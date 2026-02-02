@@ -32,14 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Utility: detect mobile breakpoint
+    var isMobileNav = function() { return window.matchMedia('(max-width: 991px)').matches; };
+
     // Mobile Menu Toggle
-    const createMobileMenu = () => {
-        const headerInner = document.querySelector('.header-inner');
-        const nav = document.querySelector('.main-nav');
+    var createMobileMenu = function() {
+        var headerInner = document.querySelector('.header-inner');
+        var nav = document.querySelector('.main-nav');
 
         if (!headerInner || !nav) return;
 
-        const toggleBtn = document.createElement('button');
+        var toggleBtn = document.createElement('button');
         toggleBtn.className = 'mobile-menu-toggle btn btn-secondary';
         toggleBtn.innerHTML = '<i class="bi bi-list" aria-hidden="true"></i>';
         toggleBtn.setAttribute('aria-label', 'Toggle Navigation');
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn.setAttribute('aria-controls', 'main-nav');
         nav.setAttribute('id', 'main-nav');
 
-        const actions = document.querySelector('.header-actions');
+        var actions = document.querySelector('.header-actions');
         if (actions) {
             headerInner.insertBefore(toggleBtn, actions);
         } else {
@@ -55,50 +58,107 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Get focusable elements within menu for focus trap
-        const getFocusableElements = () => {
+        var getFocusableElements = function() {
             return nav.querySelectorAll('a[href], button:not([disabled])');
         };
 
-        const closeMobileMenu = () => {
+        var closeAllDropdowns = function() {
+            var openItems = nav.querySelectorAll('.has-dropdown.dropdown-open');
+            for (var i = 0; i < openItems.length; i++) {
+                openItems[i].classList.remove('dropdown-open');
+                var t = openItems[i].querySelector('a[aria-haspopup]');
+                if (t) t.setAttribute('aria-expanded', 'false');
+            }
+        };
+
+        var scrollY = 0;
+
+        var lockBodyScroll = function() {
+            scrollY = window.scrollY;
+            document.body.classList.add('mobile-menu-open');
+            document.body.style.top = '-' + scrollY + 'px';
+        };
+
+        var unlockBodyScroll = function() {
+            document.body.classList.remove('mobile-menu-open');
+            document.body.style.top = '';
+            window.scrollTo(0, scrollY);
+        };
+
+        var isAnimating = false;
+
+        var closeMobileMenu = function() {
+            if (isAnimating) return;
+            isAnimating = true;
             toggleBtn.setAttribute('aria-expanded', 'false');
             nav.classList.remove('active');
             toggleBtn.innerHTML = '<i class="bi bi-list" aria-hidden="true"></i>';
-            toggleBtn.focus();
+            closeAllDropdowns();
+            unlockBodyScroll();
+            setTimeout(function() { isAnimating = false; }, 320);
         };
 
-        const openMobileMenu = () => {
+        var openMobileMenu = function() {
+            if (isAnimating) return;
+            isAnimating = true;
             toggleBtn.setAttribute('aria-expanded', 'true');
             nav.classList.add('active');
             toggleBtn.innerHTML = '<i class="bi bi-x-lg" aria-hidden="true"></i>';
-            // Focus first menu item
-            const firstLink = nav.querySelector('a');
-            if (firstLink) firstLink.focus();
+            lockBodyScroll();
+            // Focus first menu item after transition
+            var firstLink = nav.querySelector('a');
+            if (firstLink) {
+                setTimeout(function() { firstLink.focus(); }, 100);
+            }
+            setTimeout(function() { isAnimating = false; }, 320);
         };
 
-        toggleBtn.addEventListener('click', () => {
-            const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
             if (isExpanded) {
                 closeMobileMenu();
+                toggleBtn.focus();
             } else {
                 openMobileMenu();
             }
         });
 
+        // Click outside to close mobile menu
+        document.addEventListener('click', function(e) {
+            if (!isMobileNav()) return;
+            if (!nav.classList.contains('active')) return;
+            if (nav.contains(e.target) || toggleBtn.contains(e.target)) return;
+            closeMobileMenu();
+        });
+
+        // Close mobile menu when a non-dropdown nav link is clicked
+        nav.addEventListener('click', function(e) {
+            if (!isMobileNav()) return;
+            var link = e.target.closest('a');
+            if (!link) return;
+            // If it's a dropdown trigger, don't close menu (handled by dropdown init)
+            if (link.getAttribute('aria-haspopup') === 'true') return;
+            closeMobileMenu();
+        });
+
         // Escape key to close mobile menu
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && nav.classList.contains('active')) {
                 closeMobileMenu();
+                toggleBtn.focus();
             }
         });
 
         // Focus trap for mobile menu
-        nav.addEventListener('keydown', (e) => {
+        nav.addEventListener('keydown', function(e) {
             if (!nav.classList.contains('active')) return;
             if (e.key !== 'Tab') return;
 
-            const focusable = getFocusableElements();
-            const firstEl = focusable[0];
-            const lastEl = focusable[focusable.length - 1];
+            var focusable = getFocusableElements();
+            if (focusable.length === 0) return;
+            var firstEl = focusable[0];
+            var lastEl = focusable[focusable.length - 1];
 
             if (e.shiftKey && document.activeElement === firstEl) {
                 e.preventDefault();
@@ -108,69 +168,129 @@ document.addEventListener('DOMContentLoaded', () => {
                 firstEl.focus();
             }
         });
+
+        // Clean up on resize: if resized to desktop, reset mobile state (debounced)
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                if (!isMobileNav() && nav.classList.contains('active')) {
+                    isAnimating = false; // force allow close on resize
+                    closeMobileMenu();
+                }
+            }, 150);
+        });
     };
 
     createMobileMenu();
 
-    // Dropdown keyboard navigation (WCAG 2.1 compliance)
-    const initDropdownKeyboard = () => {
-        const dropdownItems = document.querySelectorAll('.has-dropdown');
+    // Dropdown handling: mobile touch/click toggle + desktop keyboard navigation (WCAG 2.1)
+    var initDropdowns = function() {
+        var dropdownItems = document.querySelectorAll('.has-dropdown');
 
-        dropdownItems.forEach(item => {
-            const trigger = item.querySelector('a[aria-haspopup]');
-            const menu = item.querySelector('.dropdown-menu');
+        dropdownItems.forEach(function(item) {
+            var trigger = item.querySelector('a[aria-haspopup]');
+            var menu = item.querySelector('.dropdown-menu');
 
             if (!trigger || !menu) return;
 
-            const menuLinks = menu.querySelectorAll('a');
+            var menuLinks = menu.querySelectorAll('a');
 
-            // Arrow down opens dropdown and moves to first item
-            trigger.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowDown' || e.key === 'Down') {
-                    e.preventDefault();
-                    trigger.setAttribute('aria-expanded', 'true');
-                    item.classList.add('dropdown-open');
-                    if (menuLinks[0]) menuLinks[0].focus();
+            var openDropdown = function() {
+                // Close sibling dropdowns first
+                var siblings = item.parentElement.querySelectorAll('.has-dropdown.dropdown-open');
+                for (var i = 0; i < siblings.length; i++) {
+                    if (siblings[i] !== item) {
+                        siblings[i].classList.remove('dropdown-open');
+                        var st = siblings[i].querySelector('a[aria-haspopup]');
+                        if (st) st.setAttribute('aria-expanded', 'false');
+                    }
+                }
+                item.classList.add('dropdown-open');
+                trigger.setAttribute('aria-expanded', 'true');
+            };
+
+            var closeDropdown = function() {
+                item.classList.remove('dropdown-open');
+                trigger.setAttribute('aria-expanded', 'false');
+            };
+
+            // Mobile: tap/click on dropdown trigger toggles submenu instead of navigating
+            trigger.addEventListener('click', function(e) {
+                if (!isMobileNav()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                if (item.classList.contains('dropdown-open')) {
+                    closeDropdown();
+                } else {
+                    openDropdown();
                 }
             });
 
-            // Navigate within dropdown
-            menuLinks.forEach((link, index) => {
-                link.addEventListener('keydown', (e) => {
+            // Keyboard: arrow-down opens dropdown and moves to first item
+            trigger.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown' || e.key === 'Down') {
+                    e.preventDefault();
+                    openDropdown();
+                    if (menuLinks[0]) menuLinks[0].focus();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    if (isMobileNav()) {
+                        e.preventDefault();
+                        if (item.classList.contains('dropdown-open')) {
+                            closeDropdown();
+                        } else {
+                            openDropdown();
+                            if (menuLinks[0]) menuLinks[0].focus();
+                        }
+                    }
+                }
+            });
+
+            // Navigate within dropdown with arrow keys
+            menuLinks.forEach(function(link, index) {
+                link.addEventListener('keydown', function(e) {
                     if (e.key === 'ArrowDown' || e.key === 'Down') {
                         e.preventDefault();
-                        const next = menuLinks[index + 1] || menuLinks[0];
+                        var next = menuLinks[index + 1] || menuLinks[0];
                         next.focus();
                     } else if (e.key === 'ArrowUp' || e.key === 'Up') {
                         e.preventDefault();
-                        const prev = menuLinks[index - 1] || menuLinks[menuLinks.length - 1];
+                        var prev = menuLinks[index - 1] || menuLinks[menuLinks.length - 1];
                         prev.focus();
                     } else if (e.key === 'Escape') {
                         e.preventDefault();
-                        trigger.setAttribute('aria-expanded', 'false');
-                        item.classList.remove('dropdown-open');
+                        closeDropdown();
                         trigger.focus();
                     } else if (e.key === 'Tab' && !e.shiftKey && index === menuLinks.length - 1) {
-                        // Tab from last item closes dropdown
-                        trigger.setAttribute('aria-expanded', 'false');
-                        item.classList.remove('dropdown-open');
+                        closeDropdown();
                     }
                 });
             });
 
-            // Close dropdown when focus leaves
-            item.addEventListener('focusout', (e) => {
-                setTimeout(() => {
+            // Close dropdown when focus leaves the item entirely
+            item.addEventListener('focusout', function() {
+                setTimeout(function() {
                     if (!item.contains(document.activeElement)) {
-                        trigger.setAttribute('aria-expanded', 'false');
-                        item.classList.remove('dropdown-open');
+                        closeDropdown();
                     }
                 }, 100);
             });
         });
+
+        // Desktop: click outside any open dropdown closes them
+        document.addEventListener('click', function(e) {
+            if (isMobileNav()) return;
+            dropdownItems.forEach(function(item) {
+                if (!item.contains(e.target)) {
+                    item.classList.remove('dropdown-open');
+                    var t = item.querySelector('a[aria-haspopup]');
+                    if (t) t.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
     };
 
-    initDropdownKeyboard();
+    initDropdowns();
 
     // Language handling is now managed by TranslationEngine in translations.js
     // The TranslationEngine initializes automatically and handles:

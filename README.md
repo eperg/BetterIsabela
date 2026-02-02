@@ -2,7 +2,7 @@
 
 A civic-tech initiative providing transparent access to municipal services, programs, and public funds of LGU Solano, Nueva Vizcaya, Philippines.
 
-![Version](https://img.shields.io/badge/version-1.1.7-green)
+![Version](https://img.shields.io/badge/version-1.1.14-green)
 ![License](https://img.shields.io/badge/license-MIT%20%7C%20CC%20BY%204.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
@@ -55,9 +55,10 @@ Visit the live website: [https://bettersolano.org](https://bettersolano.org)
 | **Fonts** | Google Fonts (Inter) |
 | **Maps** | Leaflet.js, OpenStreetMap |
 | **Charts** | Chart.js (Canvas-based) |
+| **Animations** | Lottie (dotlottie-player web component) |
 | **Data Format** | JSON |
 | **APIs** | Open-Meteo (Weather), ExchangeRate API (Currency) |
-| **Build Tools** | Node.js, npm, Bash |
+| **Build Tools** | Node.js, npm, Bash, Babel (@babel/preset-env) |
 | **Minification** | html-minifier-terser, clean-css-cli, terser |
 | **Version Control** | Git, GitHub |
 | **Server** | Apache (.htaccess), mod_rewrite, mod_deflate |
@@ -77,11 +78,13 @@ Visit the live website: [https://bettersolano.org](https://bettersolano.org)
 | **Budget Transparency** | Financial reports, income/expenditure breakdowns, and infrastructure projects |
 | **Legislative Documents** | Searchable database of ordinances and resolutions from Sangguniang Bayan |
 | **Municipal Statistics** | Demographics, economic data, and competitive index rankings |
+| **Appointment Services** | Online appointment scheduling integration with the Mayor's Office (OASYS), featuring branded Lottie animation |
 | **Real-time Information** | Live weather updates, currency exchange rates, and Philippine time |
-| **Multi-language Support** | Available in English, Filipino, and Ilocano |
-| **Accessibility** | WCAG 2.1 compliant with skip links, ARIA labels, and semantic HTML |
+| **Multi-language Support** | Available in English, Filipino, and Ilocano with full translation coverage |
+| **Mobile Navigation** | Responsive menu with GPU-accelerated open/close transitions, body scroll lock, animation guard against rapid toggles, debounced resize handling, touch-safe hover scoping, click-outside-to-close, and focus trap |
+| **Accessibility** | WCAG 2.1 compliant with skip links, ARIA labels, keyboard navigation, and semantic HTML |
 | **SEO Optimized** | Meta tags, Open Graph, Twitter Cards, structured data, and XML sitemap |
-| **Performance** | 90% size reduction through minification, GZIP compression, and browser caching |
+| **Performance** | 90%+ size reduction through minification, GZIP compression, Babel transpilation, and browser caching |
 
 ## Quick Start
 
@@ -143,6 +146,7 @@ npm run dev
 |---------|-------------|
 | `npm run dev` | Start local development server (port 8000) |
 | `npm run build` | Build minified production files to `dist/` (auto-bumps patch version) |
+| `npm run build -- --no-bump` | Build without incrementing the version number |
 | `npm run build:minor` | Bump minor version and build |
 | `npm run build:major` | Bump major version and build |
 | `npm run serve:dist` | Serve production build (port 8080) |
@@ -179,12 +183,14 @@ npm run build
 bettersolano/
 ├── assets/
 │   ├── css/              # Stylesheets (9 files)
-│   ├── js/               # JavaScript modules (15 files)
-│   ├── images/           # Images, icons, banners
+│   ├── js/               # JavaScript modules (17 files)
+│   ├── images/           # Images, icons, banners, partner logos
+│   ├── animation/        # Lottie JSON animation files
 │   └── fonts/            # Web fonts
 ├── data/                 # JSON data files
 │   ├── officials.json    # Government officials data
 │   ├── services.json     # Municipal services data
+│   ├── news.json         # News and announcements
 │   ├── ordinances.json   # Legislative ordinances
 │   └── resolutions.json  # Legislative resolutions
 ├── services/             # Service category pages (11 pages)
@@ -193,6 +199,7 @@ bettersolano/
 ├── legislative/          # Legislative framework pages
 ├── budget/               # Budget transparency page
 ├── statistics/           # Municipal statistics page
+├── news/                 # News and announcements page
 ├── contact/              # Contact information page
 ├── faq/                  # Frequently asked questions
 ├── scripts/              # Build and version scripts
@@ -203,6 +210,7 @@ bettersolano/
 ├── robots.txt            # Search engine directives
 ├── version.json          # Version tracking
 ├── build.sh              # Build automation script
+├── babel.config.json     # Babel transpilation configuration
 ├── package.json          # Node.js configuration
 └── README.md             # Project documentation
 ```
@@ -295,6 +303,7 @@ See [LICENSE](LICENSE) for full details.
 ## Acknowledgments
 
 - [BetterGov.ph](https://bettergov.ph) for the civic-tech initiative in the Philippines
+- [Abakada.org](https://abakada.org) for supporting civic technology efforts
 - LGU Solano for public data availability and transparency
 - All volunteers and contributors who dedicate their time
 - Open-source community for the tools and libraries used

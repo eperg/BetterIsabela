@@ -130,7 +130,7 @@ function animateBars(container) {
     });
     
     // Sector bars
-    container.querySelectorAll('.sector-bar').forEach(bar => {
+    container.querySelectorAll('.sector-bar, .sc-fill').forEach(bar => {
         const width = bar.dataset.width;
         if (width) {
             setTimeout(() => {

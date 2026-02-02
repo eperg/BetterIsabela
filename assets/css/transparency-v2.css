@@ -91,6 +91,7 @@
 /* Period Toggle */
 .sre-period-toggle {
     display: flex;
+    gap: 4px;
     background: white;
     border-radius: 12px;
     padding: 4px;
@@ -264,6 +265,7 @@
     height: 180px;
     margin-bottom: 20px;
     position: relative;
+    overflow: hidden;
 }
 
 /* Breakdown List */

@@ -1,0 +1,21 @@
+{
+  "/contact/page": "app/contact/page.js",
+  "/accessibility/page": "app/accessibility/page.js",
+  "/budget/page": "app/budget/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/legislative/page": "app/legislative/page.js",
+  "/faq/page": "app/faq/page.js",
+  "/page": "app/page.js",
+  "/news/page": "app/news/page.js",
+  "/service-details/[slug]/page": "app/service-details/[slug]/page.js",
+  "/services/page": "app/services/page.js",
+  "/statistics/page": "app/statistics/page.js",
+  "/sitemap-page/page": "app/sitemap-page/page.js",
+  "/terms/page": "app/terms/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/legislative/resolution-framework/page": "app/legislative/resolution-framework/page.js",
+  "/government/page": "app/government/page.js",
+  "/services/[category]/page": "app/services/[category]/page.js",
+  "/sitemap/page": "app/sitemap/page.js",
+  "/legislative/ordinance-framework/page": "app/legislative/ordinance-framework/page.js"
+}

@@ -137,6 +137,9 @@ function initCharts() {
         responsive: true,
         maintainAspectRatio: false,
         cutout: '65%',
+        layout: {
+            padding: 4
+        },
         plugins: {
             legend: { display: false },
             tooltip: {
@@ -168,13 +171,19 @@ function initCharts() {
             datasets: [{
                 data: [data.income.local, data.income.external],
                 backgroundColor: ['#10b981', '#0ea5e9'],
-                borderWidth: 0,
-                hoverOffset: 6
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                hoverOffset: 0,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#ffffff'
             }]
         },
         options: chartOptions
     });
-    
+
+    // Store original colors for highlight/restore
+    incomeChart._originalColors = ['#10b981', '#0ea5e9'];
+
     // Expenditure Chart
     expenditureChart = new Chart(expenditureCtx, {
         type: 'doughnut',
@@ -188,12 +197,18 @@ function initCharts() {
                     data.expenditures.debt
                 ],
                 backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'],
-                borderWidth: 0,
-                hoverOffset: 6
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                hoverOffset: 0,
+                hoverBorderWidth: 3,
+                hoverBorderColor: '#ffffff'
             }]
         },
         options: chartOptions
     });
+
+    // Store original colors for highlight/restore
+    expenditureChart._originalColors = ['#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'];
 }
 
 /**
@@ -273,10 +288,10 @@ function initBreakdownInteractions() {
 function highlightChartSegment(type, highlight) {
     const incomeTypes = ['local', 'external'];
     const expTypes = ['gps', 'social', 'economic', 'debt'];
-    
+
     let chart = null;
     let index = -1;
-    
+
     if (incomeTypes.includes(type)) {
         chart = incomeChart;
         index = incomeTypes.indexOf(type);
@@ -284,13 +299,27 @@ function highlightChartSegment(type, highlight) {
         chart = expenditureChart;
         index = expTypes.indexOf(type);
     }
-    
+
     if (chart && index >= 0) {
-        const meta = chart.getDatasetMeta(0);
-        if (meta.data[index]) {
-            meta.data[index].options.offset = highlight ? 8 : 0;
-            chart.update('none');
+        const dataset = chart.data.datasets[0];
+        const numSegments = dataset.data.length;
+
+        if (highlight) {
+            // Dim other segments instead of displacing the hovered one
+            const dimmedColors = dataset.backgroundColor.map((color, i) => {
+                if (i === index) return color;
+                // Add transparency to non-hovered segments
+                return color + '40';
+            });
+            dataset.hoverBackgroundColor = dimmedColors;
+            dataset.backgroundColor = dimmedColors;
+            dataset.backgroundColor[index] = chart._originalColors[index];
+        } else {
+            // Restore all segments to original colors
+            dataset.backgroundColor = [...chart._originalColors];
+            dataset.hoverBackgroundColor = [...chart._originalColors];
         }
+        chart.update('none');
     }
 }
 

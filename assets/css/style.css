@@ -328,10 +328,27 @@ p {
     gap: 0
 }
 
-.main-nav .has-dropdown:hover .dropdown-menu {
+.main-nav .has-dropdown.dropdown-open .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0)
+}
+
+@media (hover: hover) and (min-width: 992px) {
+    .main-nav .has-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0)
+    }
+}
+
+/* Body scroll lock when mobile menu is open */
+body.mobile-menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0
 }
 
 .main-nav .dropdown-menu li {
@@ -394,7 +411,7 @@ p {
 .hero-section {
     background-color: var(--color-primary);
     color: var(--color-white);
-    padding: 60px 0;
+    padding: 96px 0;
     text-align: center;
     background-image: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)
 }
@@ -487,6 +504,123 @@ p {
 
 .card-link h4 {
     color: var(--color-primary)
+}
+
+/* News Page - Card Grid */
+.news-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md)
+}
+
+.news-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-bg-alt);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease
+}
+
+.news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md)
+}
+
+.news-card:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px
+}
+
+.news-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px var(--spacing-sm) 0
+}
+
+.news-card-date {
+    font-size: .75rem;
+    color: var(--color-text-light);
+    white-space: nowrap
+}
+
+.news-card-body {
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
+    flex: 1;
+    display: flex;
+    flex-direction: column
+}
+
+.news-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 var(--spacing-xs);
+    color: var(--color-text)
+}
+
+.news-card-title a {
+    color: inherit;
+    text-decoration: none
+}
+
+.news-card-title a:hover,
+.news-card-title a:focus {
+    color: var(--color-primary)
+}
+
+.news-card-desc {
+    font-size: .8125rem;
+    line-height: 1.55;
+    color: var(--color-text-light);
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden
+}
+
+.news-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-sm) 12px;
+    gap: var(--spacing-xs)
+}
+
+.news-card-source {
+    font-size: .8125rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    border-radius: 4px
+}
+
+.news-card-source:hover,
+.news-card-source:focus {
+    color: var(--color-primary-dark);
+    text-decoration: underline
+}
+
+.news-card-source:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px
+}
+
+.news-card-source i {
+    font-size: .7rem;
+    transition: transform .15s ease
+}
+
+.news-card-source:hover i {
+    transform: translateX(2px)
 }
 
 .site-footer {
@@ -5688,7 +5822,7 @@ cklist with Icons - Proper Indentation */
 /* Hero V2 - Two Column Layout */
 .home-hero-v2 {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-    padding: 80px 0;
+    padding: 120px 0;
 }
 
 .home-hero-v2-inner {
@@ -5750,6 +5884,215 @@ cklist with Icons - Proper Indentation */
     background: rgba(255, 255, 255, 0.15);
     color: white;
     text-decoration: none;
+}
+
+/* Appointment CTA Section */
+.appointment-cta-section {
+    background:
+        radial-gradient(circle, rgba(0, 50, 160, 0.12) 1px, transparent 1px),
+        var(--color-bg-alt);
+    background-size: 20px 20px;
+    padding: 80px 0;
+}
+
+.appointment-cta-inner {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.appointment-cta-animation {
+    flex: 0 0 420px;
+    max-width: 420px;
+}
+
+.appointment-cta-animation dotlottie-player {
+    width: 100%;
+    height: auto;
+}
+
+.appointment-cta-content {
+    flex: 1;
+    text-align: left;
+}
+
+.appointment-cta-heading {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+}
+
+.appointment-cta-subtitle {
+    font-size: 1.0625rem;
+    color: var(--color-text-light);
+    margin: 0 0 32px 0;
+}
+
+.appointment-cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.appointment-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.appointment-cta-btn--primary {
+    background: #152c95;
+    color: white;
+}
+
+.appointment-cta-btn--primary:hover {
+    background: #13277c;
+    box-shadow: 0 4px 16px rgba(21, 44, 149, 0.3);
+    text-decoration: none;
+    color: white;
+}
+
+.appointment-cta-btn--outline {
+    background: white;
+    color: var(--color-text);
+    border: 1px solid #d1d5db;
+}
+
+.appointment-cta-btn--outline:hover {
+    border-color: var(--color-text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+    .appointment-cta-section {
+        padding: 56px 0;
+    }
+
+    .appointment-cta-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 32px;
+    }
+
+    .appointment-cta-animation {
+        flex: none;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .appointment-cta-content {
+        text-align: center;
+    }
+
+    .appointment-cta-heading {
+        font-size: 1.5rem;
+    }
+
+    .appointment-cta-subtitle {
+        font-size: 0.9375rem;
+        margin-bottom: 24px;
+    }
+
+    .appointment-cta-actions {
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .appointment-cta-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+    }
+}
+
+/* Abakada Education CTA */
+.abakada-cta-section {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        var(--color-bg-alt);
+    background-size: 24px 24px, 24px 24px, auto;
+}
+
+.abakada-cta-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.abakada-cta-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+.abakada-cta-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-light);
+    margin: 0;
+}
+
+.abakada-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    background: #107f87;
+    color: white;
+}
+
+.abakada-cta-btn:hover,
+.abakada-cta-btn:focus {
+    background: #1bcace;
+    color: white;
+    box-shadow: 0 4px 16px rgba(27, 202, 206, 0.3);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.abakada-cta-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 575px) {
+    .abakada-cta-logo {
+        height: 32px;
+    }
+
+    .abakada-cta-text {
+        font-size: 0.9375rem;
+    }
+
+    .abakada-cta-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+    }
 }
 
 /* Search Box */
@@ -7857,6 +8200,7 @@ a.a11y-contact-item:hover i {
 /* Environmental Initiatives Section */
 .section-compact {
     padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
 }
 
 .section-title {
@@ -7945,20 +8289,21 @@ a.a11y-contact-item:hover i {
 
 /* Education Page Styles */
 .edu-stats-grid {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    flex-wrap: wrap;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .edu-stat-card {
     background: var(--color-white);
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    padding: 24px 40px;
+    padding: 24px 16px;
     text-align: center;
     transition: all 0.2s ease;
-    min-width: 160px;
 }
 
 .edu-stat-card:hover {
@@ -8072,12 +8417,12 @@ a.a11y-contact-item:hover i {
 
 @media (max-width: 640px) {
     .edu-stats-grid {
-        gap: 12px;
+        max-width: none;
+        gap: 10px;
     }
-    
+
     .edu-stat-card {
-        padding: 16px 24px;
-        min-width: 140px;
+        padding: 16px 8px;
     }
     
     .edu-stat-num {
