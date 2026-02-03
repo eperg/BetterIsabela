@@ -54,8 +54,8 @@ npm run dev
 
 ## Documentation
 
-- [MIGRATION.md](../MIGRATION.md) - Migration guide for contributors
-- [CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
+- [MIGRATION.md](../../MIGRATION.md) - Migration guide for contributors
+- [CONTRIBUTING.md](../../CONTRIBUTING.md) - Contribution guidelines
 
 ## Compatibility
 

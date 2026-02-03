@@ -1,5 +1,12 @@
 /* Better Solano - Main JavaScript */
 
+// Register Service Worker for offline support
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(function(err) {
+        console.warn('SW registration failed:', err);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Prevent double-click on navigation and header links from causing unintended behavior
     const headerLinks = document.querySelectorAll('.site-header a, .main-nav a, .logo-container a');
