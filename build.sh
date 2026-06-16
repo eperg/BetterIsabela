@@ -24,6 +24,7 @@ rsync -av \
     --exclude='.vscode' \
     --exclude='.DS_Store' \
     --exclude='react-app' \
+    --exclude='admin' \
     --exclude='backup-restore-point-*' \
     --exclude='package*.json' \
     --exclude='build.sh' \

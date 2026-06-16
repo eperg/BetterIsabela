@@ -19,17 +19,29 @@ async function fetchResolutions() {
 }
 
 /**
- * Sorts resolutions by resolution number in descending order (newest first)
+ * Extracts the year segment from a resolution number
+ * Resolution format: "XXX-YYYY-SS" (sequence-year-session)
+ * @param {string} resolutionNo - Resolution number (e.g., "246-2025-11")
+ * @returns {number} The year (e.g., 2025)
+ */
+function getResolutionYear(resolutionNo) {
+  return parseInt(resolutionNo.split('-')[1], 10);
+}
+
+/**
+ * Sorts resolutions by year, then sequence number, in descending order (newest first)
  * Resolution format: "XXX-YYYY-SS" (sequence-year-session)
  * @param {Array} resolutions - Array of resolution objects
  * @returns {Array} Sorted array of resolutions
  */
 function sortResolutionsByNumber(resolutions) {
   return [...resolutions].sort((a, b) => {
-    // Extract sequence number from first segment (e.g., "246" from "246-2025-11")
-    const numA = parseInt(a.resolutionNo.split('-')[0], 10);
-    const numB = parseInt(b.resolutionNo.split('-')[0], 10);
-    return numB - numA;
+    const [numA, yearA] = a.resolutionNo.split('-');
+    const [numB, yearB] = b.resolutionNo.split('-');
+    if (yearA !== yearB) {
+      return parseInt(yearB, 10) - parseInt(yearA, 10);
+    }
+    return parseInt(numB, 10) - parseInt(numA, 10);
   });
 }
 
@@ -65,14 +77,16 @@ function formatSessionDate(dateString) {
 }
 
 /**
- * Renders the resolution table to the DOM
+ * Renders a resolution table to the DOM
  * @param {Array} resolutions - Array of resolution objects
+ * @param {string} tableBodyId - The id of the tbody element to populate
+ * @param {number} year - The year represented by this table (for the empty-state message)
  */
-function renderResolutionTable(resolutions) {
-  const tableBody = document.getElementById('resolution-table-body');
+function renderResolutionTable(resolutions, tableBodyId, year) {
+  const tableBody = document.getElementById(tableBodyId);
 
   if (!tableBody) {
-    console.error('Resolution table body element not found');
+    console.error('Resolution table body element not found:', tableBodyId);
     return;
   }
 
@@ -84,7 +98,7 @@ function renderResolutionTable(resolutions) {
     const emptyRow = document.createElement('tr');
     emptyRow.innerHTML = `
             <td colspan="3" class="text-center text-muted">
-                No resolutions found for 2025
+                No resolutions found for ${year}
             </td>
         `;
     tableBody.appendChild(emptyRow);
@@ -116,19 +130,30 @@ async function initResolutionTable() {
   try {
     const resolutions = await fetchResolutions();
     const sortedResolutions = sortResolutionsByNumber(resolutions);
-    renderResolutionTable(sortedResolutions);
+
+    const resolutions2026 = sortedResolutions.filter(
+      (resolution) => getResolutionYear(resolution.resolutionNo) === 2026
+    );
+    const resolutions2025 = sortedResolutions.filter(
+      (resolution) => getResolutionYear(resolution.resolutionNo) === 2025
+    );
+
+    renderResolutionTable(resolutions2026, 'resolution-table-body-2026', 2026);
+    renderResolutionTable(resolutions2025, 'resolution-table-body', 2025);
   } catch (error) {
     console.error('Error initializing resolution table:', error);
-    const tableBody = document.getElementById('resolution-table-body');
-    if (tableBody) {
-      tableBody.innerHTML = `
+    ['resolution-table-body-2026', 'resolution-table-body'].forEach((id) => {
+      const tableBody = document.getElementById(id);
+      if (tableBody) {
+        tableBody.innerHTML = `
                 <tr>
                     <td colspan="3" class="text-center text-muted">
                         Unable to load resolutions. Please try again later.
                     </td>
                 </tr>
             `;
-    }
+      }
+    });
   }
 }
 
@@ -139,6 +164,7 @@ document.addEventListener('DOMContentLoaded', initResolutionTable);
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     fetchResolutions,
+    getResolutionYear,
     sortResolutionsByNumber,
     formatResolutionNo,
     formatSessionDate,

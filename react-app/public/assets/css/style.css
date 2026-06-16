@@ -9159,3 +9159,173 @@ a.a11y-contact-item:hover i {
     padding: 4px 8px;
   }
 }
+/* HIV Care Philippines CTA */
+.hivcare-cta-section {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.035) 1px, transparent 1px) var(--color-bg-alt);
+  background-size: 20px 20px;
+}
+
+.hivcare-cta-card {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 24, 40, 0.04);
+  border-radius: 20px;
+  padding: 48px 56px;
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 12px 32px rgba(16, 24, 40, 0.08);
+}
+
+.hivcare-cta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #c4123f;
+  background: rgba(255, 46, 81, 0.08);
+  padding: 6px 16px;
+  border-radius: 50px;
+}
+
+.hivcare-cta-eyebrow i {
+  font-size: 0.9375rem;
+}
+
+.hivcare-cta-logo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  margin: 4px 0;
+}
+
+.hivcare-cta-heading {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.hivcare-cta-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  margin: 0;
+  max-width: 560px;
+}
+
+.hivcare-cta-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 28px;
+  margin: 4px 0 8px;
+}
+
+.hivcare-cta-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hivcare-cta-stat i {
+  color: #ff2e51;
+  font-size: 1.0625rem;
+}
+
+.hivcare-cta-stat strong {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #ff2e51;
+}
+
+.hivcare-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  background: #ff2e51;
+  color: white;
+  box-shadow: 0 4px 16px rgba(255, 46, 81, 0.25);
+  margin-top: 8px;
+}
+
+.hivcare-cta-btn:hover,
+.hivcare-cta-btn:focus {
+  background: #e0193c;
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 46, 81, 0.4);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.hivcare-cta-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 767px) {
+  .hivcare-cta-card {
+    padding: 36px 28px;
+    gap: 14px;
+  }
+
+  .hivcare-cta-heading {
+    font-size: 1.4375rem;
+  }
+
+  .hivcare-cta-stats {
+    gap: 10px 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  .hivcare-cta-card {
+    padding: 32px 20px;
+    border-radius: 16px;
+  }
+
+  .hivcare-cta-logo {
+    height: 32px;
+  }
+
+  .hivcare-cta-heading {
+    font-size: 1.25rem;
+  }
+
+  .hivcare-cta-text {
+    font-size: 0.9375rem;
+  }
+
+  .hivcare-cta-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hivcare-cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+  }
+}
+

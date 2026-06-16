@@ -176,6 +176,21 @@ export default function Footer() {
                 />
               </a>
               <a
+                href="https://hivcareph.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="HIV Care Philippines"
+              >
+                <img
+                  src="/assets/images/logo/hiv-care-logo-footer.svg"
+                  alt="HIV Care Philippines"
+                  className="footer-partner-logo"
+                  width="120"
+                  height="28"
+                  loading="lazy"
+                />
+              </a>
+              <a
                 href="https://bettergov.ph"
                 target="_blank"
                 rel="noopener noreferrer"
