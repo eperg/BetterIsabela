@@ -153,18 +153,33 @@
       // Capture focused element now, before scroll lock shifts layout.
       _previousFocus = document.activeElement;
 
-      // Double requestAnimationFrame: the first RAF lets the browser compute and
-      // commit the pre-animation state (card at opacity:0 / from-state) to its
-      // compositor. The second RAF then applies all show-changes atomically in one
-      // rendering frame, guaranteeing the entry animation starts from a clean slate
-      // with no one-frame flash of an intermediate or natural-opacity state.
+      // Double requestAnimationFrame, with the scroll lock deliberately split into
+      // the FIRST frame and the reveal into the SECOND:
+      //
+      //   Frame 1 — lockScroll() mutates body layout (scrollbar removal +
+      //     paddingRight compensation) while the overlay is still invisible. Doing
+      //     this here lets the layout settle a full frame BEFORE the backdrop-filter
+      //     ever samples the page. If the lock ran in the same frame as the reveal,
+      //     the filter would snapshot a shifting backdrop and flash.
+      //   Frame 2 — apply the reveal atomically over the now-stable layout, so the
+      //     card's entry animation starts from its committed from-state and the
+      //     (already-promoted) backdrop-filter layer simply turns opaque.
       requestAnimationFrame(function () {
+        lockScroll();
+
         requestAnimationFrame(function () {
-          // Scroll lock and class addition are applied together in the same frame
-          // so the layout shift and backdrop appearance are invisible to the user.
-          lockScroll();
           overlay.classList.add('vol-popup-overlay--visible');
           overlay.removeAttribute('aria-hidden');
+
+          // Release the card's GPU-layer hint once the entry animation finishes so
+          // it doesn't stay permanently promoted after it has served its purpose.
+          modal.addEventListener(
+            'animationend',
+            function () {
+              modal.style.willChange = 'auto';
+            },
+            { once: true }
+          );
 
           var focusTarget = modal.querySelector('.vol-popup-close');
           // preventScroll: true stops the browser from triggering a scroll-into-view

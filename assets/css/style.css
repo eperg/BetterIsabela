@@ -9746,6 +9746,15 @@ a.a11y-contact-item:hover i {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  /* Pre-promote the overlay to its own persistent GPU compositing layer at page
+     load — even while hidden (opacity:0). This forces the backdrop-filter layer
+     to be established ONCE up front, so toggling opacity 0->1 on reveal can no
+     longer create/destroy that layer. Without this, the layer is built lazily at
+     reveal time, producing the "appear -> disappear -> reappear" flash as the
+     compositor recomposites and snapshots the backdrop a frame late. */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .vol-popup-overlay--visible {
