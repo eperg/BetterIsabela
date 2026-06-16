@@ -585,22 +585,16 @@
                   id="map-container"
                   role="application"
                   aria-label="Interactive map of Solano, Nueva Vizcaya"
+                  data-map-loaded="iframe"
                 >
-                  <noscript>
-                    <div class="map-fallback">
-                      <p data-i18n="home-javascript-is-required-to-view-the-interactive-map">
-                        JavaScript is required to view the interactive map.
-                      </p>
-                      <a
-                        href="https://www.openstreetmap.org/?mlat=16.5167&mlon=121.1833#map=13/16.5167/121.1833"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-i18n="home-view-solano-on-openstreetmap"
-                      >
-                        View Solano on OpenStreetMap
-                      </a>
-                    </div>
-                  </noscript>
+                  <iframe
+                    id="osm-embed"
+                    class="map-iframe"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=121.1633%2C16.5017%2C121.2033%2C16.5317&layer=mapnik&marker=16.5167%2C121.1833"
+                    title="Map of Solano, Nueva Vizcaya"
+                    loading="lazy"
+                    aria-label="OpenStreetMap showing Solano Municipal Hall, Nueva Vizcaya"
+                  ></iframe>
                 </div>
                 <p class="map-attribution">
                   <i class="bi bi-geo-alt" aria-hidden="true"></i>
@@ -1363,14 +1357,13 @@
     <script defer src="assets/js/weather-map.js?v=1.6.3"></script>
 
     <!-- Failsafe: Ensure weather section renders even if scripts hang -->
+    <!-- Note: map failsafe removed — OSM iframe is now inlined in the HTML and always visible. -->
     <script>
       (function () {
-        // Extended failsafe timeout - give API 15 seconds to respond before showing fallback
         setTimeout(function () {
           var weatherContainer = document.getElementById('weather-container');
           if (weatherContainer && !weatherContainer.getAttribute('data-weather-loaded')) {
             console.warn('Weather failsafe: API timeout, using fallback data');
-            // Only trigger failsafe if weather-map.js completely failed to load
             if (typeof window.WeatherMapInit === 'function') {
               console.log('Weather failsafe: Attempting manual initialization');
               window.WeatherMapInit();
@@ -1380,14 +1373,6 @@
                 '<div class="weather-widget" role="region" aria-label="Current weather in Solano"><div class="weather-current"><div class="weather-current-icon"><i class="bi bi-cloud-sun-fill"></i></div><div class="weather-current-info"><div class="weather-current-temp">29°C</div><div class="weather-current-condition">Mainly clear</div><div class="weather-current-location"><i class="bi bi-geo-alt"></i> Solano, Nueva Vizcaya</div></div></div><div class="weather-stats"><div class="weather-stat"><i class="bi bi-droplet"></i><span>65%</span></div><div class="weather-stat"><i class="bi bi-wind"></i><span>12 km/h</span></div></div><div class="weather-hourly"><div class="weather-hour"><span class="weather-hour-time">1 PM</span><i class="bi bi-cloud-sun-fill"></i><span class="weather-hour-temp">26°</span></div><div class="weather-hour"><span class="weather-hour-time">2 PM</span><i class="bi bi-cloud-sun-fill"></i><span class="weather-hour-temp">27°</span></div><div class="weather-hour"><span class="weather-hour-time">3 PM</span><i class="bi bi-sun-fill"></i><span class="weather-hour-temp">28°</span></div><div class="weather-hour"><span class="weather-hour-time">4 PM</span><i class="bi bi-sun-fill"></i><span class="weather-hour-temp">29°</span></div></div></div>';
               weatherContainer.setAttribute('data-weather-loaded', 'failsafe');
             }
-          }
-
-          var mapContainer = document.getElementById('map-container');
-          if (mapContainer && !mapContainer.getAttribute('data-map-loaded')) {
-            console.warn('Map failsafe: Forcing iframe fallback after timeout');
-            mapContainer.innerHTML =
-              '<iframe width="100%" height="300" frameborder="0" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=121.1633%2C16.5017%2C121.2033%2C16.5317&layer=mapnik&marker=16.5167%2C121.1833" style="border:0;display:block;" title="Map of Solano" loading="lazy"></iframe>';
-            mapContainer.setAttribute('data-map-loaded', 'failsafe');
           }
         }, 15000);
       })();

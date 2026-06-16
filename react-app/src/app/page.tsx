@@ -1,16 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import SearchAutocomplete from '@/components/SearchAutocomplete';
 
 export default function HomePage() {
   const { t } = useLanguage();
-
-  useEffect(() => {
-    // Load Leaflet map after component mounts - handled by iframe fallback
-  }, []);
 
   return (
     <>
@@ -274,16 +269,13 @@ export default function HomePage() {
                   id="map-container"
                   role="application"
                   aria-label="Interactive map of Solano, Nueva Vizcaya"
-                  className="map-container-iframe"
+                  data-map-loaded="iframe"
                 >
                   <iframe
-                    width="100%"
-                    height="300"
-                    frameBorder="0"
-                    scrolling="no"
                     src="https://www.openstreetmap.org/export/embed.html?bbox=121.1633%2C16.5017%2C121.2033%2C16.5317&layer=mapnik&marker=16.5167%2C121.1833"
                     className="map-iframe"
-                    title="Map of Solano"
+                    title="Map of Solano, Nueva Vizcaya"
+                    aria-label="OpenStreetMap showing Solano Municipal Hall, Nueva Vizcaya"
                     loading="lazy"
                   ></iframe>
                 </div>

@@ -354,34 +354,20 @@
         return this.map;
       }
 
-      console.log('Map: Starting initialization...');
-      console.log('Map: Leaflet available:', typeof L !== 'undefined');
-
-      // Try to initialize Leaflet
+      // If Leaflet is available, upgrade the container to an interactive map
       if (typeof L !== 'undefined') {
+        console.log('Map: Leaflet available, upgrading to interactive map');
         return this.initLeaflet(container);
       }
 
-      // Leaflet not ready yet, show loading and retry
-      this.renderLoading(container);
-
-      // Retry multiple times
-      let attempts = 0;
-      const maxAttempts = 10;
-      const retryInterval = setInterval(() => {
-        attempts++;
-        console.log(`Map: Retry attempt ${attempts}/${maxAttempts}`);
-
-        if (typeof L !== 'undefined') {
-          clearInterval(retryInterval);
-          this.initLeaflet(container);
-        } else if (attempts >= maxAttempts) {
-          clearInterval(retryInterval);
-          console.warn('Map: Leaflet failed to load after retries');
-          this.renderTextFallback(container);
-        }
-      }, 500);
-
+      // Leaflet not available — the iframe embedded in the HTML stays visible.
+      // Ensure the fallback iframe is present if the container is somehow empty.
+      if (!container.querySelector('iframe')) {
+        console.warn('Map: Leaflet unavailable and no iframe found, inserting fallback');
+        this.renderTextFallback(container);
+      } else {
+        console.log('Map: Leaflet unavailable, keeping existing iframe');
+      }
       return null;
     },
 
@@ -417,10 +403,23 @@
       try {
         console.log('Map: Initializing Leaflet...');
 
-        // Clear any existing content
+        // Fix marker icon paths when Leaflet is loaded from a CDN — the auto-detection
+        // of _iconUrl relative to the script URL is unreliable across CDN providers.
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+          shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        });
+
+        // Clear any existing content (removes the inline iframe when upgrading)
         container.innerHTML = '';
 
-        // Create the map with keyboard navigation support (Requirement 5.4)
+        // Create the map with keyboard navigation support
         this.map = L.map(container, {
           center: this.SOLANO_CENTER,
           zoom: this.DEFAULT_ZOOM,
