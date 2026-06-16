@@ -61,7 +61,6 @@ export default function HomePage() {
         <div className="container">
           <div className="appointment-cta-inner">
             <div className="appointment-cta-animation" aria-hidden="true">
-              {/* @ts-expect-error - dotlottie-player is a web component loaded via script */}
               <dotlottie-player
                 src="/assets/animation/ramonloganjr-booking.json"
                 background="transparent"
@@ -712,7 +711,6 @@ export default function HomePage() {
         <div className="container">
           <div className="quiz-cta-inner">
             <div className="quiz-cta-animation" aria-hidden="true">
-              {/* @ts-expect-error - dotlottie-player is a web component loaded via script */}
               <dotlottie-player
                 src="/assets/animation/ramonloganjr-exam.json"
                 background="transparent"

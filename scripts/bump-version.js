@@ -124,11 +124,24 @@ htmlDirs.forEach(function (dir) {
 
 console.log('Updated ' + filesUpdated + ' HTML file(s)');
 
-// Sync version.json to react-app public folder
+// Sync version.json to react-app/public/ (consumed by React Footer at runtime)
 var reactPublicVersion = path.join(__dirname, '..', 'react-app', 'public', 'version.json');
 if (fs.existsSync(path.dirname(reactPublicVersion))) {
   fs.copyFileSync(VERSION_FILE, reactPublicVersion);
-  console.log('Synced version.json to react-app/public/');
+  console.log('Synced version.json → react-app/public/version.json');
+}
+
+// Sync version field in react-app/package.json
+var reactPkgFile = path.join(__dirname, '..', 'react-app', 'package.json');
+try {
+  if (fs.existsSync(reactPkgFile)) {
+    var reactPkg = JSON.parse(fs.readFileSync(reactPkgFile, 'utf8'));
+    reactPkg.version = newVersion;
+    fs.writeFileSync(reactPkgFile, JSON.stringify(reactPkg, null, 2) + '\n');
+    console.log('Synced version → react-app/package.json');
+  }
+} catch (e) {
+  console.warn('Warning: Could not update react-app/package.json:', e.message);
 }
 
 console.log('Done! Version is now ' + newVersion);

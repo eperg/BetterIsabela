@@ -429,12 +429,38 @@
           keyboardPanDelta: 80,
         });
 
-        // Add tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Add tile layer with CSP-block detection — some servers (e.g. cPanel hosts that inject
+        // their own CSP alongside .htaccess) block tile.openstreetmap.org images even when
+        // unpkg.com images (marker icons) load fine. If 3 tile errors fire before any tile
+        // succeeds, the host is blocking tiles; fall back to the always-reliable OSM iframe embed.
+        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19,
-        }).addTo(this.map);
+          crossOrigin: false,
+        });
+
+        let tileLoadedOnce = false;
+        let tileErrorCount = 0;
+
+        tileLayer.on('tileload', () => {
+          tileLoadedOnce = true;
+        });
+
+        tileLayer.on('tileerror', () => {
+          if (!tileLoadedOnce) {
+            tileErrorCount++;
+            if (tileErrorCount >= 3) {
+              console.warn('Map: Tiles blocked (likely CSP or network), falling back to OSM embed iframe');
+              const map = this.map;
+              this.map = null;
+              if (map) map.remove();
+              this.renderTextFallback(container);
+            }
+          }
+        });
+
+        tileLayer.addTo(this.map);
 
         // Add marker
         const marker = L.marker(this.SOLANO_CENTER).addTo(this.map);

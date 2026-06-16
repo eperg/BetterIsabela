@@ -2,4 +2,6 @@
 node_modules/
 dist/
 .next/
+react-app/out/
+out/
 *.backup
