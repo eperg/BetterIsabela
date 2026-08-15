@@ -172,6 +172,43 @@ AddDefaultCharset UTF-8
 </IfModule>
 
 # ============================================
+# IMMUTABLE ASSETS (Next.js build output)
+# ============================================
+# Everything under /_next/static/ carries a content hash in its filename, so a
+# changed file is always a new URL and the old one can never go stale. Marking
+# it immutable stops browsers revalidating it at all.
+# Path-scoped rules are not possible with <FilesMatch>, and <Directory> is not
+# allowed in .htaccess, so the path is tagged via a rewrite env var and the
+# header keyed off that tag. This block sits after the generic rules above so
+# its Cache-Control wins for these files.
+<IfModule mod_rewrite.c>
+    RewriteRule ^_next/static/ - [E=IMMUTABLE_ASSET:1]
+</IfModule>
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable" env=IMMUTABLE_ASSET
+</IfModule>
+
+# ============================================
+# BROTLI COMPRESSION (preferred when available)
+# ============================================
+# LiteSpeed and most current cPanel Apache builds ship mod_brotli. Where it is
+# present browsers negotiate br over gzip and text payloads land roughly 15-20%
+# smaller; where it is absent this block is skipped and the gzip rules below
+# still apply, so no host is left worse off.
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html
+    AddOutputFilterByType BROTLI_COMPRESS text/css
+    AddOutputFilterByType BROTLI_COMPRESS text/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/json
+    AddOutputFilterByType BROTLI_COMPRESS application/manifest+json
+    AddOutputFilterByType BROTLI_COMPRESS application/xml
+    AddOutputFilterByType BROTLI_COMPRESS text/xml
+    AddOutputFilterByType BROTLI_COMPRESS text/plain
+    AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+# ============================================
 # GZIP COMPRESSION
 # ============================================
 <IfModule mod_deflate.c>
@@ -200,22 +237,43 @@ AddDefaultCharset UTF-8
 # ============================================
 # FILE ACCESS PROTECTION
 # ============================================
-# Protect sensitive files
+# Access rules are written twice on purpose. cPanel hosts run either Apache 2.4
+# or LiteSpeed; 2.4 uses `Require`, while the older `Order/Deny` syntax works
+# only when mod_access_compat happens to be loaded. Emitting both, each guarded
+# by its own mod_authz_core version check, keeps the rules effective on any
+# cPanel box rather than silently doing nothing on a host without compat.
+
+# Protect dotfiles (.htaccess, .env, .git remnants, editor configs)
 <FilesMatch "^\.">
-    Order allow,deny
-    Deny from all
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
-# Protect backup files
-<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|old|backup)$">
-    Order allow,deny
-    Deny from all
+# Protect backup, config and script files
+<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|old|backup|yml|yaml|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
-# Protect data directory (allow JSON for AJAX)
+# Re-allow the site's own JSON data files, which the front end fetches
 <FilesMatch "^(officials|ordinances|resolutions|services|competitive-index|dpwh-projects|news|demographics|fiscal_transparency)\.json$">
-    Order allow,deny
-    Allow from all
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
 </FilesMatch>
 
 # ============================================

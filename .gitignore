@@ -11,3 +11,7 @@ test-results/
 playwright-report/
 blob-report/
 .playwright/
+
+# Build-time config (see .env.example) and release archives
+.env
+release/

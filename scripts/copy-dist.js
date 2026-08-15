@@ -24,15 +24,25 @@ const EXCLUDED = new Set([
   '.github',
   '.gitignore',
   'validate-translations.js',
+  // Keep in step with the rsync exclude list in build.sh.
+  'tests',
+  'playwright.config.js',
+  'playwright-report',
+  'test-results',
+  '.prettierrc',
+  '.prettierignore',
+  '.editorconfig',
+  'release',
 ]);
 
-const EXCLUDED_EXT = new Set(['.backup', '.md']);
-const EXCLUDED_PREFIX = ['backup-restore-point-', 'package'];
+const EXCLUDED_EXT = new Set(['.backup', '.md', '.zip', '.log']);
+const EXCLUDED_PREFIX = ['backup-restore-point-', 'package', '.env'];
 
 function shouldExclude(name) {
   if (EXCLUDED.has(name)) return true;
   const ext = path.extname(name);
   if (EXCLUDED_EXT.has(ext)) return true;
+  if (name.endsWith('.tar.gz')) return true;
   for (const p of EXCLUDED_PREFIX) {
     if (name.startsWith(p)) return true;
   }

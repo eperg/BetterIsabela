@@ -18,7 +18,9 @@
     "test:report": "playwright show-report",
     "lighthouse": "lhci autorun",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "package": "bash scripts/package-cpanel.sh --build",
+    "package:only": "bash scripts/package-cpanel.sh"
   },
   "keywords": [
     "solano",

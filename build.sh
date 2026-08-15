@@ -25,6 +25,18 @@ echo "╔═══════════════════════�
 echo "║   BetterSolano — Production Build        ║"
 echo "╚══════════════════════════════════════════╝"
 
+# ── 0. Build-time configuration (optional .env, see .env.example) ────────────
+# Exported so the React build inherits SITE_URL. The file is git-ignored and
+# excluded from dist/, so nothing here reaches the served output directly.
+if [ -f .env ]; then
+    set -a
+    # shellcheck disable=SC1091
+    . ./.env
+    set +a
+    echo ""
+    echo "▶ [0/6] Loaded .env (SITE_URL=${SITE_URL:-unset})"
+fi
+
 # ── 1. Version (single source of truth: version.json) ────────────────────────
 echo ""
 echo "▶ [1/6] Version management..."
@@ -69,6 +81,19 @@ if command -v rsync &>/dev/null; then
         --exclude='.github' \
         --exclude='.gitignore' \
         --exclude='validate-translations.js' \
+        --exclude='tests' \
+        --exclude='playwright.config.js' \
+        --exclude='playwright-report' \
+        --exclude='test-results' \
+        --exclude='.prettierrc' \
+        --exclude='.prettierignore' \
+        --exclude='.editorconfig' \
+        --exclude='.env' \
+        --exclude='.env.*' \
+        --exclude='release' \
+        --exclude='*.zip' \
+        --exclude='*.tar.gz' \
+        --exclude='*.log' \
         . dist/
 else
     # Fallback: cross-platform Node.js copy (Windows / no rsync)
