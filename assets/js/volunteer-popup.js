@@ -9,6 +9,7 @@
   var _dismissed = false;
   var _previousFocus = null;
   var _scrollbarWidth = 0;
+  var _scrollY = 0;
   var _onKeyDown = null;
 
   // ─── Scroll lock ──────────────────────────────────────────────────────────
@@ -17,46 +18,84 @@
     return window.innerWidth - document.documentElement.clientWidth;
   }
 
+  /**
+   * iOS Safari ignores `overflow: hidden` on <body> for touch scrolling, so the
+   * page used to keep scrolling underneath the dialog on iPhones and iPads.
+   * Pinning the body with position:fixed at a negative offset is the technique
+   * that actually holds on every engine; the offset is replayed on unlock so
+   * the reading position survives.
+   */
   function lockScroll() {
+    _scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
     _scrollbarWidth = measureScrollbarWidth();
-    // Compensate for the disappearing scrollbar so the layout doesn't jump.
-    if (_scrollbarWidth > 0) {
-      document.body.style.paddingRight = _scrollbarWidth + 'px';
-    }
-    document.body.style.overflow = 'hidden';
+
+    var body = document.body;
+    body.style.position = 'fixed';
+    body.style.top = -_scrollY + 'px';
+    body.style.left = '0';
+    // Holding the right edge off by the scrollbar width keeps the content box
+    // exactly as wide as it was, so nothing reflows when the bar disappears.
+    body.style.right = _scrollbarWidth > 0 ? _scrollbarWidth + 'px' : '0';
+    body.style.overflow = 'hidden';
   }
 
   function unlockScroll() {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
+    var body = document.body;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.overflow = '';
+    // Unpinning drops the page back to the top, so put the reading position
+    // back in the same frame.
+    window.scrollTo(0, _scrollY);
   }
 
   // ─── Focus trap ───────────────────────────────────────────────────────────
 
   function getFocusable(modal) {
-    return Array.prototype.slice.call(
-      modal.querySelectorAll(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    return Array.prototype.slice
+      .call(
+        modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
       )
-    );
+      .filter(function (el) {
+        // Skip anything not actually rendered — a hidden control would become a
+        // dead stop in the cycle.
+        return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+      });
   }
 
+  /**
+   * Drives Tab movement entirely from script rather than intercepting only the
+   * first/last boundary.
+   *
+   * Two engine behaviours make the boundary-only approach unreliable:
+   *   - Safari's default keyboard policy skips buttons and links in the native
+   *     Tab order, so a dialog built from them leaks focus straight out on the
+   *     very first Tab, never reaching a boundary we could catch.
+   *   - Safari and Firefox do not focus a control when it is clicked, leaving
+   *     activeElement on <body>, which matches neither boundary either.
+   *
+   * Computing the next index ourselves makes the cycle identical everywhere.
+   */
   function trapFocus(modal, e) {
     var focusable = getFocusable(modal);
     if (!focusable.length) return;
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-    if (e.shiftKey) {
-      if (document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      }
+
+    e.preventDefault();
+
+    var index = focusable.indexOf(document.activeElement);
+    var step = e.shiftKey ? -1 : 1;
+    var next;
+
+    if (index === -1) {
+      // Focus sat outside the dialog — re-enter from the matching end.
+      next = e.shiftKey ? focusable[focusable.length - 1] : focusable[0];
     } else {
-      if (document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+      next = focusable[(index + step + focusable.length) % focusable.length];
     }
+
+    next.focus();
   }
 
   // ─── Dismiss ──────────────────────────────────────────────────────────────
@@ -102,12 +141,21 @@
   // ─── Init ─────────────────────────────────────────────────────────────────
 
   function init() {
-    try {
-      if (localStorage.getItem(STORAGE_KEY)) return;
-    } catch (e) {}
-
     var overlay = document.getElementById('vol-popup-overlay');
     if (!overlay) return;
+
+    var alreadySeen = false;
+    try {
+      alreadySeen = !!localStorage.getItem(STORAGE_KEY);
+    } catch (e) {}
+
+    // Returning visitor: drop the markup entirely rather than leaving a hidden
+    // dialog parked in the document on every page view.
+    if (alreadySeen) {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      return;
+    }
+
     var modal = overlay.querySelector('.vol-popup');
     if (!modal) return;
 
@@ -173,13 +221,13 @@
 
           // Release the card's GPU-layer hint once the entry animation finishes so
           // it doesn't stay permanently promoted after it has served its purpose.
-          modal.addEventListener(
-            'animationend',
-            function () {
-              modal.style.willChange = 'auto';
-            },
-            { once: true }
-          );
+          var releaseLayer = function () {
+            modal.style.willChange = 'auto';
+          };
+          modal.addEventListener('animationend', releaseLayer, { once: true });
+          // Under reduced motion there is no animation, so animationend never
+          // fires and the hint would stay promoted for the life of the page.
+          if (reducedMotion) releaseLayer();
 
           var focusTarget = modal.querySelector('.vol-popup-close');
           // preventScroll: true stops the browser from triggering a scroll-into-view

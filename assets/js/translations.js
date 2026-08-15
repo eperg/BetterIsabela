@@ -19456,7 +19456,7 @@ const TranslationEngine = {
     if (this.initialized) return;
 
     // Try to get saved language, then browser preference
-    let savedLang = localStorage.getItem('selectedLang');
+    let savedLang = this.readStoredLang();
     if (!savedLang || !this.supportedLangs.includes(savedLang)) {
       savedLang = this.detectBrowserLanguage();
     }
@@ -19469,6 +19469,36 @@ const TranslationEngine = {
     this.initialized = true;
 
     console.log('[TranslationEngine] Initialized with language:', this.currentLang);
+  },
+
+  /**
+   * Read the saved language preference.
+   *
+   * Touching localStorage at all — even `typeof localStorage` — throws in
+   * Safari private browsing and wherever site data is blocked. Because init()
+   * ran before anything else on the page, that exception took the whole
+   * translation engine down with it and left the page untranslated.
+   *
+   * @returns {string|null} Saved language code, or null when unavailable
+   */
+  readStoredLang: function () {
+    try {
+      return localStorage.getItem('selectedLang');
+    } catch (e) {
+      return null;
+    }
+  },
+
+  /**
+   * Persist the language preference, tolerating blocked or full storage.
+   * @param {string} lang - Language code to save
+   */
+  storeLang: function (lang) {
+    try {
+      localStorage.setItem('selectedLang', lang);
+    } catch (e) {
+      // Preference will not survive the session, but the switch still applies.
+    }
   },
 
   /**
@@ -19634,7 +19664,7 @@ const TranslationEngine = {
 
     // Save preference
     this.currentLang = lang;
-    localStorage.setItem('selectedLang', lang);
+    this.storeLang(lang);
 
     // Dispatch event for other scripts
     document.dispatchEvent(

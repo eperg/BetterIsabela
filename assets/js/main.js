@@ -13,7 +13,14 @@ function showInstallBanner() {
   // Don't show if already installed or dismissed recently
   if (window.matchMedia('(display-mode: standalone)').matches) return;
   if (navigator.standalone) return;
-  if (sessionStorage.getItem('pwa-install-dismissed')) return;
+  // Reading storage throws outright in Safari private browsing and wherever
+  // site data is blocked; treat that as "not dismissed" rather than letting it
+  // abort the rest of this handler.
+  try {
+    if (sessionStorage.getItem('pwa-install-dismissed')) return;
+  } catch (e) {
+    /* storage unavailable — fall through and show the banner */
+  }
 
   var existing = document.querySelector('.pwa-install-banner');
   if (existing) return;
@@ -44,7 +51,11 @@ function showInstallBanner() {
   });
 
   banner.querySelector('.pwa-install-dismiss').addEventListener('click', function () {
-    sessionStorage.setItem('pwa-install-dismissed', '1');
+    try {
+      sessionStorage.setItem('pwa-install-dismissed', '1');
+    } catch (e) {
+      /* dismissal will not persist, but the banner still closes */
+    }
     banner.remove();
   });
 }
@@ -75,10 +86,19 @@ if ('serviceWorker' in navigator) {
         console.warn('SW registration failed:', err);
       });
 
-    // When a new SW takes over, reload seamlessly
+    // When a new SW *replaces an existing one*, reload seamlessly.
+    //
+    // The guard matters: sw.js calls clients.claim() on activate, so on a first
+    // visit the worker claims this page about a second after load and fires
+    // controllerchange with no previous controller. Reloading there threw away
+    // whatever the visitor was already looking at — including the volunteer
+    // dialog, which reveals itself at the 800ms mark and was being torn down
+    // mid-animation. An uncontrolled page has nothing stale to refresh, so the
+    // first claim should be adopted silently.
+    var hadController = !!navigator.serviceWorker.controller;
     var refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', function () {
-      if (refreshing) return;
+      if (!hadController || refreshing) return;
       refreshing = true;
       window.location.reload();
     });

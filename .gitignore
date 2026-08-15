@@ -5,3 +5,9 @@ dist/
 react-app/out/
 out/
 *.backup
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+.playwright/

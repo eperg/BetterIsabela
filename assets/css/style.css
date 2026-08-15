@@ -6497,7 +6497,10 @@ cklist with Icons - Proper Indentation */
 
 .home-hero-v2-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, 1fr) keeps each column tied to the container rather than to its
+     content's min-content width — the same floor that broke the mobile layout,
+     and a live risk here too since Filipino and Ilocano strings run longer. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--spacing-xl);
   align-items: center;
 }
@@ -7301,7 +7304,12 @@ cklist with Icons - Proper Indentation */
 /* Hero V2 Responsive */
 @media (max-width: 992px) {
   .home-hero-v2-inner {
-    grid-template-columns: 1fr;
+    /* minmax(0, …) rather than a bare 1fr: a 1fr track is minmax(auto, 1fr),
+       whose auto floor is the content's min-content width. On a 320px phone the
+       hero's min-content came to 329px, so the track refused to shrink and
+       pushed the whole page 17px wider than the screen. A 0 floor lets the
+       track follow the container instead of the content. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-lg);
   }
 
@@ -8397,7 +8405,7 @@ a.a11y-contact-item:hover i {
 
 .weather-map-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: var(--spacing-lg);
   align-items: stretch;
 }
@@ -8825,7 +8833,8 @@ a.a11y-contact-item:hover i {
 /* Weather & Location Responsive */
 @media (max-width: 991px) {
   .weather-map-grid {
-    grid-template-columns: 1fr;
+    /* Same min-content floor as the hero grid above — see that note. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--spacing-md);
   }
 
@@ -9743,9 +9752,21 @@ a.a11y-contact-item:hover i {
   align-items: center;
   justify-content: center;
   padding: var(--spacing-sm);
+  /* Backstop for viewports so short that even the capped card cannot fit:
+     the overlay itself scrolls rather than stranding content off-screen. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
   opacity: 0;
+  /* visibility (not just opacity) is what removes the dialog's controls from
+     the tab order while it is hidden. Without it, the buttons and the mailto
+     link stay keyboard-focusable during the pre-reveal delay and — for anyone
+     who already dismissed the popup — on every subsequent page view, so
+     keyboard users hit an invisible focus trap. */
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  /* Visibility flips only after the fade-out finishes, so the close animation
+     stays visible; opacity still carries the motion. */
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
   /* Pre-promote the overlay to its own persistent GPU compositing layer at page
      load — even while hidden (opacity:0). This forces the backdrop-filter layer
      to be established ONCE up front, so toggling opacity 0->1 on reveal can no
@@ -9759,6 +9780,7 @@ a.a11y-contact-item:hover i {
 
 .vol-popup-overlay--visible {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   /* No transition on open: the browser would otherwise set up a backdrop-filter
      compositing layer while simultaneously fading in, causing a GPU compositor
@@ -9774,7 +9796,18 @@ a.a11y-contact-item:hover i {
   max-width: 460px;
   background: var(--color-bg);
   border-radius: 20px;
-  overflow: hidden;
+  /* Cap the card to the viewport at EVERY size and let it scroll internally.
+     Previously this only applied under 500px wide, so landscape phones and
+     short desktop windows (e.g. 667x375, 1280x420) rendered a card taller than
+     the screen with no scroll container — the CTA and the close button were
+     pushed off-screen and could not be reached at all.
+     The vh line is a deliberate fallback: browsers without dvh support drop the
+     line after it, and would otherwise be left with no cap whatsoever. */
+  max-height: calc(100vh - 2 * var(--spacing-sm));
+  max-height: calc(100dvh - 2 * var(--spacing-sm));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   box-shadow:
     0 0 0 1px rgba(0, 50, 160, 0.12),
     0 8px 32px rgba(0, 0, 0, 0.24),
@@ -9816,7 +9849,22 @@ a.a11y-contact-item:hover i {
   transition: background 0.18s ease, transform 0.18s ease;
 }
 
-.vol-popup-close:hover,
+/* Expand the pointer target to ~46px without growing the 36px visual circle,
+   so the control clears the 44px minimum touch-target guidance on phones. */
+.vol-popup-close::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+}
+
+/* :hover and :focus-visible are kept in SEPARATE rules on purpose. Grouped in
+   one selector list, any engine that does not understand :focus-visible treats
+   the whole list as invalid and drops the hover styling too. */
+.vol-popup-close:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: scale(1.1);
+}
+
 .vol-popup-close:focus-visible {
   background: rgba(255, 255, 255, 0.32);
   transform: scale(1.1);
@@ -9963,12 +10011,20 @@ a.a11y-contact-item:hover i {
   font-family: var(--font-main);
 }
 
-.vol-popup-cta:hover,
+.vol-popup-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 50, 160, 0.44);
+  color: #fff;
+  text-decoration: none;
+}
+
 .vol-popup-cta:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0, 50, 160, 0.44);
   color: #fff;
   text-decoration: none;
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .vol-popup-cta i {
@@ -9987,37 +10043,76 @@ a.a11y-contact-item:hover i {
   transition: color 0.18s ease;
 }
 
-.vol-popup-skip:hover,
+.vol-popup-skip:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+/* Keeps a real focus ring — the previous `outline: none` here left keyboard
+   users with no indication of where focus was sitting. */
 .vol-popup-skip:focus-visible {
   color: var(--color-text);
   text-decoration: underline;
-  outline: none;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-/* Reduced-motion: skip all animations and transitions */
+/* Reduced-motion: skip all animations and transitions.
+   These selectors deliberately mirror the specificity of the rules they cancel.
+   A plain `.vol-popup { animation: none }` (0,1,0) loses to the entry rule
+   `.vol-popup-overlay--visible .vol-popup:not(.is-closing)` (0,3,0), so the
+   animation kept running for users who had asked for reduced motion. */
 @media (prefers-reduced-motion: reduce) {
   .vol-popup-overlay {
     transition: none;
   }
 
-  .vol-popup,
+  .vol-popup-overlay--visible .vol-popup:not(.is-closing),
   .vol-popup.is-closing {
     animation: none;
   }
 
   /* Restore visibility — base opacity:0 is only safe when animation drives the reveal.
      With animation disabled the card must be made visible immediately. */
-  .vol-popup-overlay--visible .vol-popup {
+  .vol-popup-overlay--visible .vol-popup:not(.is-closing) {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Short viewports — landscape phones and shallow desktop windows. The card
+   already scrolls, but trimming the generous vertical rhythm keeps the CTA
+   above the fold instead of behind a scroll. */
+@media (max-height: 560px) {
+  .vol-popup-header {
+    padding: 20px 24px 16px;
+  }
+
+  .vol-popup-logo {
+    width: 150px;
+    margin-bottom: 10px;
+  }
+
+  .vol-popup-title {
+    font-size: 1.25rem;
+  }
+
+  .vol-popup-body {
+    padding: 16px 22px 20px;
+  }
+
+  .vol-popup-lead {
+    margin-bottom: 14px;
+  }
+
+  .vol-popup-roles {
+    margin-bottom: 16px;
   }
 }
 
 @media (max-width: 500px) {
   .vol-popup {
     border-radius: 16px;
-    max-height: calc(100dvh - 32px);
-    overflow-y: auto;
   }
 
   .vol-popup-header {
@@ -10034,5 +10129,43 @@ a.a11y-contact-item:hover i {
 
   .vol-popup-body {
     padding: 20px 20px 24px;
+  }
+}
+
+/* Windows High Contrast / forced-colors: gradients and translucent fills are
+   discarded by the OS, which would otherwise leave the close button and the
+   role chips as invisible shapes. Give every control a real border the system
+   palette can map. */
+@media (forced-colors: active) {
+  .vol-popup {
+    border: 1px solid CanvasText;
+  }
+
+  .vol-popup-close {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .vol-popup-close:hover,
+  .vol-popup-close:focus-visible {
+    outline: 2px solid Highlight;
+  }
+
+  .vol-popup-role {
+    border: 1px solid CanvasText;
+  }
+
+  .vol-popup-cta {
+    border: 1px solid ButtonText;
+    forced-color-adjust: none;
+    background: ButtonText;
+    color: ButtonFace;
+  }
+
+  .vol-popup-cta:focus-visible,
+  .vol-popup-skip:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
