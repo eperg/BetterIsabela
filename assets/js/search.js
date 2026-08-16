@@ -1,4 +1,4 @@
-/* Better Solano - Enhanced Search Functionality */
+/* Better Isabela - Enhanced Search Functionality */
 /* Updated: 2025-12-05 */
 
 (function () {
@@ -10,8 +10,8 @@
   let searchIndex = null;
 
   // Search analytics storage
-  const ANALYTICS_KEY = 'bettersolano_search_analytics';
-  const RECENT_SEARCHES_KEY = 'bettersolano_recent_searches';
+  const ANALYTICS_KEY = 'betterisabela_search_analytics';
+  const RECENT_SEARCHES_KEY = 'betterisabela_recent_searches';
   const MAX_RECENT_SEARCHES = 10;
   const MAX_ANALYTICS_ENTRIES = 100;
 
@@ -30,7 +30,7 @@
     'tricycle franchise',
     'property declaration',
     'online payment',
-    'mswdo',
+    'pswdo',
     'slaughterhouse',
   ];
 
@@ -1297,7 +1297,7 @@
   }
 
   if (typeof window !== 'undefined') {
-    window.BetterSolanoSearch = {
+    window.BetterIsabelaSearch = {
       searchServices,
       getSuggestions,
       getPopularSearches,

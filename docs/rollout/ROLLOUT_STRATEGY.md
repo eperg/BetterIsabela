@@ -2,11 +2,11 @@
 
 **Document Status:** Draft 1.0
 **Target Audience:** Technical Leads, Frontend Developers, LGU Data Custodians
-**Reference Implementation:** BetterSolano (GitHub)
+**Reference Implementation:** BetterIsabela (GitHub)
 
 ## Executive Summary
 
-This document serves as the authoritative "Source of Truth" for deploying the BetterLGU transparency platform. It outlines the mandatory design standards, data synchronization protocols, and architectural decisions required to scale the BetterSolano template to other Local Government Units (LGUs). All contributors must adhere to the "Kapwa" design values and the data normalization standards defined herein to ensure the platform remains accessible, maintainable, and civic-centric.
+This document serves as the authoritative "Source of Truth" for deploying the BetterLGU transparency platform. It outlines the mandatory design standards, data synchronization protocols, and architectural decisions required to scale the BetterIsabela template to other Local Government Units (LGUs). All contributors must adhere to the "Kapwa" design values and the data normalization standards defined herein to ensure the platform remains accessible, maintainable, and civic-centric.
 
 ---
 
@@ -47,13 +47,13 @@ To maintain a standardized schema across different LGUs, developers must normali
 
 Developers are responsible for ETL (Extract, Transform, Load) operations mapping external data fields to the BetterLGU internal schema.
 
-| Data Domain         | Official Source (Primary)  | Secondary Verification    | Internal Target Schema          |
-| :------------------ | :------------------------- | :------------------------ | :------------------------------ |
-| **Demographics**    | **PSA** (psa.gov.ph)       | Local CBMS Data           | `data/demographics.json`        |
-| **Fiscal Data**     | **BLGF** (blgf.gov.ph)     | LGU Accounting Office     | `data/fiscal_transparency.json` |
-| **Competitiveness** | **CMCI** (cmci.dti.gov.ph) | DTI Provincial Office     | `data/indices.json`             |
-| **Ordinances**      | **Sangguniang Bayan**      | Official SB Facebook Page | `data/legislative.json`         |
-| **Services**        | **Citizen's Charter**      | Department Heads          | `data/services.json`            |
+| Data Domain         | Official Source (Primary)    | Secondary Verification    | Internal Target Schema          |
+| :------------------ | :--------------------------- | :------------------------ | :------------------------------ |
+| **Demographics**    | **PSA** (psa.gov.ph)         | Local CBMS Data           | `data/demographics.json`        |
+| **Fiscal Data**     | **BLGF** (blgf.gov.ph)       | LGU Accounting Office     | `data/fiscal_transparency.json` |
+| **Competitiveness** | **CMCI** (cmci.dti.gov.ph)   | DTI Provincial Office     | `data/indices.json`             |
+| **Ordinances**      | **Sangguniang Panlalawigan** | Official SB Facebook Page | `data/legislative.json`         |
+| **Services**        | **Citizen's Charter**        | Department Heads          | `data/services.json`            |
 
 ### 2.2 Integration Workflows
 
@@ -74,13 +74,13 @@ This section defines the architectural modularity required to allow LGUs to sele
 
 ### 3.1 Stack Comparison Matrix
 
-| Feature         | **BetterSolano A (Lightweight)** | **BetterSolano B (React/TS)**              |
-| :-------------- | :------------------------------- | :----------------------------------------- |
-| **Core Tech**   | Vanilla JS, Bootstrap 5, Leaflet | React, TypeScript, Tailwind                |
-| **Data Store**  | Static JSON Fetching             | Typed JSON Imports / Context API           |
-| **Hosting**     | GitHub Pages (Zero Config)       | Vercel / Netlify / GitHub Actions          |
-| **Maintenance** | Low (Accessible to novice devs)  | Medium (Requires build pipeline knowledge) |
-| **Use Case**    | 4th-6th Class Municipalities     | Cities and 1st Class Municipalities        |
+| Feature         | **BetterIsabela A (Lightweight)** | **BetterIsabela B (React/TS)**             |
+| :-------------- | :-------------------------------- | :----------------------------------------- |
+| **Core Tech**   | Vanilla JS, Bootstrap 5, Leaflet  | React, TypeScript, Tailwind                |
+| **Data Store**  | Static JSON Fetching              | Typed JSON Imports / Context API           |
+| **Hosting**     | GitHub Pages (Zero Config)        | Vercel / Netlify / GitHub Actions          |
+| **Maintenance** | Low (Accessible to novice devs)   | Medium (Requires build pipeline knowledge) |
+| **Use Case**    | 4th-6th Class Municipalities      | Cities and 1st Class Municipalities        |
 
 ### 3.2 Core Reusable Modules
 
@@ -112,7 +112,7 @@ All new repositories must initialize with the following template:
 ```markdown
 # LGU Synchronization Protocol
 
-**LGU Name:** [Insert Municipality/City]
+**LGU Name:** [Insert Province/City]
 **Last Sync Date:** [YYYY-MM-DD]
 
 ## Roles & Responsibilities
@@ -124,13 +124,13 @@ All new repositories must initialize with the following template:
 
 ### 2. Data Custodians (Source of Truth)
 
-- **Designation:** [e.g., Municipal Planning & Development Coordinator (MPDC)]
+- **Designation:** [e.g., Provincial Planning & Development Coordinator (MPDC)]
 - **Responsibility:** Provides the raw CSV/Excel files for the Citizen's Charter and Annual Budget.
 - **Contact Protocol:** [e.g., Email submission by the 5th of every month]
 
 ### 3. Content Approvers (Gatekeepers)
 
-- **Designation:** [e.g., Information Officer / Mayor's Chief of Staff]
+- **Designation:** [e.g., Information Officer / Governor's Chief of Staff]
 - **Responsibility:** Verifies that the data on the staging site matches the official hard copies before production deployment.
 
 ## Change Management Log

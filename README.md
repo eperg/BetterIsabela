@@ -1,6 +1,6 @@
-# BetterSolano.org
+# BetterIsabela.org
 
-A civic-tech initiative providing transparent access to municipal services, programs, and public funds of LGU Solano, Nueva Vizcaya, Philippines.
+A civic-tech initiative providing transparent access to provincial services, programs, and public funds of LGU Isabela, Philippines.
 
 ![Version](https://img.shields.io/badge/version-1.1.15-green)
 ![License](https://img.shields.io/badge/license-MIT%20%7C%20CC%20BY%204.0-blue)
@@ -13,7 +13,7 @@ A civic-tech initiative providing transparent access to municipal services, prog
 
 ## Version Notice
 
-A **React + TypeScript** version of BetterSolano.org is now available for contributors who prefer modern tooling and component-based architecture.
+A **React + TypeScript** version of BetterIsabela.org is now available for contributors who prefer modern tooling and component-based architecture.
 
 | Version            | Branch             | Status             | Documentation                |
 | ------------------ | ------------------ | ------------------ | ---------------------------- |
@@ -33,75 +33,73 @@ We encourage adoption by other municipalities in support of:
 - **Modernization** - Bringing local government services to digital platforms
 - **Public Service** - Improving the delivery of government services to the community
 
-To adapt this project for your LGU, fork the repository and customize the content, styling, and data sources to match your municipality's requirements.
+To adapt this project for your LGU, fork the repository and customize the content, styling, and data sources to match your province's requirements.
 
 ## About
 
-BetterSolano.org is a volunteer-driven, open-source project that empowers the people of Solano with easy access to local government information. The platform aggregates public data from official government portals and presents it in a user-friendly, accessible format.
+BetterIsabela.org is a volunteer-driven, open-source project that empowers the people of Isabela with easy access to local government information. The platform aggregates public data from official government portals and presents it in a user-friendly, accessible format.
 
-**Cost to the People of Solano = ₱0**
+**Cost to the People of Isabela = ₱0**
 
 ## Live Demo
 
-Visit the live website: [https://bettersolano.org](https://bettersolano.org)
+Visit the live website: [https://betterisabela.org](https://betterisabela.org)
 
 ## Technology Stack
 
-| Category            | Technologies                                                           |
-| ------------------- | ---------------------------------------------------------------------- |
-| **Frontend**        | HTML5, CSS3, JavaScript (ES6+)                                         |
-| **Styling**         | Custom CSS, CSS Variables, Flexbox, CSS Grid, Responsive Design        |
-| **Icons**           | Bootstrap Icons (CDN)                                                  |
-| **Fonts**           | Google Fonts (Inter)                                                   |
-| **Maps**            | Leaflet.js, OpenStreetMap                                              |
-| **Charts**          | Chart.js (Canvas-based)                                                |
-| **Animations**      | Lottie (dotlottie-player web component)                                |
-| **Data Format**     | JSON                                                                   |
-| **APIs**            | Open-Meteo (Weather), ExchangeRate API (Currency)                      |
-| **Build Tools**     | Node.js, npm, Bash, Babel (@babel/preset-env)                          |
-| **Minification**    | html-minifier-terser, clean-css-cli, terser                            |
-| **Code Formatting** | Prettier (auto-format on commit via git pre-commit hook)               |
-| **Version Control** | Git, GitHub                                                            |
-| **Server**          | Apache (.htaccess), mod_rewrite, mod_deflate                           |
-| **Hosting**         | cPanel (Production), Python HTTP Server (Development)                  |
+| Category            | Technologies                                                                                             |
+| ------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Frontend**        | HTML5, CSS3, JavaScript (ES6+)                                                                           |
+| **Styling**         | Custom CSS, CSS Variables, Flexbox, CSS Grid, Responsive Design                                          |
+| **Icons**           | Bootstrap Icons (CDN)                                                                                    |
+| **Fonts**           | Google Fonts (Inter)                                                                                     |
+| **Maps**            | Leaflet.js, OpenStreetMap                                                                                |
+| **Charts**          | Chart.js (Canvas-based)                                                                                  |
+| **Animations**      | Lottie (dotlottie-player web component)                                                                  |
+| **Data Format**     | JSON                                                                                                     |
+| **APIs**            | Open-Meteo (Weather), ExchangeRate API (Currency)                                                        |
+| **Build Tools**     | Node.js, npm, Bash, Babel (@babel/preset-env)                                                            |
+| **Minification**    | html-minifier-terser, clean-css-cli, terser                                                              |
+| **Code Formatting** | Prettier (auto-format on commit via git pre-commit hook)                                                 |
+| **Version Control** | Git, GitHub                                                                                              |
+| **Server**          | Apache (.htaccess), mod_rewrite, mod_deflate                                                             |
+| **Hosting**         | cPanel (Production), Python HTTP Server (Development)                                                    |
 | **PWA**             | Service Worker (versioned caching, install prompt, seamless updates), Web App Manifest, offline fallback |
-| **SEO**             | Open Graph, Twitter Cards, XML Sitemap, robots.txt                     |
-| **Security**        | HTTPS, CSP Headers, HSTS, X-Frame-Options                              |
-| **Analytics**       | Google Analytics (gtag.js)                                             |
-| **Accessibility**   | WCAG 2.1, ARIA, Semantic HTML                                          |
-| **Performance**     | GZIP Compression, Browser Caching, Asset Minification                  |
+| **SEO**             | Open Graph, Twitter Cards, XML Sitemap, robots.txt                                                       |
+| **Security**        | HTTPS, CSP Headers, HSTS, X-Frame-Options                                                                |
+| **Analytics**       | Google Analytics (gtag.js)                                                                               |
+| **Accessibility**   | WCAG 2.1, ARIA, Semantic HTML                                                                            |
+| **Performance**     | GZIP Compression, Browser Caching, Asset Minification                                                    |
 
 ## Key Features
 
-| Feature                          | Description                                                                                                                                                                                                       |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Municipal Services Directory** | Comprehensive guide to all LGU services with requirements, fees, and processing times                                                                                                                             |
-| **Government Officials**         | Directory of elected officials and department heads with contact information                                                                                                                                      |
-| **Budget Transparency**          | Financial reports, income/expenditure breakdowns, and infrastructure projects                                                                                                                                     |
-| **Legislative Documents**        | Searchable database of ordinances and resolutions from Sangguniang Bayan                                                                                                                                          |
-| **Municipal Statistics**         | Demographics, economic data, and competitive index rankings                                                                                                                                                       |
-| **Appointment Services**         | Online appointment scheduling integration with the Mayor's Office (OASYS), featuring branded Lottie animation                                                                                                     |
-| **Solano Quiz**                  | Interactive quiz about Solano history and culture, linked from homepage CTA and footer across all pages                                                                                                           |
-| **Real-time Information**        | Live weather updates, currency exchange rates, and Philippine time                                                                                                                                                |
-| **Emergency Hotline Marquee**    | Clickable scrolling marquee for emergency contacts on tablet and mobile viewports, with pause-on-hover/focus accessibility                                                                                        |
-| **Progressive Web App**          | Installable PWA with "Install App" prompt, seamless auto-updates via skipWaiting (no manual refresh), versioned service worker caching (static + runtime), offline fallback page with emergency hotlines, push notification foundation |
-| **Auto Version Management**      | Dynamic version display from `version.json`, auto-bumped on every git commit via pre-commit hook, synced across all 51+ HTML files, `package.json`, and React app                                                 |
-| **Multi-language Support**       | Full i18n coverage in English, Filipino, and Ilocano (5,546 keys per language with perfect parity)                                                                                                                |
-| **Clean URLs**                   | SEO-friendly URLs without `.html` extensions, powered by Apache mod_rewrite                                                                                                                                       |
-| **Brief History of Solano**      | Interactive timeline (1760–1957) with fully translated cards in all three languages                                                                                                                               |
-| **Mobile Navigation**            | Responsive menu with GPU-accelerated open/close transitions, body scroll lock, animation guard against rapid toggles, debounced resize handling, touch-safe hover scoping, click-outside-to-close, and focus trap |
-| **Accessibility**                | WCAG 2.1 compliant with skip links, ARIA labels, keyboard navigation, and semantic HTML                                                                                                                           |
-| **SEO Optimized**                | Meta tags, Open Graph, Twitter Cards, structured data, and XML sitemap                                                                                                                                            |
-| **Performance**                  | 90%+ size reduction through minification, GZIP compression, Babel transpilation, and browser caching                                                                                                              |
+| Feature                           | Description                                                                                                                                                                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Provincial Services Directory** | Comprehensive guide to all LGU services with requirements, fees, and processing times                                                                                                                                                  |
+| **Government Officials**          | Directory of elected officials and department heads with contact information                                                                                                                                                           |
+| **Budget Transparency**           | Financial reports, income/expenditure breakdowns, and infrastructure projects                                                                                                                                                          |
+| **Legislative Documents**         | Searchable database of ordinances and resolutions from Sangguniang Panlalawigan                                                                                                                                                        |
+| **Provincial Statistics**         | Demographics, economic data, and competitive index rankings                                                                                                                                                                            |
+| **Real-time Information**         | Live weather updates, currency exchange rates, and Philippine time                                                                                                                                                                     |
+| **Emergency Hotline Marquee**     | Clickable scrolling marquee for emergency contacts on tablet and mobile viewports, with pause-on-hover/focus accessibility                                                                                                             |
+| **Progressive Web App**           | Installable PWA with "Install App" prompt, seamless auto-updates via skipWaiting (no manual refresh), versioned service worker caching (static + runtime), offline fallback page with emergency hotlines, push notification foundation |
+| **Auto Version Management**       | Dynamic version display from `version.json`, auto-bumped on every git commit via pre-commit hook, synced across all 51+ HTML files, `package.json`, and React app                                                                      |
+| **Multi-language Support**        | Full i18n coverage in English, Filipino, and Ilocano (5,546 keys per language with perfect parity)                                                                                                                                     |
+| **Clean URLs**                    | SEO-friendly URLs without `.html` extensions, powered by Apache mod_rewrite                                                                                                                                                            |
+| **Brief History of Isabela**      | Interactive timeline (1760–1957) with fully translated cards in all three languages                                                                                                                                                    |
+| **Mobile Navigation**             | Responsive menu with GPU-accelerated open/close transitions, body scroll lock, animation guard against rapid toggles, debounced resize handling, touch-safe hover scoping, click-outside-to-close, and focus trap                      |
+| **Accessibility**                 | WCAG 2.1 compliant with skip links, ARIA labels, keyboard navigation, and semantic HTML                                                                                                                                                |
+| **SEO Optimized**                 | Meta tags, Open Graph, Twitter Cards, structured data, and XML sitemap                                                                                                                                                                 |
+| **Performance**                   | 90%+ size reduction through minification, GZIP compression, Babel transpilation, and browser caching                                                                                                                                   |
 
 ## Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/BetterSolano/bettersolano.git
+git clone https://github.com/BetterIsabela/betterisabela.git
 
 # Navigate to project directory
-cd bettersolano
+cd betterisabela
 
 # Install dependencies
 npm install
@@ -129,8 +127,8 @@ py serve.py --port 8000 --directory .
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/BetterSolano/bettersolano.git
-cd bettersolano
+git clone https://github.com/BetterIsabela/betterisabela.git
+cd betterisabela
 ```
 
 2. **Install dependencies**
@@ -218,7 +216,7 @@ All CSS, images, animations, and translations are kept in sync across all three 
 ## Project Structure
 
 ```
-bettersolano/
+betterisabela/
 ├── assets/
 │   ├── css/              # Stylesheets (9 files)
 │   ├── js/               # JavaScript modules (18 files)
@@ -226,7 +224,7 @@ bettersolano/
 │   └── animation/        # Lottie JSON animation files
 ├── data/                 # JSON data files
 │   ├── officials.json    # Government officials data
-│   ├── services.json     # Municipal services data
+│   ├── services.json     # Provincial services data
 │   ├── news.json         # News and announcements
 │   ├── ordinances.json   # Legislative ordinances
 │   └── resolutions.json  # Legislative resolutions
@@ -241,7 +239,7 @@ bettersolano/
 ├── government/           # Government directory pages
 ├── legislative/          # Legislative framework pages
 ├── budget/               # Budget transparency page
-├── statistics/           # Municipal statistics page
+├── statistics/           # Provincial statistics page
 ├── news/                 # News and announcements page
 ├── contact/              # Contact information page
 ├── faq/                  # Frequently asked questions
@@ -292,7 +290,7 @@ bettersolano/
 - Raised tablet breakpoint from 991px to 1024px to properly capture iPad Pro portrait (1024px) and iPad Air landscape
 - Converted emergency hotline bar into a clickable scrolling marquee on all tablet and mobile viewports (≤1024px) with pause-on-hover/focus for accessibility
 - Centered hamburger menu icon between logo and language toggle on tablet viewports using flexbox ordering (logo → hamburger → lang toggle)
-- Tablet footer: left-aligned BetterSolano logo, tagline, and social icons to match the visual hierarchy of the brand column
+- Tablet footer: left-aligned BetterIsabela logo, tagline, and social icons to match the visual hierarchy of the brand column
 
 #### Progressive Web App (PWA)
 
@@ -336,9 +334,9 @@ bettersolano/
 
 ### Content & Features
 
-- Added Solano Quiz CTA section on homepage with branded Lottie animation (brand blue `#0032A0`)
-- Added Solano Quiz link to footer Quick Links across all 51 HTML pages and React Footer
-- Added Brief History of Solano interactive timeline section on homepage (1760–1957)
+- Added Isabela Quiz CTA section on homepage with branded Lottie animation (brand blue `#0032A0`)
+- Added Isabela Quiz link to footer Quick Links across all 51 HTML pages and React Footer
+- Added Brief History of Isabela interactive timeline section on homepage (1760–1957)
 - Added quiz entry to HTML sitemap page
 - Added Abakada education tools CTA on services/education page with local SVG logo
 
@@ -348,14 +346,14 @@ bettersolano/
 - Fixed Brief History timeline cards — full paragraph translations now applied via `data-i18n` on `<p>` elements (previously only proper nouns inside `<strong>` tags were translated, leaving surrounding English text intact)
 - Corrected Filipino translations: proper religious title "Padre" (not "Ama"), fully translated historical paragraphs (no half-English)
 - Corrected Ilocano translations: proper Ilocano vocabulary ("Ababa a Pakasaritaan" not Filipino "Maikling Kasaysayan", "Dimteng" not "Dumating", "Ili" not "Lungsod"), fully translated paragraphs
-- Added 54 translation keys for Solano Quiz footer link across all page contexts
+- Added 54 translation keys for Isabela Quiz footer link across all page contexts
 
 ### Footer & Copyright
 
 - Standardized copyright across all 51 HTML files and React Footer: three styled spans (`footer-copyright-text`, `footer-copyright-license`, `footer-copyright-disclaimer`)
-- Updated copyright year to 2026, name to "BetterSolano.org"
+- Updated copyright year to 2026, name to "BetterIsabela.org"
 - Footer copyright uses `flex-wrap: wrap; gap: 6px` layout with version badge right-aligned via `margin-left: auto`
-- Removed trailing period after "BetterSolano.org" from all pages and all 3 translation languages
+- Removed trailing period after "BetterIsabela.org" from all pages and all 3 translation languages
 
 ### Clean URLs
 
@@ -376,7 +374,7 @@ bettersolano/
 
 ## Contributing
 
-We welcome contributions from everyone! Whether you're a developer, designer, data researcher, content writer, translator, or a concerned citizen of Solano, your participation helps shape this project for all.
+We welcome contributions from everyone! Whether you're a developer, designer, data researcher, content writer, translator, or a concerned citizen of Isabela, your participation helps shape this project for all.
 
 ### How to Contribute
 
@@ -403,10 +401,10 @@ We welcome contributions from everyone! Whether you're a developer, designer, da
 | ---------------------- | ------------------------------------------------------------- |
 | **Bug Fixes**          | Report issues or submit fixes for existing bugs               |
 | **Features**           | Propose or implement new functionality                        |
-| **Content**            | Update service information, add missing municipal data        |
+| **Content**            | Update service information, add missing provincial data       |
 | **Translations**       | Help translate content to Filipino or Ilocano                 |
 | **Design**             | Improve UI/UX, accessibility, and visual consistency          |
-| **Data**               | Verify and update municipal statistics and records            |
+| **Data**               | Verify and update provincial statistics and records           |
 | **Documentation**      | Enhance README, code comments, and guides                     |
 | **API Integration**    | Propose or implement API connections for real-time data feeds |
 | **Data Visualization** | Enhance charts, graphs, and interactive presentations         |
@@ -430,13 +428,13 @@ We welcome contributions from everyone! Whether you're a developer, designer, da
 
 All public information is sourced from official government portals:
 
-| Source                             | URL                                                                       | Data Type                 |
-| ---------------------------------- | ------------------------------------------------------------------------- | ------------------------- |
-| LGU Solano Official Website        | [solano.gov.ph](https://solano.gov.ph/)                                   | Services, Officials       |
-| Sangguniang Bayan ng Solano        | [sangguniangbayan.solano.gov.ph](https://sangguniangbayan.solano.gov.ph/) | Ordinances, Resolutions   |
-| Bureau of Local Government Finance | [blgf.gov.ph](https://blgf.gov.ph/)                                       | Budget, Financial Reports |
-| Philippine Statistics Authority    | [psa.gov.ph](https://psa.gov.ph/)                                         | Demographics, Census      |
-| DTI CMCI Portal                    | [cmci.dti.gov.ph](https://cmci.dti.gov.ph/)                               | Competitive Index         |
+| Source                              | URL                                                                               | Data Type                 |
+| ----------------------------------- | --------------------------------------------------------------------------------- | ------------------------- |
+| PLGU Isabela Official Website       | [provinceofisabela.gov.ph](https://provinceofisabela.gov.ph/)                     | Services, Officials       |
+| Sangguniang Panlalawigan ng Isabela | [provinceofisabela.gov.ph](https://provinceofisabela.gov.ph/ordinanceresolution/) | Ordinances, Resolutions   |
+| Bureau of Local Government Finance  | [blgf.gov.ph](https://blgf.gov.ph/)                                               | Budget, Financial Reports |
+| Philippine Statistics Authority     | [psa.gov.ph](https://psa.gov.ph/)                                                 | Demographics, Census      |
+| DTI CMCI Portal                     | [cmci.dti.gov.ph](https://cmci.dti.gov.ph/)                                       | Competitive Index         |
 
 ## License
 
@@ -451,28 +449,30 @@ See [LICENSE](LICENSE) for full details.
 
 ## Contact
 
-| Channel  | Link                                                                      |
-| -------- | ------------------------------------------------------------------------- |
-| Website  | [bettersolano.org](https://bettersolano.org)                              |
-| Email    | volunteer@bettersolano.org                                                |
-| Facebook | [@bettersolano.org](https://www.facebook.com/bettersolano.org)            |
-| LinkedIn | [BetterSolano](https://www.linkedin.com/company/bettersolano/)            |
-| Discord  | [Join Community](https://discord.com/invite/qeSu7RJkjQ)                   |
-| GitHub   | [BetterSolano/bettersolano](https://github.com/BetterSolano/bettersolano) |
+| Channel  | Link                                                             |
+| -------- | ---------------------------------------------------------------- |
+| Website  | [betterisabela.org](https://betterisabela.org)                   |
+| Email    | volunteer@betterisabela.org                                      |
+| Facebook | [@betterisabela.org](https://www.facebook.com/betterisabela.org) |
+| Discord  | [Join Community](https://discord.com/invite/qeSu7RJkjQ)          |
+
+> The BetterIsabela GitHub organisation and LinkedIn page are not live yet. The
+> `git clone` URLs below point to their intended home; they will 404 until the
+> organisation is created.
 
 ## Acknowledgments
 
 - [BetterGov.ph](https://bettergov.ph) for the civic-tech initiative in the Philippines
 - [Abakada.org](https://abakada.org) for supporting civic technology efforts
-- LGU Solano for public data availability and transparency
+- PLGU Isabela for public data availability and transparency
 - All volunteers and contributors who dedicate their time
 - Open-source community for the tools and libraries used
-- Citizens of Solano for their feedback and support
+- Citizens of Isabela for their feedback and support
 
 ---
 
-Made for the people of Solano, Nueva Vizcaya
+Made for the people of Isabela
 
 ## Developer
 
-[Ramon Logan Jr.](https://ramonloganjr.com/) is a UAE-based full-stack developer and IT professional specializing in web development, design, cloud services, and cybersecurity. He is the developer behind BetterSolano.org, [Abakada.org](https://abakada.org), and the founder of the small cloud-based solutions initiative, [HelloPinas.com](https://hellopinas.com). Ramon actively contributes to civic-tech efforts like [BetterGov.ph](https://bettergov.ph) and is an individual participant in the [OpenJS Foundation](https://openjsf.org/).
+[Ramon Logan Jr.](https://ramonloganjr.com/) is a UAE-based full-stack developer and IT professional specializing in web development, design, cloud services, and cybersecurity. He is the developer behind BetterIsabela.org, [Abakada.org](https://abakada.org), and the founder of the small cloud-based solutions initiative, [HelloPinas.com](https://hellopinas.com). Ramon actively contributes to civic-tech efforts like [BetterGov.ph](https://bettergov.ph) and is an individual participant in the [OpenJS Foundation](https://openjsf.org/).

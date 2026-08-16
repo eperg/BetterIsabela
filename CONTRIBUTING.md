@@ -1,10 +1,10 @@
-# Contributing to BetterSolano.org
+# Contributing to BetterIsabela.org
 
-Thank you for your interest in contributing to BetterSolano.org! This civic-tech project thrives on community participation. Whether you're a developer, designer, translator, or a concerned citizen of Solano, your contributions are welcome.
+Thank you for your interest in contributing to BetterIsabela.org! This civic-tech project thrives on community participation. Whether you're a developer, designer, translator, or a concerned citizen of Isabela, your contributions are welcome.
 
 ## Choosing a Version
 
-BetterSolano.org has two versions. Choose based on your preference:
+BetterIsabela.org has two versions. Choose based on your preference:
 
 | Version            | Branch             | Best For                                                          |
 | ------------------ | ------------------ | ----------------------------------------------------------------- |
@@ -29,8 +29,8 @@ For detailed differences and migration guidance, see [MIGRATION.md](MIGRATION.md
 #### Setup
 
 ```bash
-git clone https://github.com/BetterSolano/bettersolano.git
-cd bettersolano
+git clone https://github.com/BetterIsabela/betterisabela.git
+cd betterisabela
 npm install
 npm run dev
 ```
@@ -48,8 +48,8 @@ Open http://localhost:8000 in your browser.
 #### Setup
 
 ```bash
-git clone https://github.com/BetterSolano/bettersolano.git
-cd bettersolano
+git clone https://github.com/BetterIsabela/betterisabela.git
+cd betterisabela
 git checkout react-typescript
 cd react-app
 npm install
@@ -62,7 +62,7 @@ Open http://localhost:3000 in your browser.
 
 ### Reporting Bugs
 
-1. Check existing [issues](https://github.com/BetterSolano/bettersolano/issues) to avoid duplicates
+1. Check existing [issues](https://github.com/BetterIsabela/betterisabela/issues) to avoid duplicates
 2. Create a new issue with:
    - Clear, descriptive title
    - Steps to reproduce
@@ -112,17 +112,17 @@ Types:
 
 ## Contribution Areas
 
-| Area               | Description                          |
-| ------------------ | ------------------------------------ |
-| Bug Fixes          | Fix reported issues                  |
-| Features           | Implement new functionality          |
-| Content            | Update municipal service information |
-| Translations       | Translate to Filipino or Ilocano     |
-| Design             | Improve UI/UX and accessibility      |
-| Data               | Verify and update statistics         |
-| Documentation      | Improve guides and comments          |
-| API Integration    | Connect real-time data sources       |
-| Data Visualization | Enhance charts and graphs            |
+| Area               | Description                           |
+| ------------------ | ------------------------------------- |
+| Bug Fixes          | Fix reported issues                   |
+| Features           | Implement new functionality           |
+| Content            | Update provincial service information |
+| Translations       | Translate to Filipino or Ilocano      |
+| Design             | Improve UI/UX and accessibility       |
+| Data               | Verify and update statistics          |
+| Documentation      | Improve guides and comments           |
+| API Integration    | Connect real-time data sources        |
+| Data Visualization | Enhance charts and graphs             |
 
 ## Code Guidelines
 
@@ -183,9 +183,8 @@ Pull requests are reviewed for:
 ## Community
 
 - **Discord:** [Join our community](https://discord.com/invite/qeSu7RJkjQ)
-- **Facebook:** [@bettersolano.org](https://www.facebook.com/bettersolano.org)
-- **LinkedIn:** [Connect with us](https://www.linkedin.com/company/bettersolano)
-- **Email:** volunteer@bettersolano.org
+- **Facebook:** [@betterisabela.org](https://www.facebook.com/betterisabela.org)
+- **Email:** volunteer@betterisabela.org
 
 ## Recognition
 
@@ -197,4 +196,4 @@ Feel free to open an issue or reach out on Discord. We're happy to help!
 
 ---
 
-Thank you for helping make government information accessible to the people of Solano.
+Thank you for helping make government information accessible to the people of Isabela.

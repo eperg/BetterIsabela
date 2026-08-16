@@ -1,26 +1,27 @@
 /**
- * BetterSolano Service Worker
+ * BetterIsabela Service Worker
  * Enterprise-grade PWA with versioned caching, runtime strategies, and offline resilience.
  */
 
-var CACHE_VERSION = 'v3';
-var STATIC_CACHE = 'bettersolano-static-' + CACHE_VERSION;
-var RUNTIME_CACHE = 'bettersolano-runtime-' + CACHE_VERSION;
+var CACHE_VERSION = 'v6';
+var STATIC_CACHE = 'betterisabela-static-' + CACHE_VERSION;
+var RUNTIME_CACHE = 'betterisabela-runtime-' + CACHE_VERSION;
 var OFFLINE_URL = '/offline.html';
 
 // Core shell: precached on install for instant offline load
 var PRECACHE_URLS = [
   '/',
   '/offline.html',
+  '/prices',
   '/assets/css/style.css',
   '/assets/css/responsive.css',
   '/assets/css/footer.css',
   '/assets/css/accessibility.css',
-  '/assets/js/main.js',
-  '/assets/js/translations.js',
-  '/assets/js/info-bar.js',
-  '/assets/images/logo/better-solano-logo.svg',
-  '/assets/images/logo/better-solano-logo-white.svg',
+  '/assets/css/app.css',
+  '/data/prices.json',
+  '/data/towns.json',
+  '/assets/images/logo/better-isabela-logo.svg',
+  '/assets/images/logo/better-isabela-logo-white.svg',
   '/assets/images/logo/favicon.svg',
   '/assets/images/logo/favicon.ico',
   '/manifest.webmanifest',
@@ -38,8 +39,17 @@ self.addEventListener('install', function (event) {
     caches
       .open(STATIC_CACHE)
       .then(function (cache) {
-        // Use addAll for atomic precaching — if any fail, install fails
-        return cache.addAll(PRECACHE_URLS);
+        // Cache each entry independently. addAll is atomic, so a single stale
+        // path in the list above aborted the whole install and left the site
+        // with no service worker at all — the failure mode is silent and total,
+        // and far worse than one asset missing from the offline shell.
+        return Promise.all(
+          PRECACHE_URLS.map(function (url) {
+            return cache.add(url).catch(function (err) {
+              console.warn('[sw] precache skipped', url, err);
+            });
+          })
+        );
       })
       .then(function () {
         return self.skipWaiting();
@@ -127,6 +137,13 @@ self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET') return;
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
+  // Never touch auth or API traffic. These responses are per-user and the
+  // default branch below is cache-first, so /api/me was being kept for days:
+  // after signing out the header would still show the previous person's name
+  // and role. The Cache API ignores Cache-Control, so the only reliable guard
+  // is to not intercept these at all.
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/auth/')) return;
+
   // ── Navigation requests: Network-first with offline fallback ──
   if (event.request.mode === 'navigate') {
     event.respondWith(
@@ -191,7 +208,13 @@ self.addEventListener('fetch', function (event) {
           return response;
         })
         .catch(function () {
-          return caches.match(event.request);
+          // Prefer the runtime copy: it is the most recent successful fetch.
+          // The precached copy is only a first-install baseline and may be older.
+          return caches.open(RUNTIME_CACHE).then(function (cache) {
+            return cache.match(event.request).then(function (hit) {
+              return hit || caches.match(event.request);
+            });
+          });
         })
     );
     return;
@@ -236,11 +259,11 @@ self.addEventListener('push', function (event) {
   if (!event.data) return;
   var data = event.data.json();
   event.waitUntil(
-    self.registration.showNotification(data.title || 'BetterSolano', {
+    self.registration.showNotification(data.title || 'BetterIsabela', {
       body: data.body || '',
       icon: '/assets/images/logo/favicon.svg',
       badge: '/assets/images/logo/favicon.svg',
-      tag: data.tag || 'bettersolano-notification',
+      tag: data.tag || 'betterisabela-notification',
       data: { url: data.url || '/' },
     })
   );

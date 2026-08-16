@@ -1,18 +1,24 @@
 {
   "name": "bs-web",
   "version": "1.1.19",
-  "description": "BetterSolano.org - Official Portal for LGU Solano",
+  "description": "BetterIsabela.org - Official Portal for PLGU Isabela",
   "scripts": {
-    "dev": "python3 -m http.server 8000",
+    "dev": "python3 serve.py --port 8000 --directory .",
     "build": "bash build.sh",
     "build:major": "bash scripts/version.sh major && bash build.sh --no-bump",
     "build:minor": "bash scripts/version.sh minor && bash build.sh --no-bump",
-    "serve": "python3 -m http.server 8000",
-    "serve:dist": "cd dist && python3 -m http.server 8080",
+    "serve": "python3 serve.py --port 8000 --directory .",
+    "serve:dist": "python3 serve.py --port 8080 --directory dist",
     "version:major": "node scripts/bump-version.js major",
     "version:minor": "node scripts/bump-version.js minor",
     "version:patch": "node scripts/bump-version.js patch",
     "version:check": "node scripts/bump-version.js",
+    "validate:links": "node scripts/check-internal-links.js",
+    "validate:css": "node scripts/check-css-sync.js",
+    "validate:http": "node scripts/crawl-site.js",
+    "audit:external": "node scripts/check-external-links.js",
+    "sync:prices": "node scripts/sync-prices.js",
+    "sync:towns": "node scripts/sync-towns.js",
     "test": "playwright test",
     "test:chrome": "playwright test --project=chrome",
     "test:report": "playwright show-report",
@@ -23,8 +29,8 @@
     "package:only": "bash scripts/package-cpanel.sh"
   },
   "keywords": [
-    "solano",
-    "nueva-vizcaya",
+    "isabela",
+    "cagayan-valley",
     "government",
     "lgu"
   ],
@@ -39,6 +45,7 @@
     "clean-css-cli": "^5.6.3",
     "core-js": "^3.40.0",
     "html-minifier-terser": "^7.2.0",
+    "node-html-parser": "^9.0.1",
     "playwright": "^1.61.0",
     "prettier": "^3.8.1",
     "terser": "^5.44.1"

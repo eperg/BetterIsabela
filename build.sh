@@ -1,5 +1,5 @@
 #!/bin/bash
-# BetterSolano — Production Build Script
+# BetterIsabela — Production Build Script
 # Usage:
 #   bash build.sh            — bump patch, build everything
 #   bash build.sh --no-bump  — keep current version, build everything
@@ -22,7 +22,7 @@ done
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
-echo "║   BetterSolano — Production Build        ║"
+echo "║   BetterIsabela — Production Build        ║"
 echo "╚══════════════════════════════════════════╝"
 
 # ── 0. Build-time configuration (optional .env, see .env.example) ────────────
@@ -101,32 +101,14 @@ else
 fi
 echo "  Legacy files copied."
 
-# ── 4. Build React app and merge health page ──────────────────────────────────
+# ── 4. React app (now a separate Vercel deployment) ───────────────────────────
 echo ""
-echo "▶ [4/6] React app build..."
+echo "▶ [4/6] React app..."
 if [ "$REACT_BUILD" = true ] && [ -f "react-app/package.json" ]; then
-    (
-        cd react-app
-        echo "  Installing dependencies..."
-        npm ci --prefer-offline 2>/dev/null || npm install --silent
-        echo "  Running next build..."
-        npm run build
-    )
-
-    # _next contains all JS chunks and static assets for React pages
-    if [ -d "react-app/out/_next" ]; then
-        echo "  Merging React static assets → dist/_next/"
-        cp -r react-app/out/_next dist/_next
-    fi
-
-    # Merge only React-owned routes into dist (do not overwrite legacy pages)
-    # Currently: /services/health is the only React-served route in production
-    if [ -f "react-app/out/services/health.html" ]; then
-        echo "  Merging health page → dist/services/health.html"
-        cp react-app/out/services/health.html dist/services/health.html
-    fi
-
-    echo "  React build merged."
+    echo "  Skipped — react-app is a server application now (SSO, database, API"
+    echo "  routes) and deploys to Vercel, not into this static bundle."
+    echo "  Deploy it with:  cd react-app && vercel deploy"
+    echo "  The static services/health.html in this repo serves that route on cPanel."
 elif [ "$REACT_BUILD" = false ]; then
     echo "  Skipped (--no-react)."
 else
@@ -183,6 +165,6 @@ printf  "║  Source: %-31s║\n" "${ORIG_SIZE}"
 printf  "║  Dist:   %-31s║\n" "${DIST_SIZE}"
 echo "╠══════════════════════════════════════════╣"
 echo "║  Upload dist/ → cPanel public_html/     ║"
-echo "║  Preview: cd dist && python3 -m http.server 8080  ║"
+echo "║  Preview: npm run serve:dist                    ║"
 echo "╚══════════════════════════════════════════╝"
 echo ""

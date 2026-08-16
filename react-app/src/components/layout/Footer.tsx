@@ -23,55 +23,21 @@ export default function Footer() {
         <div className="footer-main-new">
           <div className="footer-brand">
             <img
-              src="/assets/images/logo/better-solano-logo-white.svg"
-              alt="Better Solano logo"
+              src="/assets/images/logo/better-isabela-logo-white.svg"
+              alt="Better Isabela logo"
               className="footer-logo"
             />
             <p className="footer-tagline">{t('footer-tagline')}</p>
-            <div className="footer-social-new">
-              <a
-                href="https://www.facebook.com/bettersolano.org"
-                className="footer-social-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-              >
-                <i className="bi bi-facebook"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/company/bettersolano/"
-                className="footer-social-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-              >
-                <i className="bi bi-linkedin"></i>
-              </a>
-              <a
-                href="https://discord.com/invite/qeSu7RJkjQ"
-                className="footer-social-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Discord"
-              >
-                <i className="bi bi-discord"></i>
-              </a>
-            </div>
           </div>
           <div className="footer-column">
             <h4>{t('footer-quick-links')}</h4>
             <ul className="footer-links-new">
               <li>
-                <a href="https://quiz.bettersolano.org/" target="_blank" rel="noopener noreferrer">
-                  {t('footer-solano-quiz')}
-                </a>
-              </li>
-              <li>
-                <a href="/sitemap-page">{t('footer-sitemap')}</a>
+                <a href="/sitemap">{t('footer-sitemap')}</a>
               </li>
               <li>
                 <a
-                  href="https://solano.gov.ph/wp-content/uploads/2025/10/As-of-October-21-2025-2.pdf"
+                  href="https://provinceofisabela.gov.ph/transparency/citizens-charter/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -106,26 +72,21 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://solano.gov.ph/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://provinceofisabela.gov.ph/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {t('footer-lgu-portal')}
                 </a>
               </li>
               <li>
                 <a
-                  href="https://sangguniangbayan.solano.gov.ph/"
+                  href="https://provinceofisabela.gov.ph/ordinanceresolution/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   {t('footer-sb')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.facebook.com/OfficialLguSolanoFanpage/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t('footer-lgu-facebook')}
                 </a>
               </li>
               <li>
@@ -144,37 +105,14 @@ export default function Footer() {
             <div
               className="footer-cost"
               role="status"
-              aria-label="Cost to the People of Solano: Zero Pesos"
+              aria-label="Cost to the People of Isabela: Zero Pesos"
             >
               {t('footer-cost')} <span className="footer-cost-value">₱0</span>
             </div>
-            <a href="mailto:volunteer@bettersolano.org" className="footer-contribute">
+            <a href="mailto:volunteer@betterisabela.org" className="footer-contribute">
               <i className="bi bi-envelope-heart"></i> {t('footer-volunteer')}
             </a>
-            <a
-              href="https://github.com/BetterSolano/bettersolano"
-              className="footer-contribute"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="bi bi-github"></i> {t('footer-contribute')}
-            </a>
             <div className="footer-partners">
-              <a
-                href="https://abakada.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Abakada.org"
-              >
-                <img
-                  src="/assets/images/logo/abakada-footer.svg"
-                  alt="Abakada.org"
-                  className="footer-partner-logo"
-                  width="120"
-                  height="28"
-                  loading="lazy"
-                />
-              </a>
               <a
                 href="https://hivcareph.org/"
                 target="_blank"

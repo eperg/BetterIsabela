@@ -23,20 +23,20 @@ TRANSLATIONS_JS = 'assets/js/translations.js'
 
 # Words/phrases that should NOT be translated (proper nouns, acronyms, etc.)
 KEEP_AS_IS = {
-    'BLGF Portal', 'CMCI DTI Portal', 'LGU Solano Facebook',
+    'BLGF Portal', 'CMCI DTI Portal', 'PLGU Isabela Facebook',
     'Open Data Philippines', 'PhilHealth', 'GSIS', 'SSS', 'Pag-IBIG',
-    'BFP', 'PNP', 'DILG', 'MDRRMO', 'MSWDO', 'SEEDO', 'MPDO',
+    'BFP', 'PNP', 'DILG', 'PDRRMO', 'PSWDO', 'PEEDO', 'PPDO',
     'TB-DOTS', 'BIR', 'DTI', 'SEC', 'DENR', 'DPWH', 'DSWD',
-    'PSA', 'NBI', 'CENRO', 'MENRO', 'PENRO', 'TESDA', 'DepEd',
+    'PSA', 'NBI', 'CENRO', 'PENRO', 'PENRO', 'TESDA', 'DepEd',
     'CHED', 'COA', 'CSC', 'DBM', 'DOH', 'DOLE', 'DOT', 'DA',
     'DAR', 'DICT', 'DOE', 'DOF', 'DOJ', 'DOST', 'DND', 'NEDA',
     'NAPC', 'PCSO', 'PAGASA', 'PHIVOLCS', 'NDRRMC', 'OCD',
     'R2TMC', 'MTOF', 'BPLS', 'RPT', 'CTC', 'RPTA',
-    'Filipizen', 'BetterSolano.org', 'Better Solano',
-    'Abakada.org', 'volunteer@bettersolano.org',
-    'accounting@solano.gov.ph', 'Facebook', 'Google',
-    'Sangguniang Bayan', 'Sangguniang Panlalawigan',
-    'Nueva Vizcaya', 'Solano', 'Bayombong',
+    'Filipizen', 'BetterIsabela.org', 'Better Isabela',
+    'Abakada.org', 'volunteer@betterisabela.org',
+    'acctg.isabela@gmail.com', 'Facebook', 'Google',
+    'Sangguniang Panlalawigan', 'Sangguniang Panlalawigan',
+    'Cagayan Valley', 'Isabela', 'Bayombong',
 }
 
 # Patterns that should be kept as-is (regex)
@@ -97,30 +97,30 @@ FIL_WORDS = {
 
 # Filipino phrase-level translations (checked before word-level)
 FIL_PHRASES = {
-    # Government & Municipal
+    # Government & Provincial
     "Citizen's Charter": "Citizen's Charter",
-    "Municipal Hall": "Munisipyo",
-    "Municipal Mayor": "Punong Bayan",
-    "Municipal Vice Mayor": "Bise Punong Bayan",
-    "Mayor's Office": "Opisina ng Punong Bayan",
-    "Vice Mayor's Office": "Opisina ng Bise Punong Bayan",
-    "Municipal Administrator": "Tagapangasiwa ng Munisipyo",
-    "Municipal Accountant": "Akawntant ng Munisipyo",
-    "Municipal Assessor": "Tagapagtasa ng Munisipyo",
-    "Municipal Budget Officer": "Opisyal ng Badyet ng Munisipyo",
-    "Municipal Civil Registrar": "Tagapagrehistro Sibil ng Munisipyo",
-    "Municipal Engineer": "Inhinyero ng Munisipyo",
-    "Municipal Health Officer": "Opisyal ng Kalusugan ng Munisipyo",
-    "Municipal Planning and Development": "Pagpaplano at Pagpapaunlad ng Munisipyo",
-    "Municipal Treasurer": "Ingat-Yaman ng Munisipyo",
-    "Municipal Social Welfare": "Kagawaran ng Kapakanan ng Munisipyo",
-    "Municipal Agriculture": "Kagawaran ng Agrikultura ng Munisipyo",
+    "Provincial Capitol": "Munisipyo",
+    "Provincial Governor": "Punong Bayan",
+    "Vice Governor": "Bise Punong Bayan",
+    "Governor's Office": "Opisina ng Punong Bayan",
+    "Vice Governor's Office": "Opisina ng Bise Punong Bayan",
+    "Provincial Administrator": "Tagapangasiwa ng Munisipyo",
+    "Provincial Accountant": "Akawntant ng Munisipyo",
+    "Provincial Assessor": "Tagapagtasa ng Munisipyo",
+    "Provincial Budget Officer": "Opisyal ng Badyet ng Munisipyo",
+    "Provincial Civil Registry Coordinator": "Tagapagrehistro Sibil ng Munisipyo",
+    "Provincial Engineer": "Inhinyero ng Munisipyo",
+    "Provincial Health Officer": "Opisyal ng Kalusugan ng Munisipyo",
+    "Provincial Planning and Development": "Pagpaplano at Pagpapaunlad ng Munisipyo",
+    "Provincial Treasurer": "Ingat-Yaman ng Munisipyo",
+    "Provincial Social Welfare": "Kagawaran ng Kapakanan ng Munisipyo",
+    "Provincial Agriculture": "Kagawaran ng Agrikultura ng Munisipyo",
     "Human Resource Management": "Pamamahala ng Yamang Tao",
     "General Services": "Pangkalahatang Serbisyo",
     "Ground Floor": "Unang Palapag",
     "2nd Floor": "Ikalawang Palapag",
     "3rd Floor": "Ikatlong Palapag",
-    "Sangguniang Bayan": "Sangguniang Bayan",
+    "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
     "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
     "Barangay Captain": "Kapitan ng Barangay",
     "Barangay Hall": "Barangay Hall",
@@ -129,7 +129,7 @@ FIL_PHRASES = {
     "Police Clearance": "Police Clearance",
     "Public Market": "Pamilihang Bayan",
     "Slaughterhouse": "Katayan",
-    "Municipal Slaughterhouse": "Katayan ng Munisipyo",
+    "Provincial Veterinary Office": "Katayan ng Munisipyo",
     "Tricycle Franchise": "Prangkisa ng Traysikel",
     "Business Permit": "Permiso sa Negosyo",
     "Building Permit": "Permiso sa Pagtatayo",
@@ -279,30 +279,30 @@ FIL_PHRASES = {
 # ============================================================
 
 ILO_PHRASES = {
-    # Government & Municipal
+    # Government & Provincial
     "Citizen's Charter": "Citizen's Charter",
-    "Municipal Hall": "Munisipalidad",
-    "Municipal Mayor": "Mayor ti Munisipalidad",
-    "Municipal Vice Mayor": "Bise Mayor ti Munisipalidad",
-    "Mayor's Office": "Opisina ti Mayor",
-    "Vice Mayor's Office": "Opisina ti Bise Mayor",
-    "Municipal Administrator": "Administrador ti Munisipalidad",
-    "Municipal Accountant": "Akawntant ti Munisipalidad",
-    "Municipal Assessor": "Assessor ti Munisipalidad",
-    "Municipal Budget Officer": "Opisyal ti Badyet ti Munisipalidad",
-    "Municipal Civil Registrar": "Sibil a Rehistrador ti Munisipalidad",
-    "Municipal Engineer": "Inhinyero ti Munisipalidad",
-    "Municipal Health Officer": "Opisyal ti Salun-at ti Munisipalidad",
-    "Municipal Planning and Development": "Panagplano ken Panagrang-ay ti Munisipalidad",
-    "Municipal Treasurer": "Tesorero ti Munisipalidad",
-    "Municipal Social Welfare": "Departamento ti Pakasaritaan ti Munisipalidad",
-    "Municipal Agriculture": "Departamento ti Agrikultura ti Munisipalidad",
+    "Provincial Capitol": "Munisipalidad",
+    "Provincial Governor": "Governor ti Munisipalidad",
+    "Vice Governor": "Bise Governor ti Munisipalidad",
+    "Governor's Office": "Opisina ti Governor",
+    "Vice Governor's Office": "Opisina ti Bise Governor",
+    "Provincial Administrator": "Administrador ti Munisipalidad",
+    "Provincial Accountant": "Akawntant ti Munisipalidad",
+    "Provincial Assessor": "Assessor ti Munisipalidad",
+    "Provincial Budget Officer": "Opisyal ti Badyet ti Munisipalidad",
+    "Provincial Civil Registry Coordinator": "Sibil a Rehistrador ti Munisipalidad",
+    "Provincial Engineer": "Inhinyero ti Munisipalidad",
+    "Provincial Health Officer": "Opisyal ti Salun-at ti Munisipalidad",
+    "Provincial Planning and Development": "Panagplano ken Panagrang-ay ti Munisipalidad",
+    "Provincial Treasurer": "Tesorero ti Munisipalidad",
+    "Provincial Social Welfare": "Departamento ti Pakasaritaan ti Munisipalidad",
+    "Provincial Agriculture": "Departamento ti Agrikultura ti Munisipalidad",
     "Human Resource Management": "Panagtaripato ti Tao a Rekurso",
     "General Services": "Sapasap a Serbisio",
     "Ground Floor": "Umuna a Kadsaaran",
     "2nd Floor": "Maikadua a Kadsaaran",
     "3rd Floor": "Maikatlo a Kadsaaran",
-    "Sangguniang Bayan": "Sangguniang Bayan",
+    "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
     "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
     "Barangay Captain": "Kapitan ti Barangay",
     "Barangay Hall": "Barangay Hall",
@@ -311,7 +311,7 @@ ILO_PHRASES = {
     "Police Clearance": "Police Clearance",
     "Public Market": "Publiko a Tiendaan",
     "Slaughterhouse": "Pagpartian",
-    "Municipal Slaughterhouse": "Pagpartian ti Munisipalidad",
+    "Provincial Veterinary Office": "Pagpartian ti Munisipalidad",
     "Tricycle Franchise": "Prangkisa ti Traysikel",
     "Business Permit": "Permiso ti Negosio",
     "Building Permit": "Permiso ti Panagbangon",
@@ -465,18 +465,18 @@ FIL_SENTENCES = {
     # Common footer/sidebar links
     "BLGF Portal": "BLGF Portal",
     "CMCI DTI Portal": "CMCI DTI Portal",
-    "LGU Solano Facebook": "LGU Solano Facebook",
+    "PLGU Isabela Facebook": "PLGU Isabela Facebook",
     "Open Data Philippines": "Open Data Philippines",
-    "Better Solano": "Better Solano",
-    "BFP Solano": "BFP Solano",
+    "Better Isabela": "Better Isabela",
+    "BFP Isabela": "BFP Isabela",
 
     # Common service phrases
     "Contact us for assistance with this service.": "Makipag-ugnayan sa amin para sa tulong sa serbisyong ito.",
-    "Municipal Hall, Ground Floor Solano, Nueva Vizcaya 3708": "Munisipyo, Unang Palapag, Solano, Nueva Vizcaya 3708",
-    "Municipal Hall, 2nd Floor Solano, Nueva Vizcaya 3708": "Munisipyo, Ikalawang Palapag, Solano, Nueva Vizcaya 3708",
-    "Municipal Hall, Ground Floor, Solano, Nueva Vizcaya 3708": "Munisipyo, Unang Palapag, Solano, Nueva Vizcaya 3708",
-    "2nd Floor, Municipal Hall, Solano, Nueva Vizcaya": "Ikalawang Palapag, Munisipyo, Solano, Nueva Vizcaya",
-    "Ground Floor, Municipal Hall, Solano, Nueva Vizcaya": "Unang Palapag, Munisipyo, Solano, Nueva Vizcaya",
+    "Provincial Capitol, Ground Floor Isabela 3708": "Munisipyo, Unang Palapag, Isabela 3708",
+    "Provincial Capitol, 2nd Floor Isabela 3708": "Munisipyo, Ikalawang Palapag, Isabela 3708",
+    "Provincial Capitol, Ground Floor, Isabela 3708": "Munisipyo, Unang Palapag, Isabela 3708",
+    "2nd Floor, Provincial Capitol, Isabela": "Ikalawang Palapag, Munisipyo, Isabela",
+    "Ground Floor, Provincial Capitol, Isabela": "Unang Palapag, Munisipyo, Isabela",
 
     # Time/duration phrases
     "8AM - 5PM": "8AM - 5PM",
@@ -564,7 +564,7 @@ FIL_SENTENCES = {
     "Access primary documents and official publications referenced": "I-access ang mga pangunahing dokumento at opisyal na publikasyong binanggit",
 
     # Statistics
-    "2021 City and Municipal Level Poverty Estimates": "2021 Mga Tantiya ng Kahirapan sa Antas ng Lungsod at Munisipyo",
+    "2021 City and Provincial Level Poverty Estimates": "2021 Mga Tantiya ng Kahirapan sa Antas ng Lungsod at Munisipyo",
     "2024 Census of Population": "2024 Senso ng Populasyon",
 
     # Education
@@ -577,7 +577,7 @@ FIL_SENTENCES = {
     "1st Class": "Unang Klase",
 
     # Offline page
-    "Emergency Hotlines - Solano, Nueva Vizcaya": "Mga Emergency Hotline - Solano, Nueva Vizcaya",
+    "Emergency Hotlines - Isabela": "Mga Emergency Hotline - Isabela",
     "Fire (BFP)": "Sunog (BFP)",
     "Police (PNP)": "Pulis (PNP)",
 
@@ -618,18 +618,18 @@ ILO_SENTENCES = {
     # Common footer/sidebar links
     "BLGF Portal": "BLGF Portal",
     "CMCI DTI Portal": "CMCI DTI Portal",
-    "LGU Solano Facebook": "LGU Solano Facebook",
+    "PLGU Isabela Facebook": "PLGU Isabela Facebook",
     "Open Data Philippines": "Open Data Philippines",
-    "Better Solano": "Better Solano",
-    "BFP Solano": "BFP Solano",
+    "Better Isabela": "Better Isabela",
+    "BFP Isabela": "BFP Isabela",
 
     # Common service phrases
     "Contact us for assistance with this service.": "Kontakennakami para iti tulong iti daytoy a serbisio.",
-    "Municipal Hall, Ground Floor Solano, Nueva Vizcaya 3708": "Munisipalidad, Umuna a Kadsaaran, Solano, Nueva Vizcaya 3708",
-    "Municipal Hall, 2nd Floor Solano, Nueva Vizcaya 3708": "Munisipalidad, Maikadua a Kadsaaran, Solano, Nueva Vizcaya 3708",
-    "Municipal Hall, Ground Floor, Solano, Nueva Vizcaya 3708": "Munisipalidad, Umuna a Kadsaaran, Solano, Nueva Vizcaya 3708",
-    "2nd Floor, Municipal Hall, Solano, Nueva Vizcaya": "Maikadua a Kadsaaran, Munisipalidad, Solano, Nueva Vizcaya",
-    "Ground Floor, Municipal Hall, Solano, Nueva Vizcaya": "Umuna a Kadsaaran, Munisipalidad, Solano, Nueva Vizcaya",
+    "Provincial Capitol, Ground Floor Isabela 3708": "Munisipalidad, Umuna a Kadsaaran, Isabela 3708",
+    "Provincial Capitol, 2nd Floor Isabela 3708": "Munisipalidad, Maikadua a Kadsaaran, Isabela 3708",
+    "Provincial Capitol, Ground Floor, Isabela 3708": "Munisipalidad, Umuna a Kadsaaran, Isabela 3708",
+    "2nd Floor, Provincial Capitol, Isabela": "Maikadua a Kadsaaran, Munisipalidad, Isabela",
+    "Ground Floor, Provincial Capitol, Isabela": "Umuna a Kadsaaran, Munisipalidad, Isabela",
 
     # Time/duration phrases
     "8AM - 5PM": "8AM - 5PM",
@@ -717,7 +717,7 @@ ILO_SENTENCES = {
     "Access primary documents and official publications referenced": "Ag-access kadagiti kangrunaan a dokumento ken opisial a publikasion a nadakamat",
 
     # Statistics
-    "2021 City and Municipal Level Poverty Estimates": "2021 Dagiti Tantia ti Kinapanglaw iti Lebel ti Siudad ken Munisipalidad",
+    "2021 City and Provincial Level Poverty Estimates": "2021 Dagiti Tantia ti Kinapanglaw iti Lebel ti Siudad ken Munisipalidad",
     "2024 Census of Population": "2024 Senso ti Populasion",
 
     # Education
@@ -730,7 +730,7 @@ ILO_SENTENCES = {
     "1st Class": "Umuna a Klase",
 
     # Offline page
-    "Emergency Hotlines - Solano, Nueva Vizcaya": "Dagiti Emergency Hotline - Solano, Nueva Vizcaya",
+    "Emergency Hotlines - Isabela": "Dagiti Emergency Hotline - Isabela",
     "Fire (BFP)": "Apuy (BFP)",
     "Police (PNP)": "Polis (PNP)",
 
@@ -778,7 +778,7 @@ FIL_WORD_MAP = {
     'department': 'kagawaran', 'departments': 'mga kagawaran',
     'division': 'dibisyon', 'section': 'seksyon',
     'unit': 'yunit', 'branch': 'sangay',
-    'government': 'pamahalaan', 'municipality': 'munisipyo',
+    'government': 'pamahalaan', 'province': 'munisipyo',
     'province': 'lalawigan', 'barangay': 'barangay',
     'city': 'lungsod', 'town': 'bayan',
     'district': 'distrito', 'region': 'rehiyon',
@@ -786,7 +786,7 @@ FIL_WORD_MAP = {
     'council': 'konseho', 'board': 'lupon',
     'committee': 'komite', 'commission': 'komisyon',
     'authority': 'awtoridad', 'agency': 'ahensya',
-    'mayor': 'alkalde', 'councilor': 'konsehal',
+    'governor': 'alkalde', 'board member': 'konsehal',
     'secretary': 'kalihim', 'treasurer': 'ingat-yaman',
     'assessor': 'tagapagtasa', 'engineer': 'inhinyero',
     'accountant': 'akawntant', 'administrator': 'tagapangasiwa',
@@ -947,7 +947,7 @@ FIL_WORD_MAP = {
     'official': 'opisyal', 'public': 'pampubliko',
     'private': 'pribado', 'personal': 'personal',
     'local': 'lokal', 'national': 'pambansa',
-    'municipal': 'pangmunisipyo', 'provincial': 'panlalawigan',
+    'provincial': 'pangmunisipyo', 'provincial': 'panlalawigan',
     'annual': 'taunang', 'monthly': 'buwanang',
     'weekly': 'lingguhang', 'daily': 'araw-araw',
     'current': 'kasalukuyang', 'previous': 'nakaraang',
@@ -996,7 +996,7 @@ ILO_WORD_MAP = {
     'department': 'departamento', 'departments': 'dagiti departamento',
     'division': 'dibision', 'section': 'seksion',
     'unit': 'yunit', 'branch': 'sanga',
-    'government': 'gobierno', 'municipality': 'munisipalidad',
+    'government': 'gobierno', 'province': 'munisipalidad',
     'province': 'probinsia', 'barangay': 'barangay',
     'city': 'siudad', 'town': 'ili',
     'district': 'distrito', 'region': 'rehion',
@@ -1004,7 +1004,7 @@ ILO_WORD_MAP = {
     'council': 'konseho', 'board': 'lupon',
     'committee': 'komite', 'commission': 'komisyon',
     'authority': 'awtoridad', 'agency': 'ahensia',
-    'mayor': 'mayor', 'councilor': 'konsehal',
+    'governor': 'governor', 'board member': 'konsehal',
     'secretary': 'sekretario', 'treasurer': 'tesorero',
     'assessor': 'assessor', 'engineer': 'inhinyero',
     'accountant': 'akawntant', 'administrator': 'administrador',
@@ -1163,7 +1163,7 @@ ILO_WORD_MAP = {
     'official': 'opisial', 'public': 'publiko',
     'private': 'pribado', 'personal': 'personal',
     'local': 'lokal', 'national': 'nailian',
-    'municipal': 'munisipal', 'provincial': 'probinsial',
+    'provincial': 'munisipal', 'provincial': 'probinsial',
     'annual': 'tinawen', 'monthly': 'binulan',
     'weekly': 'linawas', 'daily': 'inaldaw',
     'current': 'agdama', 'previous': 'napalabas',

@@ -1,0 +1,262 @@
+{
+  "_schema_version": "1.0",
+  "_source": "https://provinceofisabela.gov.ph/directory/",
+  "_hotline_source": "https://provinceofisabela.gov.ph/emergency-hotlines/",
+  "_verified": "2026-08-16",
+  "_note": "Canonical, source-backed contact directory for the Province of Isabela. Do not add an entry here without a named source and verification date. Site pages should reference these values rather than hardcoding new numbers.",
+  "emergency": [
+    {
+      "id": "ippo",
+      "name": "IPPO (Isabela Provincial Police Office)",
+      "tel": "09175018212",
+      "display": "0917 501 8212",
+      "icon": "bi-shield-fill"
+    },
+    {
+      "id": "bfp",
+      "name": "BFP (Bureau of Fire Protection)",
+      "tel": "09165562881",
+      "display": "0916 556 2881",
+      "icon": "bi-fire"
+    },
+    {
+      "id": "dart831",
+      "name": "DART 831 (Rescue)",
+      "tel": "09158193187",
+      "display": "0915 819 3187",
+      "icon": "bi-exclamation-triangle-fill"
+    },
+    {
+      "id": "pdrrmo",
+      "name": "PDRRMO Isabela",
+      "tel": "09777837341",
+      "display": "0977 783 7341",
+      "landline": "(078) 323 0416",
+      "icon": "bi-cone-striped"
+    }
+  ],
+  "offices": [
+    {
+      "id": "governor",
+      "name": "Provincial Governor's Office",
+      "landline": "(078) 323 0369",
+      "tel": "09275585888",
+      "display": "0927 558 5888"
+    },
+    {
+      "id": "vice-governor",
+      "name": "Provincial Vice Governor's Office",
+      "landline": "(078) 323 0129",
+      "tel": "09178734105",
+      "display": "0917 873 4105"
+    },
+    { "id": "legal", "name": "Provincial Legal Office", "landline": "(078) 323 0380" },
+    { "id": "information", "name": "Provincial Information Office", "landline": "(078) 323 0248" },
+    {
+      "id": "treasurer",
+      "name": "Provincial Treasurer's Office",
+      "landline": "(078) 323 1060",
+      "tel": "09178598126",
+      "display": "0917 859 8126"
+    },
+    {
+      "id": "accounting",
+      "name": "Provincial Accountant's Office",
+      "landline": "(078) 323 1823",
+      "tel": "09451761120",
+      "display": "0945 176 1120"
+    },
+    {
+      "id": "budget",
+      "name": "Provincial Budget Office",
+      "landline": "(078) 323 2082",
+      "tel": "09178436227",
+      "display": "0917 843 6227"
+    },
+    {
+      "id": "planning",
+      "name": "Provincial Planning & Development Office",
+      "landline": "(078) 323 0171",
+      "tel": "09178161152",
+      "display": "0917 816 1152"
+    },
+    {
+      "id": "internal-audit",
+      "name": "Provincial Internal Audit and Control Office",
+      "tel": "09175186427",
+      "display": "0917 518 6427"
+    },
+    {
+      "id": "hrmo",
+      "name": "Provincial Human Resource Management Office",
+      "landline": "(078) 324 8496",
+      "tel": "09171363317",
+      "display": "0917 136 3317"
+    },
+    {
+      "id": "general-services",
+      "name": "Provincial General Services Office",
+      "landline": "(078) 323 0384",
+      "tel": "09770826233",
+      "display": "0977 082 6233"
+    },
+    {
+      "id": "engineering",
+      "name": "Provincial Engineering Office",
+      "landline": "(078) 323 2770",
+      "tel": "09533263296",
+      "display": "0953 326 3296"
+    },
+    {
+      "id": "assessor",
+      "name": "Provincial Assessor's Office",
+      "landline": "(078) 323 2746",
+      "tel": "09569713720",
+      "display": "0956 971 3720"
+    },
+    {
+      "id": "agriculture",
+      "name": "Provincial Agriculturist Office",
+      "landline": "(078) 323 0373",
+      "tel": "09171846458",
+      "display": "0917 184 6458"
+    },
+    {
+      "id": "veterinary",
+      "name": "Provincial Veterinary Office",
+      "landline": "(078) 323 1279",
+      "tel": "09171523637",
+      "display": "0917 152 3637"
+    },
+    {
+      "id": "cooperative",
+      "name": "Provincial Cooperative, Livelihood & Enterprise Development Office",
+      "landline": "(078) 323 1297"
+    },
+    {
+      "id": "pswdo",
+      "name": "Provincial Social Welfare & Development Office",
+      "landline": "(078) 323 0356",
+      "tel": "09543883672",
+      "display": "0954 388 3672"
+    },
+    {
+      "id": "pdrrmo",
+      "name": "Provincial Disaster Risk Reduction and Management Office",
+      "landline": "(078) 323 0416",
+      "tel": "09777837341",
+      "display": "0977 783 7341"
+    },
+    {
+      "id": "health",
+      "name": "Integrated Provincial Health Office",
+      "landline": "(078) 624 0233",
+      "tel": "09162812091",
+      "display": "0916 281 2091"
+    },
+    {
+      "id": "enro",
+      "name": "Environmental & Natural Resource Office",
+      "landline": "(078) 323 0449",
+      "tel": "09683345372",
+      "display": "0968 334 5372"
+    },
+    {
+      "id": "sanggunian",
+      "name": "Office of the Secretary to the Sangguniang Panlalawigan",
+      "landline": "(078) 323 0170",
+      "tel": "09178734105",
+      "display": "0917 873 4105"
+    },
+    {
+      "id": "safety",
+      "name": "Provincial Safety Office",
+      "landline": "(078) 323 1132",
+      "tel": "09178170669",
+      "display": "0917 817 0669"
+    },
+    {
+      "id": "tourism",
+      "name": "Provincial Tourism Office",
+      "tel": "09538841753",
+      "display": "0953 884 1753"
+    },
+    {
+      "id": "peso",
+      "name": "Public Employment Service Office",
+      "landline": "(078) 325 6451",
+      "tel": "09265571804",
+      "display": "0926 557 1804"
+    },
+    {
+      "id": "pedipo",
+      "name": "Provincial Economic Development & Investment Promotion Office",
+      "tel": "09953321669",
+      "display": "0995 332 1669"
+    },
+    {
+      "id": "jail",
+      "name": "Isabela Provincial Jail",
+      "landline": "(078) 323 0395",
+      "tel": "09954253040",
+      "display": "0995 425 3040"
+    },
+    {
+      "id": "coastal",
+      "name": "Isabela Coastal Development Office",
+      "landline": "(078) 323 2864",
+      "tel": "09771551370",
+      "display": "0977 155 1370"
+    },
+    {
+      "id": "youth",
+      "name": "Provincial Youth Development Office",
+      "landline": "(078) 323 1483",
+      "tel": "09657502655",
+      "display": "0965 750 2655"
+    }
+  ],
+  "hospitals": [
+    {
+      "id": "dy-memorial",
+      "name": "Gov. Faustino Dy, Sr. Memorial Hospital",
+      "landline": "(078) 624 1688",
+      "emergency": "09154008661",
+      "emergencyDisplay": "0915 400 8661"
+    },
+    {
+      "id": "roxas",
+      "name": "Manuel A. Roxas District Hospital",
+      "landline": "(078) 642 0512",
+      "emergency": "09650957285",
+      "emergencyDisplay": "0965 095 7285"
+    },
+    {
+      "id": "echague",
+      "name": "Echague District Hospital",
+      "landline": "(078) 305 9088",
+      "emergency": "09060467804",
+      "emergencyDisplay": "0906 046 7804"
+    },
+    {
+      "id": "palanan",
+      "name": "Palanan Station Hospital",
+      "emergency": "09678393252",
+      "emergencyDisplay": "0967 839 3252"
+    },
+    { "id": "cauayan", "name": "Cauayan District Hospital", "landline": "(078) 260 1120" },
+    {
+      "id": "san-mariano",
+      "name": "San Mariano Community Hospital",
+      "emergency": "09613482375",
+      "emergencyDisplay": "0961 348 2375"
+    },
+    {
+      "id": "milagros-albano",
+      "name": "Milagros Albano District Hospital",
+      "landline": "(078) 325 2069",
+      "emergency": "09626361023",
+      "emergencyDisplay": "0962 636 1023"
+    }
+  ]
+}

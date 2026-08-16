@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import HotlineBar from '@/components/layout/HotlineBar';
-import Header from '@/components/layout/Header';
+import Nav from '@/components/app/Nav';
 import InfoBar from '@/components/layout/InfoBar';
 import Footer from '@/components/layout/Footer';
 import PWAManager from '@/components/PWAManager';
@@ -11,21 +11,32 @@ export const viewport: Viewport = {
   themeColor: '#0032a0',
 };
 
+/**
+ * The canonical host, which is the one the site actually serves on: the apex
+ * 308-redirects to www. Everything that emits an absolute URL — canonical tags,
+ * Open Graph, sitemap, robots — is derived from this so they cannot disagree.
+ */
+const SITE = (process.env.SITE_URL ?? 'https://www.betterisabela.org').replace(/\/$/, '');
+
 export const metadata: Metadata = {
-  title: { default: 'BetterSolano.org | Official Portal', template: '%s | BetterSolano.org' },
-  description: 'BetterSolano.org - Your digital gateway to LGU Solano services.',
-  keywords: ['BetterSolano', 'Solano Nueva Vizcaya', 'LGU Solano', 'municipal services'],
+  metadataBase: new URL(SITE),
+  // Resolved per route against metadataBase, so every page declares itself
+  // canonical on one host instead of leaving apex and www to compete.
+  alternates: { canonical: './' },
+  title: { default: 'BetterIsabela.org | Official Portal', template: '%s | BetterIsabela.org' },
+  description: 'BetterIsabela.org - Your digital gateway to PLGU Isabela services.',
+  keywords: ['BetterIsabela', 'Isabela', 'PLGU Isabela', 'provincial services'],
   authors: [{ name: 'Ramon Logan Jr.' }],
   openGraph: {
     type: 'website',
     locale: 'en_PH',
-    url: 'https://bettersolano.org/',
-    siteName: 'BetterSolano.org',
-    title: 'BetterSolano.org | Official Portal',
-    description: 'Empowering the people of Solano with transparent access to services.',
+    url: SITE,
+    siteName: 'BetterIsabela.org',
+    title: 'BetterIsabela.org | Official Portal',
+    description: 'Empowering the people of Isabela with transparent access to services.',
     images: [
       {
-        url: 'https://bettersolano.org/assets/images/banners/opengraph.png',
+        url: '/assets/images/banners/opengraph.png',
         width: 1200,
         height: 630,
       },
@@ -37,7 +48,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'BetterSolano',
+    title: 'BetterIsabela',
   },
 };
 
@@ -59,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="/assets/css/responsive.css" />
         <link rel="stylesheet" href="/assets/css/accessibility.css" />
         <link rel="stylesheet" href="/assets/css/footer.css" />
+        <link rel="stylesheet" href="/assets/css/app.css" />
       </head>
       <body>
         <LanguageProvider>
@@ -66,14 +78,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Skip to main content
           </a>
           <HotlineBar />
-          <Header />
+          <Nav />
           <InfoBar />
-          <main id="main-content">{children}</main>
+          <div id="main-content">{children}</div>
           <Footer />
           <PWAManager />
         </LanguageProvider>
+        {/* An .mjs bundle must load as a module; as a classic script it throws
+            "Cannot use import statement outside a module" and aborts hydration. */}
         <Script
           src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+          type="module"
           strategy="lazyOnload"
         />
       </body>

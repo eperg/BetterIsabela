@@ -6,55 +6,52 @@ Mimics Apache's mod_rewrite behavior for testing cPanel deployment locally
 
 import os
 import sys
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, unquote
+
 
 class CleanURLHandler(SimpleHTTPRequestHandler):
     """
     Custom HTTP handler that supports clean URLs (without .html extension)
     Mimics the .htaccess rewrite rules used in cPanel deployment
     """
-    
-    def do_GET(self):
-        # Parse the URL path
+    def _rewrite_clean_url(self):
+        """Map an extensionless URL to its matching HTML file, when present."""
         parsed_path = urlparse(self.path)
-        path = unquote(parsed_path.path)
-        
-        # Remove trailing slash for non-root paths
-        if path != '/' and path.endswith('/'):
-            # Check if this is a directory with index.html
-            dir_path = '.' + path
-            index_path = dir_path + 'index.html'
-            if os.path.isdir(dir_path) and os.path.isfile(index_path):
-                # Serve index.html from directory
-                return super().do_GET()
-        
-        # Try to serve the file directly first
-        file_path = '.' + path
-        
-        # If path doesn't have extension and file doesn't exist
-        if not os.path.exists(file_path) and not path.endswith('/'):
-            # Try adding .html extension
-            html_path = file_path + '.html'
-            if os.path.isfile(html_path):
-                # Internally rewrite to serve the .html file
-                self.path = path + '.html'
-                if parsed_path.query:
-                    self.path += '?' + parsed_path.query
-                return super().do_GET()
-        
-        # If it's a directory, try index.html
-        if os.path.isdir(file_path):
-            index_path = os.path.join(file_path, 'index.html')
-            if os.path.isfile(index_path):
-                self.path = path.rstrip('/') + '/index.html'
-                if parsed_path.query:
-                    self.path += '?' + parsed_path.query
-                return super().do_GET()
-        
-        # Fall back to default behavior
+        decoded_path = unquote(parsed_path.path)
+        file_path = super().translate_path(decoded_path)
+
+        if os.path.exists(file_path) or decoded_path.endswith('/'):
+            return
+
+        html_path = file_path + '.html'
+        if os.path.isfile(html_path):
+            self.path = parsed_path.path + '.html'
+            if parsed_path.query:
+                self.path += '?' + parsed_path.query
+
+    def do_GET(self):
+        self._rewrite_clean_url()
         return super().do_GET()
-    
+
+    def do_HEAD(self):
+        self._rewrite_clean_url()
+        return super().do_HEAD()
+
+    def send_error(self, code, message=None, explain=None):
+        """Use the site's error document while preserving the HTTP 404 status."""
+        if code == 404 and os.path.isfile('404.html'):
+            with open('404.html', 'rb') as error_page:
+                content = error_page.read()
+            self.send_response(code, message)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.send_header('Content-Length', str(len(content)))
+            self.end_headers()
+            if self.command != 'HEAD':
+                self.wfile.write(content)
+            return
+        return super().send_error(code, message, explain)
+
     def log_message(self, format, *args):
         # Custom logging with color for clean URL rewrites
         message = format % args
@@ -75,7 +72,7 @@ def run_server(port=8888, directory='dist'):
         os.chdir(directory)
     
     server_address = ('', port)
-    httpd = HTTPServer(server_address, CleanURLHandler)
+    httpd = ThreadingHTTPServer(server_address, CleanURLHandler)
     
     print("=" * 60)
     print("Clean URL Development Server")
@@ -98,6 +95,7 @@ def run_server(port=8888, directory='dist'):
 
 if __name__ == '__main__':
     import argparse
+
     parser = argparse.ArgumentParser(description='Local server with clean URL support')
     parser.add_argument('-p', '--port', type=int, default=8888, help='Port number (default: 8888)')
     parser.add_argument('-d', '--directory', type=str, default='dist', help='Directory to serve (default: dist)')

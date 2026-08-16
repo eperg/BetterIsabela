@@ -1,54 +1,74 @@
 {
-  "mayor": {
-    "name": "Hon. Philip A. Dacayo",
-    "title": "Municipal Mayor",
-    "image": "assets/images/officials/mayor.jpg"
+  "_schema_version": "1.0",
+  "_status": "verified",
+  "_source": "https://provinceofisabela.gov.ph/officials/board-members/",
+  "_verified_on": "2026-08-15",
+  "governor": {
+    "name": "Hon. Rodolfo T. Albano III",
+    "title": "Provincial Governor",
+    "image": "assets/images/officials/governor.jpg"
   },
-  "vice_mayor": {
-    "name": "Hon. Eduardo D. Tiongson",
-    "title": "Municipal Vice Mayor",
-    "image": "assets/images/officials/vice-mayor.jpg"
+  "vice_governor": {
+    "name": "Hon. Francis Faustino A. Dy",
+    "title": "Vice Governor",
+    "image": "assets/images/officials/vice-governor.jpg"
   },
-  "councilors": [
+  "board_members": [
     {
-      "name": "Hon. Councilor One",
-      "title": "SB Member",
+      "name": "Hon. Evyn Jay C. Diaz",
+      "title": "Board Member, 1st District",
       "image": "assets/images/officials/sb1.jpg"
     },
     {
-      "name": "Hon. Councilor Two",
-      "title": "SB Member",
+      "name": "Hon. Emmanuel Joselito B. Añes",
+      "title": "Board Member, 1st District",
       "image": "assets/images/officials/sb2.jpg"
     },
     {
-      "name": "Hon. Councilor Three",
-      "title": "SB Member",
+      "name": "Hon. Ed Christian S. Go",
+      "title": "Board Member, 2nd District",
       "image": "assets/images/officials/sb3.jpg"
     },
     {
-      "name": "Hon. Councilor Four",
-      "title": "SB Member",
+      "name": "Hon. Angelica L. Reyes",
+      "title": "Board Member, 2nd District",
       "image": "assets/images/officials/sb4.jpg"
     },
     {
-      "name": "Hon. Councilor Five",
-      "title": "SB Member",
+      "name": "Hon. Jose T. Panganiban Jr.",
+      "title": "Board Member, 3rd District",
       "image": "assets/images/officials/sb5.jpg"
     },
     {
-      "name": "Hon. Councilor Six",
-      "title": "SB Member",
+      "name": "Hon. Ramon Juan N. Reyes Jr.",
+      "title": "Board Member, 3rd District",
       "image": "assets/images/officials/sb6.jpg"
     },
     {
-      "name": "Hon. Councilor Seven",
-      "title": "SB Member",
+      "name": "Hon. Clifford R. Raspado",
+      "title": "Board Member, 4th District",
       "image": "assets/images/officials/sb7.jpg"
     },
     {
-      "name": "Hon. Councilor Eight",
-      "title": "SB Member",
+      "name": "Hon. Abegail V. Sable",
+      "title": "Board Member, 4th District",
       "image": "assets/images/officials/sb8.jpg"
+    },
+    {
+      "name": "Hon. Jonathan Jose C. Calderon",
+      "title": "Board Member, 5th District"
+    },
+    {
+      "name": "Hon. Manuel Faustino U. Dy",
+      "title": "Board Member, 5th District"
+    },
+    {
+      "name": "Hon. Marco Paolo A. Meris",
+      "title": "Board Member, 6th District"
+    },
+    {
+      "name": "Hon. Amador A. Gaffud Jr.",
+      "title": "Board Member, 6th District"
     }
   ]
 }

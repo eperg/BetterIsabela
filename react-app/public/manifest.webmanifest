@@ -1,7 +1,7 @@
 {
-  "name": "BetterSolano.org - LGU Solano Portal",
-  "short_name": "BetterSolano",
-  "description": "Access government services, emergency hotlines, and transparency data for Solano, Nueva Vizcaya.",
+  "name": "BetterIsabela.org - PLGU Isabela Portal",
+  "short_name": "BetterIsabela",
+  "description": "Access government services, emergency hotlines, and transparency data for Isabela.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

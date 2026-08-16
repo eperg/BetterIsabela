@@ -1,0 +1,82 @@
+name: Palay & Corn Price Sync
+
+# Rebuilds data/prices.json from two official, keyless sources:
+#   - PSA OpenSTAT   monthly Isabela FARMGATE price for palay and yellow corn
+#   - DA Bantay Presyo  current RETAIL price in the five Isabela public markets
+# and (if anything moved) deploys the file to cPanel.
+#
+# Needs no secrets to run — only to deploy. Safe to enable immediately: without
+# FTP secrets it still commits nothing and simply uploads the file as an artifact.
+
+on:
+  schedule:
+    # 06:00 and 18:00 Manila (UTC+8). Bantay Presyo refreshes on weekdays; PSA
+    # farmgate is monthly, so twice a day is ample and stays well inside any
+    # reasonable courtesy rate for a government portal.
+    - cron: '0 22,10 * * *'
+  workflow_dispatch: {} # manual run from the Actions tab
+
+permissions:
+  contents: read
+
+concurrency:
+  group: price-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      FTP_REMOTE_PATH: ${{ vars.FTP_PRICES_REMOTE_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync palay & corn prices into data/prices.json
+        id: sync
+        # Optional overrides:
+        #   PRICES_YEARS      years of farmgate history to request (default 3)
+        #   PRICES_TIMEOUT_MS per-request timeout (default 30000)
+        run: node scripts/sync-prices.js
+
+      - name: Validate the generated file
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          node -e "
+            const d = require('./data/prices.json');
+            const series = d.farmgate?.series || [];
+            const points = series.reduce((a, s) => a + s.points.length, 0);
+            const retail = (d.retail?.categories || []).reduce((a, c) => a + c.items.length, 0);
+            if (!points && !retail) { console.error('prices.json holds no observations'); process.exit(1); }
+            console.log(\`ok — \${points} farmgate observation(s), \${retail} retail item(s)\`);
+            if (d._problems?.length) console.warn('degraded sources: ' + d._problems.join('; '));
+          "
+
+      - name: Deploy prices.json to cPanel (FTPS)
+        if: steps.sync.outputs.changed == 'true' && env.FTP_SERVER != '' && env.FTP_REMOTE_PATH != ''
+        run: |
+          curl --fail --show-error --silent --ssl-reqd \
+            -T data/prices.json \
+            "ftp://${FTP_SERVER}/${FTP_REMOTE_PATH}" \
+            --user "${FTP_USERNAME}:${FTP_PASSWORD}"
+          echo "Deployed data/prices.json to cPanel."
+
+      - name: No deploy target configured
+        if: steps.sync.outputs.changed == 'true' && (env.FTP_SERVER == '' || env.FTP_REMOTE_PATH == '')
+        run: |
+          echo "prices.json changed but FTP_SERVER or the FTP_PRICES_REMOTE_PATH variable is unset."
+          echo "Download the artifact below, or configure them to auto-deploy."
+
+      - name: Upload prices.json artifact (fallback when no FTP configured)
+        if: steps.sync.outputs.changed == 'true' && (env.FTP_SERVER == '' || env.FTP_REMOTE_PATH == '')
+        uses: actions/upload-artifact@v4
+        with:
+          name: prices-json
+          path: data/prices.json
+          retention-days: 7

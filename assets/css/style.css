@@ -1,4 +1,4 @@
-/* Better Solano - Complete Main Stylesheet */
+/* Better Isabela - Complete Main Stylesheet */
 :root {
   --color-primary: #0032a0;
   --color-primary-dark: #002170;
@@ -1288,7 +1288,7 @@ body.mobile-menu-open {
   margin-right: var(--spacing-xs);
 }
 
-.councilor-card {
+.board-member-card {
   padding: var(--spacing-md);
 }
 
@@ -2053,8 +2053,8 @@ body.mobile-menu-open {
   }
 }
 
-/* Councilor Cards - Government Page */
-.councilor-card {
+/* Board Member Cards - Government Page */
+.board-member-card {
   background: var(--color-white);
   border-radius: 10px;
   border: 1px solid #e5e7eb;
@@ -2063,31 +2063,31 @@ body.mobile-menu-open {
   transition: all 0.2s ease;
 }
 
-.councilor-card:hover {
+.board-member-card:hover {
   border-color: var(--color-primary);
   box-shadow: 0 4px 12px rgba(0, 50, 160, 0.08);
 }
 
-.councilor-card--liga {
+.board-member-card--liga {
   border-left-color: var(--color-success);
 }
 
-.councilor-card--sk {
+.board-member-card--sk {
   border-left-color: var(--color-accent);
 }
 
-.councilor-card--ipmr {
+.board-member-card--ipmr {
   border-left-color: #8b4513;
 }
 
-.councilor-name {
+.board-member-name {
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-text);
   margin: 0 0 6px 0;
 }
 
-.councilor-badge {
+.board-member-badge {
   display: inline-block;
   background: var(--color-primary);
   color: white;
@@ -2098,19 +2098,19 @@ body.mobile-menu-open {
   margin-bottom: 10px;
 }
 
-.councilor-badge--liga {
+.board-member-badge--liga {
   background: var(--color-success);
 }
 
-.councilor-badge--sk {
+.board-member-badge--sk {
   background: var(--color-accent);
 }
 
-.councilor-badge--ipmr {
+.board-member-badge--ipmr {
   background: #8b4513;
 }
 
-.councilor-committees {
+.board-member-committees {
   font-size: 0.8125rem;
   color: var(--color-text-light);
   margin: 0;
@@ -2580,7 +2580,7 @@ h6 {
 }
 
 .cost-badge::before {
-  content: 'Cost to the People of Solano';
+  content: 'Cost to the People of Isabela';
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -6016,7 +6016,9 @@ cklist with Icons - Proper Indentation */
   padding: 12px 22px;
   border-radius: var(--border-radius);
   text-decoration: none;
-  transition: background 0.18s ease, transform 0.15s ease;
+  transition:
+    background 0.18s ease,
+    transform 0.15s ease;
 }
 
 .home-fb-cta:hover,
@@ -6104,12 +6106,26 @@ cklist with Icons - Proper Indentation */
   animation: skeleton-shimmer 1.4s infinite ease-in-out;
 }
 
-.fb-skel-bar--title { height: 13px; width: 72%; margin-bottom: 8px; }
-.fb-skel-bar--100   { width: 100%; }
-.fb-skel-bar--80    { width: 80%; }
-.fb-skel-bar--60    { width: 60%; }
-.fb-skel-bar--45    { width: 45%; }
-.fb-skel-bar--sm    { height: 8px; }
+.fb-skel-bar--title {
+  height: 13px;
+  width: 72%;
+  margin-bottom: 8px;
+}
+.fb-skel-bar--100 {
+  width: 100%;
+}
+.fb-skel-bar--80 {
+  width: 80%;
+}
+.fb-skel-bar--60 {
+  width: 60%;
+}
+.fb-skel-bar--45 {
+  width: 45%;
+}
+.fb-skel-bar--sm {
+  height: 8px;
+}
 
 /* ── Post cards ── */
 .fb-feed-local {
@@ -6942,7 +6958,7 @@ cklist with Icons - Proper Indentation */
   }
 }
 
-/* Solano Quiz CTA */
+/* Isabela Quiz CTA */
 .quiz-cta-section {
   background:
     radial-gradient(circle, rgba(0, 50, 160, 0.1) 1px, transparent 1px),
@@ -8905,7 +8921,7 @@ a.a11y-contact-item:hover i {
   }
 }
 
-/* Online Services Section - Filipizen Integration */
+/* Online Services Section */
 .online-services-section {
   background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
   padding: var(--spacing-xl) 0;
@@ -9766,7 +9782,9 @@ a.a11y-contact-item:hover i {
   pointer-events: none;
   /* Visibility flips only after the fade-out finishes, so the close animation
      stays visible; opacity still carries the motion. */
-  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s linear 0.3s;
   /* Pre-promote the overlay to its own persistent GPU compositing layer at page
      load — even while hidden (opacity:0). This forces the backdrop-filter layer
      to be established ONCE up front, so toggling opacity 0->1 on reveal can no
@@ -9846,7 +9864,9 @@ a.a11y-contact-item:hover i {
   justify-content: center;
   font-size: 1rem;
   z-index: 2;
-  transition: background 0.18s ease, transform 0.18s ease;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 
 /* Expand the pointer target to ~46px without growing the 36px visual circle,
@@ -10006,7 +10026,9 @@ a.a11y-contact-item:hover i {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   box-shadow: 0 4px 16px rgba(0, 50, 160, 0.32);
   font-family: var(--font-main);
 }
@@ -10167,5 +10189,738 @@ a.a11y-contact-item:hover i {
   .vol-popup-skip:focus-visible {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   Price Watch (prices/) — farmgate vs market comparison
+   ========================================================================== */
+
+.price-headline-section {
+  padding-bottom: 0;
+}
+
+.price-headline {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 28px -18px rgba(0, 0, 0, 0.22);
+}
+
+.price-headline-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 8px 20px;
+}
+
+.price-headline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.price-headline-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-headline-value {
+  font-size: clamp(1.9rem, 1.4rem + 1.8vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary, #0b3d91);
+}
+
+.price-headline-value small {
+  font-size: 0.42em;
+  font-weight: 500;
+  color: var(--color-text-light, #5a6472);
+  margin-left: 2px;
+}
+
+.price-headline-note {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-headline-item--gap .price-headline-value {
+  color: #a5382a;
+}
+
+.price-headline-sep {
+  display: grid;
+  place-items: center;
+  color: var(--color-text-light, #98a2ad);
+  font-size: 1.4rem;
+}
+
+.price-loading,
+.price-empty {
+  margin: 0;
+  color: var(--color-text-light, #5a6472);
+  font-size: 0.95rem;
+}
+
+.price-section-head {
+  margin-bottom: 22px;
+}
+
+.price-section-head h2 {
+  margin: 0 0 8px;
+}
+
+.price-section-head p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--color-text-light, #5a6472);
+}
+
+/* ---- farmgate cards ---- */
+
+.price-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.price-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.price-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.price-card-head h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.price-card-period {
+  font-size: 0.76rem;
+  color: var(--color-text-light, #5a6472);
+  white-space: nowrap;
+}
+
+.price-card-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.price-card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-card-value small {
+  font-size: 0.45em;
+  font-weight: 500;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-delta {
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-delta small {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-delta--up {
+  color: #1e7a4b;
+}
+.price-delta--down {
+  color: #a5382a;
+}
+.price-delta--flat {
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-spark {
+  width: 100%;
+  height: 48px;
+  display: block;
+}
+
+.price-spark-area {
+  fill: rgba(30, 107, 69, 0.12);
+  stroke: none;
+}
+.price-spark-line {
+  fill: none;
+  stroke: #1e6b45;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.price-spark-dot {
+  fill: #1e6b45;
+}
+
+.price-range {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+}
+
+.price-range div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price-range dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-range dd {
+  margin: 0;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- market tables ---- */
+
+.price-asof {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 0 16px;
+  font-size: 0.82rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.price-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.price-swatch--low {
+  background: rgba(30, 122, 75, 0.22);
+  border: 1px solid #1e7a4b;
+}
+.price-swatch--high {
+  background: rgba(165, 56, 42, 0.16);
+  border: 1px solid #a5382a;
+}
+
+.price-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+  margin-bottom: 20px;
+}
+
+.price-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+.price-table caption {
+  text-align: left;
+  padding: 14px 16px 10px;
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+
+.price-table th,
+.price-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.07));
+  text-align: left;
+  vertical-align: top;
+}
+
+.price-table thead th {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.price-table tbody th {
+  font-weight: 600;
+  min-width: 200px;
+  display: table-cell;
+}
+
+.price-table tbody th small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.76rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-table tr:last-child td,
+.price-table tr:last-child th {
+  border-bottom: none;
+}
+
+.price-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.price-na {
+  color: var(--color-text-light, #98a2ad);
+}
+
+td.price-low {
+  background: rgba(30, 122, 75, 0.1);
+  color: #1e7a4b;
+}
+
+td.price-high {
+  background: rgba(165, 56, 42, 0.08);
+  color: #a5382a;
+}
+
+/* ---- provenance ---- */
+
+.price-provenance h2 {
+  margin: 0 0 14px;
+}
+
+.price-source-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-source {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 14px;
+  border-left: 3px solid var(--color-border, rgba(0, 0, 0, 0.12));
+}
+
+.price-source span {
+  font-size: 0.86rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-source--meta {
+  border-left-color: transparent;
+  font-size: 0.86rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.price-caveat {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text-light, #5a6472);
+  max-width: 74ch;
+}
+
+@media (max-width: 720px) {
+  .price-headline-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .price-headline-sep {
+    display: none;
+  }
+  .price-headline-item--gap {
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  }
+}
+
+/* ==========================================================================
+   Homepage — price overview + town browser
+   ========================================================================== */
+
+.home-price-overview {
+  margin-bottom: 18px;
+}
+
+.home-price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px;
+  background: var(--color-border, rgba(0, 0, 0, 0.09));
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.09));
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.home-price-tile {
+  background: var(--color-surface, #fff);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-price-label {
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+}
+
+.home-price-value {
+  font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary, #0b3d91);
+}
+
+.home-price-value small {
+  font-size: 0.42em;
+  font-weight: 500;
+  color: var(--color-text-light, #5a6472);
+  margin-left: 2px;
+}
+
+.home-price-tile--market .home-price-value {
+  color: #a5382a;
+}
+
+.home-price-note {
+  font-size: 0.79rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.home-price-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.94rem;
+}
+
+/* ---- town browser ---- */
+
+.town-filter {
+  position: relative;
+  max-width: 380px;
+  margin-bottom: 18px;
+}
+
+.town-filter i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-light, #98a2ad);
+  pointer-events: none;
+}
+
+.town-search {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.14));
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: var(--color-surface, #fff);
+  color: inherit;
+}
+
+.town-search:focus-visible {
+  outline: 2px solid var(--color-primary, #0b3d91);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.town-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.town-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
+  border-radius: 999px;
+  background: var(--color-surface, #fff);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.town-chip:hover {
+  border-color: var(--color-primary, #0b3d91);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.town-chip:focus-visible {
+  outline: 2px solid var(--color-primary, #0b3d91);
+  outline-offset: 2px;
+}
+
+.town-chip.is-selected {
+  background: var(--color-primary, #0b3d91);
+  border-color: var(--color-primary, #0b3d91);
+  color: #fff;
+}
+
+.town-chip-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(30, 122, 75, 0.14);
+  color: #1e7a4b;
+}
+
+.town-chip.is-selected .town-chip-tag {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.town-none {
+  color: var(--color-text-light, #5a6472);
+  font-size: 0.92rem;
+  margin: 8px 0 0;
+}
+
+.town-detail {
+  margin-top: 22px;
+  scroll-margin-top: 90px;
+}
+
+.town-detail:focus-visible {
+  outline: 2px solid var(--color-primary, #0b3d91);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.town-prompt {
+  color: var(--color-text-light, #5a6472);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.town-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.09));
+  border-radius: 12px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.town-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.town-card-head h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+}
+
+.town-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 5px;
+  background: rgba(30, 122, 75, 0.13);
+  color: #1e7a4b;
+}
+
+.town-desc {
+  margin: 0;
+  color: var(--color-text-light, #4a5560);
+  line-height: 1.65;
+  max-width: 72ch;
+}
+
+.town-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+  border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.08));
+}
+
+.town-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.town-fact dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+}
+
+.town-fact dd {
+  margin: 0;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.town-officials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.town-officials div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.town-officials span {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #5a6472);
+}
+
+.town-prices h4 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.town-price-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 6px 20px;
+}
+
+.town-price-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px dotted var(--color-border, rgba(0, 0, 0, 0.14));
+  font-size: 0.88rem;
+}
+
+.town-price-name {
+  color: var(--color-text-light, #4a5560);
+}
+
+.town-price-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.town-price-src {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--color-text-light, #5a6472);
+}
+
+.town-prices--none p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-light, #5a6472);
+  max-width: 68ch;
+  line-height: 1.6;
+}
+
+.town-official-link {
+  align-self: flex-start;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .town-card {
+    padding: 20px;
+  }
+  .town-card-head h3 {
+    font-size: 1.28rem;
   }
 }

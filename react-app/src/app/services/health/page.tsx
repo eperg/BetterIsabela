@@ -143,7 +143,7 @@ export default function HealthPage() {
               <div className="health-facility-meta">
                 <span>
                   <i className="bi bi-geo-alt"></i>
-                  <span>{t('health-national-highway-solano')}</span>
+                  <span>{t('health-national-highway-isabela')}</span>
                 </span>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function HealthPage() {
               <div className="health-facility-meta">
                 <span>
                   <i className="bi bi-geo-alt"></i>
-                  <span>{t('health-national-highway-solano')}</span>
+                  <span>{t('health-national-highway-isabela')}</span>
                 </span>
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function HealthPage() {
         </div>
       </section>
 
-      {/* Municipal Health Office */}
+      {/* Provincial Health Office */}
       <section className="section section-compact bg-alt">
         <div className="container">
           <h2 className="section-title">
@@ -301,7 +301,10 @@ export default function HealthPage() {
       </section>
 
       {/* HIV Care Philippines CTA */}
-      <section className="section hivcare-cta-section" aria-label="HIV Care Philippines facility directory">
+      <section
+        className="section hivcare-cta-section"
+        aria-label="HIV Care Philippines facility directory"
+      >
         <div className="container">
           <div className="hivcare-cta-card">
             <span className="hivcare-cta-eyebrow">

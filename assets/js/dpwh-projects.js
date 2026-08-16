@@ -93,7 +93,22 @@
     });
   }
 
+  function renderEmptyState(container) {
+    container.innerHTML = `
+            <div class="dpwh-empty" role="status">
+                <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+                <p>Isabela infrastructure project records are being curated from the
+                   <a href="https://transparency.dpwh.gov.ph/" target="_blank" rel="noopener noreferrer">DPWH transparency portal</a>.
+                   This section will be published once each record has been verified.</p>
+            </div>`;
+  }
+
   function renderSection(container, data) {
+    if (!allProjects.length) {
+      renderEmptyState(container);
+      return;
+    }
+
     const counts = getCategoryCounts(allProjects);
     const completedCount = allProjects.filter((p) => p.status === 100).length;
 

@@ -220,7 +220,7 @@ function updateIncomeSection(data) {
   // Update period text
   const periodText = document.getElementById('income-period-text');
   if (periodText) {
-    periodText.textContent = `Breakdown of municipal revenue for ${data.period}`;
+    periodText.textContent = `Breakdown of provincial revenue for ${data.period}`;
   }
 
   // Update local sources

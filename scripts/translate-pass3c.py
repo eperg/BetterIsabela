@@ -38,20 +38,20 @@ def extract_lang_dict(content, lang):
 FIXES_FIL = {
     "Accomplish Client Feedback Form and drop at designated suggestion box.":
         "Punan ang Client Feedback Form at ihulog sa itinalagang suggestion box.",
-    "Go to the Municipal Social Welfare and Development Office (MSWDO) with:":
-        "Pumunta sa Opisina ng Kagalingang Panlipunan at Pagpapaunlad ng Munisipyo (MSWDO) na may dalang:",
+    "Go to the Provincial Social Welfare and Development Office (PSWDO) with:":
+        "Pumunta sa Opisina ng Kagalingang Panlipunan at Pagpapaunlad ng Munisipyo (PSWDO) na may dalang:",
     "Please accomplish Client Feedback Form and drop at the designated suggestion box":
         "Mangyaring punan ang Client Feedback Form at ihulog sa itinalagang suggestion box",
-    "The Municipal Budget Office assists the different schools in the preparation of SEF Annual Budget. It assists the Municipal School Board in the conduct of budget hearings and deliberations of budget proposals. It ensures compliance with statutory, contractual obligations and budgetary requirements prior to the review and approval by the Municipal School Board (MSB).":
-        "Ang Opisina ng Badyet ng Munisipyo ay tumutulong sa iba't ibang paaralan sa paghahanda ng Taunang Badyet ng SEF. Tinutulungan nito ang Municipal School Board sa pagsasagawa ng mga pagdinig sa badyet at deliberasyon ng mga panukala sa badyet. Tinitiyak nito ang pagsunod sa mga statutory, kontraktwal na obligasyon at mga kinakailangan sa badyet bago ang pagsusuri at pag-apruba ng Municipal School Board (MSB).",
-    "The Municipal Budget Office processes disbursement vouchers particularly the integral part of Obligation Request (ObR) to ensure the existence of appropriation":
+    "The Provincial Budget Office assists the different schools in the preparation of SEF Annual Budget. It assists the Provincial School Board in the conduct of budget hearings and deliberations of budget proposals. It ensures compliance with statutory, contractual obligations and budgetary requirements prior to the review and approval by the Provincial School Board (MSB).":
+        "Ang Opisina ng Badyet ng Munisipyo ay tumutulong sa iba't ibang paaralan sa paghahanda ng Taunang Badyet ng SEF. Tinutulungan nito ang Provincial School Board sa pagsasagawa ng mga pagdinig sa badyet at deliberasyon ng mga panukala sa badyet. Tinitiyak nito ang pagsunod sa mga statutory, kontraktwal na obligasyon at mga kinakailangan sa badyet bago ang pagsusuri at pag-apruba ng Provincial School Board (MSB).",
+    "The Provincial Budget Office processes disbursement vouchers particularly the integral part of Obligation Request (ObR) to ensure the existence of appropriation":
         "Ang Opisina ng Badyet ng Munisipyo ay nagpoproseso ng mga disbursement voucher lalo na ang mahalagang bahagi ng Obligation Request (ObR) upang matiyak ang pagkakaroon ng appropriasyon",
-    "Get your copy of COM duly registered and signed by the Receiving Officer and MCR or any authorized signatory. Accomplish Client Feedback Form and drop at designated suggestion box.":
-        "Kunin ang iyong kopya ng COM na wastong nairehistro at nilagdaan ng Receiving Officer at MCR o sinumang awtorisadong lumagda. Punan ang Client Feedback Form at ihulog sa itinalagang suggestion box.",
+    "Get your copy of COM duly registered and signed by the Receiving Officer and PCRC or any authorized signatory. Accomplish Client Feedback Form and drop at designated suggestion box.":
+        "Kunin ang iyong kopya ng COM na wastong nairehistro at nilagdaan ng Receiving Officer at PCRC o sinumang awtorisadong lumagda. Punan ang Client Feedback Form at ihulog sa itinalagang suggestion box.",
     "Submit the accomplished Certificate of Marriage (COM) for review. The COM must be duly signed by the contracting parties, solemnizing officer, and at least two witnesses.":
         "Isumite ang napunang Sertipiko ng Kasal (COM) para sa pagsusuri. Ang COM ay dapat wastong nilagdaan ng mga partido sa kontrata, opisyal na nagkasal, at hindi bababa sa dalawang saksi.",
-    "While volunteers make every effort to secure BetterSolano.org from online threats and keep information accurate, no system can be guaranteed to be perfectly secure, error-free, or completely up-to-date at all times.":
-        "Bagaman ang mga boluntaryo ay nagsusumikap na pangalagaan ang BetterSolano.org mula sa mga online na banta at panatilihing tumpak ang impormasyon, walang sistema ang maaaring garantiyahan na perpektong ligtas, walang error, o ganap na napapanahon sa lahat ng oras.",
+    "While volunteers make every effort to secure BetterIsabela.org from online threats and keep information accurate, no system can be guaranteed to be perfectly secure, error-free, or completely up-to-date at all times.":
+        "Bagaman ang mga boluntaryo ay nagsusumikap na pangalagaan ang BetterIsabela.org mula sa mga online na banta at panatilihing tumpak ang impormasyon, walang sistema ang maaaring garantiyahan na perpektong ligtas, walang error, o ganap na napapanahon sa lahat ng oras.",
 }
 
 def build_ilo_from_fil(fil_val):
@@ -69,7 +69,7 @@ def build_ilo_from_fil(fil_val):
         'hindi': 'saan', 'Hindi': 'Saan',
         'wala': 'awan', 'Wala': 'Awan', 'Walang': 'Awan ti',
         'Munisipyo': 'Munisipalidad',
-        'Alkalde': 'Mayor', 'alkalde': 'mayor',
+        'Alkalde': 'Governor', 'alkalde': 'governor',
         'Kagawaran': 'Departamento',
         'Serbisyo': 'Serbisio', 'serbisyo': 'serbisio',
         'Impormasyon': 'Impormasion', 'impormasyon': 'impormasion',

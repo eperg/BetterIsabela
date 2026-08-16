@@ -1,4 +1,4 @@
-/* Responsive Styles - Better Solano */
+/* Responsive Styles - Better Isabela */
 
 /* Large Desktop */
 @media (min-width: 1200px) {
@@ -404,12 +404,12 @@
     font-size: 4rem !important;
   }
 
-  /* Councilor cards */
-  .councilor-card {
+  /* Board Member cards */
+  .board-member-card {
     padding: var(--spacing-sm);
   }
 
-  .councilor-card i {
+  .board-member-card i {
     font-size: 2rem !important;
   }
 

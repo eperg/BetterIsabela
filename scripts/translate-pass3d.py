@@ -40,23 +40,23 @@ FIXES = {
         "Ihain ang aplikasyon sa Opisina ng Tagapagtasa na may mga kinakailangang dokumento kabilang ang patunay ng pagmamay-ari",
     "Pay the required transfer tax at the Treasurer's Office (0.5% of selling price or fair market value, whichever is higher)":
         "Magbayad ng kinakailangang buwis sa paglipat sa Opisina ng Ingat-Yaman (0.5% ng presyo ng pagbebenta o patas na halaga sa pamilihan, alinman ang mas mataas)",
-    "Additional permits and clearances issued by the Office of the Mayor":
+    "Additional permits and clearances issued by the Office of the Governor":
         "Mga karagdagang permiso at clearance na ibinibigay ng Opisina ng Punong Bayan",
-    "Pay building permit fee and other fees at the Municipal Treasurer's Office":
+    "Pay building permit fee and other fees at the Provincial Treasurer's Office":
         "Magbayad ng bayad sa building permit at iba pang mga bayad sa Opisina ng Ingat-Yaman ng Munisipyo",
-    "Various permit types issued by the Municipal Engineering Office":
+    "Various permit types issued by the Provincial Engineering Office":
         "Iba't ibang uri ng permiso na ibinibigay ng Opisina ng Inhinyeriya ng Munisipyo",
-    "Visit the Municipal Treasurer's Office at the Municipal Hall with your Tax Declaration or latest Official Receipt":
+    "Visit the Provincial Treasurer's Office at the Provincial Capitol with your Tax Declaration or latest Official Receipt":
         "Bumisita sa Opisina ng Ingat-Yaman ng Munisipyo sa Munisipyo na may iyong Tax Declaration o pinakabagong Opisyal na Resibo",
-    "The Municipal General Services Office manages and maintains municipal vehicles":
+    "The Provincial General Services Office manages and maintains provincial vehicles":
         "Ang Opisina ng Pangkalahatang Serbisyo ng Munisipyo ay namamahala at nagpapanatili ng mga sasakyan ng munisipyo",
-    "Wait for approval from the Office of the Mayor":
+    "Wait for approval from the Office of the Governor":
         "Maghintay ng pag-apruba mula sa Opisina ng Punong Bayan",
-    "Official certifications issued by the Municipal Agriculture Office":
+    "Official certifications issued by the Provincial Agriculture Office":
         "Mga opisyal na sertipikasyon na ibinibigay ng Opisina ng Agrikultura ng Munisipyo",
-    "As deputized by the Municipal Treasurer":
+    "As deputized by the Provincial Treasurer":
         "Bilang kinatawan ng Ingat-Yaman ng Munisipyo",
-    "Pay clearance fee to the Municipal Treasurer's Office":
+    "Pay clearance fee to the Provincial Treasurer's Office":
         "Magbayad ng bayad sa clearance sa Opisina ng Ingat-Yaman ng Munisipyo",
     "Pay the required fee at Treasurer's Office":
         "Magbayad ng kinakailangang bayad sa Opisina ng Ingat-Yaman",
@@ -64,7 +64,7 @@ FIXES = {
         "Para sa mga indigenteng residente na nangangailangan ng sertipikasyon para sa iba't ibang layunin",
     "Pay slaughter fee at the Slaughterhouse Office":
         "Magbayad ng bayad sa pagkatay sa Opisina ng Katayan",
-    "Additional services offered by the Municipal Treasurer's Office":
+    "Additional services offered by the Provincial Treasurer's Office":
         "Mga karagdagang serbisyo na inaalok ng Opisina ng Ingat-Yaman ng Munisipyo",
 }
 

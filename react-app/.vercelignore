@@ -1,0 +1,4 @@
+.pglite
+.env
+.env.local
+supabase/.temp

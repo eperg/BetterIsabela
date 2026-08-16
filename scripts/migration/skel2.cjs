@@ -1,0 +1,10 @@
+const {parse}=require('node-html-parser');const fs=require('fs');
+const root=parse(fs.readFileSync(process.argv[2],'utf8'));
+const el=root.querySelectorAll(process.argv[3])[Number(process.argv[4]||0)];
+const walk=(n,d)=>{if(d>5||n.nodeType!==1)return;
+ if(['SCRIPT','STYLE','I'].includes(n.tagName))return;
+ const c=n.getAttribute('class');
+ const t=(n.text||'').replace(/\s+/g,' ').trim().slice(0,48);
+ console.log('  '.repeat(d)+n.tagName.toLowerCase()+(c?'.'+c.trim().split(/\s+/).join('.'):'')+(n.childNodes.filter(x=>x.nodeType===1).length?'':'  » '+t));
+ n.childNodes.forEach(x=>walk(x,d+1));};
+walk(el,0);

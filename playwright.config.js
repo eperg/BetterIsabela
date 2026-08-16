@@ -22,10 +22,11 @@ module.exports = defineConfig({
   },
 
   webServer: {
-    command: 'python3 -m http.server 8321',
+    command: 'python3 serve.py --port 8321 --directory .',
     url: 'http://localhost:8321/index.html',
     reuseExistingServer: true,
     timeout: 30_000,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 5_000 },
   },
 
   projects: [

@@ -1,0 +1,465 @@
+{
+  "_schema_version": "1.0",
+  "_generated": "2026-08-16T03:41:45.342Z",
+  "_generator": "scripts/sync-prices.js",
+  "_note": "Machine-generated. Do not hand-edit — the next scheduled run overwrites this file. Farmgate is what the farmer is paid; retail is what the market charges.",
+  "_problems": [],
+  "farmgate": {
+    "_source": "https://openstat.psa.gov.ph/Database/Prices/Farmgate-Prices",
+    "_sourceName": "Philippine Statistics Authority — OpenSTAT, Cereals Farmgate Prices",
+    "_geolocation": "Isabela",
+    "_coverage": "2024-2026",
+    "_note": "Farmgate price is what a farmer is paid at the farm. Monthly provincial average; PSA publishes some months late, so the most recent month may be absent.",
+    "series": [
+      {
+        "commodity": "palay",
+        "label": "Palay (dry, 14% moisture)",
+        "unit": "PHP/kg",
+        "points": [
+          {
+            "period": "2024-02",
+            "price": 25.67
+          },
+          {
+            "period": "2024-03",
+            "price": 25.45
+          },
+          {
+            "period": "2024-04",
+            "price": 25.35
+          },
+          {
+            "period": "2024-05",
+            "price": 25.9
+          },
+          {
+            "period": "2024-08",
+            "price": 23.76
+          },
+          {
+            "period": "2024-09",
+            "price": 19.83
+          },
+          {
+            "period": "2024-10",
+            "price": 19.27
+          },
+          {
+            "period": "2024-11",
+            "price": 20.17
+          },
+          {
+            "period": "2025-02",
+            "price": 19.7
+          },
+          {
+            "period": "2025-03",
+            "price": 17.8
+          },
+          {
+            "period": "2025-04",
+            "price": 16.43
+          },
+          {
+            "period": "2025-05",
+            "price": 16.99
+          },
+          {
+            "period": "2025-08",
+            "price": 14.27
+          },
+          {
+            "period": "2025-09",
+            "price": 13.53
+          },
+          {
+            "period": "2025-10",
+            "price": 16.7
+          },
+          {
+            "period": "2025-11",
+            "price": 17.62
+          },
+          {
+            "period": "2026-02",
+            "price": 28.51
+          },
+          {
+            "period": "2026-03",
+            "price": 25.3
+          },
+          {
+            "period": "2026-04",
+            "price": 24.49
+          },
+          {
+            "period": "2026-05",
+            "price": 21.9
+          }
+        ],
+        "latest": {
+          "period": "2026-05",
+          "price": 21.9
+        }
+      },
+      {
+        "commodity": "corn-yellow",
+        "label": "Yellow corngrain (matured)",
+        "unit": "PHP/kg",
+        "points": [
+          {
+            "period": "2024-01",
+            "price": 15
+          },
+          {
+            "period": "2024-02",
+            "price": 15
+          },
+          {
+            "period": "2024-03",
+            "price": 16
+          },
+          {
+            "period": "2024-04",
+            "price": 16.42
+          },
+          {
+            "period": "2024-05",
+            "price": 16.99
+          },
+          {
+            "period": "2024-07",
+            "price": 17.44
+          },
+          {
+            "period": "2024-08",
+            "price": 16.3
+          },
+          {
+            "period": "2024-09",
+            "price": 15.74
+          },
+          {
+            "period": "2024-10",
+            "price": 15.85
+          },
+          {
+            "period": "2024-11",
+            "price": 15.61
+          },
+          {
+            "period": "2024-12",
+            "price": 15.39
+          },
+          {
+            "period": "2025-01",
+            "price": 12.42
+          },
+          {
+            "period": "2025-02",
+            "price": 15.18
+          },
+          {
+            "period": "2025-03",
+            "price": 15.14
+          },
+          {
+            "period": "2025-04",
+            "price": 15.51
+          },
+          {
+            "period": "2025-05",
+            "price": 14.67
+          },
+          {
+            "period": "2025-06",
+            "price": 15.54
+          },
+          {
+            "period": "2025-08",
+            "price": 15.1
+          },
+          {
+            "period": "2025-09",
+            "price": 16.56
+          },
+          {
+            "period": "2025-10",
+            "price": 14.94
+          },
+          {
+            "period": "2025-11",
+            "price": 14.71
+          },
+          {
+            "period": "2026-01",
+            "price": 17.06
+          },
+          {
+            "period": "2026-02",
+            "price": 18.32
+          },
+          {
+            "period": "2026-03",
+            "price": 19.61
+          },
+          {
+            "period": "2026-04",
+            "price": 18.89
+          },
+          {
+            "period": "2026-05",
+            "price": 19.49
+          },
+          {
+            "period": "2026-06",
+            "price": 18.33
+          }
+        ],
+        "latest": {
+          "period": "2026-06",
+          "price": 18.33
+        }
+      }
+    ]
+  },
+  "retail": {
+    "_source": "http://www.bantaypresyo.da.gov.ph/",
+    "_sourceName": "Department of Agriculture — Bantay Presyo (DA Price Watch)",
+    "_region": "Region II (Cagayan Valley)",
+    "_markets": [
+      "ILAGAN CITY PUBLIC MARKET",
+      "ROXAS PUBLIC MARKET",
+      "CAUAYAN CITY PUBLIC MARKET",
+      "SANTIAGO CITY PUBLIC MARKET",
+      "TUMAUINI PUBLIC MARKET"
+    ],
+    "_asOf": "August 13, 2026",
+    "_note": "Retail price is what a shopper pays at the public market. Shown for the five Region II markets located in Isabela.",
+    "categories": [
+      {
+        "category": "rice",
+        "label": "Rice",
+        "items": [
+          {
+            "commodity": "COMMERCIAL (IMPORTED) Premium (Yellow tagged)",
+            "specification": "5% BROKEN",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 59
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 59
+              }
+            ]
+          },
+          {
+            "commodity": "COMMERCIAL (LOCAL) Premium (Yellow tagged)",
+            "specification": "5% BROKEN",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 48
+              },
+              {
+                "market": "ROXAS PUBLIC MARKET",
+                "price": 60
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 56
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 55
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 48
+              }
+            ]
+          },
+          {
+            "commodity": "COMMERCIAL (LOCAL) Regular Milled",
+            "specification": "20-40% BRAN STREAK",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 35
+              },
+              {
+                "market": "ROXAS PUBLIC MARKET",
+                "price": 44
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 50
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 43
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 40
+              }
+            ]
+          },
+          {
+            "commodity": "COMMERCIAL (LOCAL) Special (Blue tagged)",
+            "specification": "WHITE RICE",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 55
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 60
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 59
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 55
+              }
+            ]
+          },
+          {
+            "commodity": "COMMERCIAL (LOCAL) Well Milled",
+            "specification": "1-19% BRAN STREAK",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 45
+              },
+              {
+                "market": "ROXAS PUBLIC MARKET",
+                "price": 50
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 54
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 49
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 42
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "category": "corn",
+        "label": "Corn",
+        "items": [
+          {
+            "commodity": "Corn (White)",
+            "specification": "Cob, Glutinous",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 50
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 40
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 60
+              }
+            ]
+          },
+          {
+            "commodity": "Corn (Yellow)",
+            "specification": "Cob, Sweet Corn",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 80
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 90
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 60
+              }
+            ]
+          },
+          {
+            "commodity": "Corn Cracked (Yellow, Feed Grade)",
+            "specification": "KG",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 32
+              },
+              {
+                "market": "ROXAS PUBLIC MARKET",
+                "price": 35
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 32
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 30
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 30
+              }
+            ]
+          },
+          {
+            "commodity": "Corn Grits (Feed Grade)",
+            "specification": "KG",
+            "markets": [
+              {
+                "market": "ILAGAN CITY PUBLIC MARKET",
+                "price": 32
+              },
+              {
+                "market": "ROXAS PUBLIC MARKET",
+                "price": 35
+              },
+              {
+                "market": "CAUAYAN CITY PUBLIC MARKET",
+                "price": 32
+              },
+              {
+                "market": "SANTIAGO CITY PUBLIC MARKET",
+                "price": 30
+              },
+              {
+                "market": "TUMAUINI PUBLIC MARKET",
+                "price": 30
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "spread": {
+    "farmgatePalay": 21.9,
+    "farmgatePeriod": "2026-05",
+    "retailRiceAverage": 42.4,
+    "retailBasis": "COMMERCIAL (LOCAL) Regular Milled — average of 5 Isabela market(s)",
+    "spread": 20.5,
+    "unit": "PHP/kg",
+    "_note": "Palay and milled rice are not the same good — roughly 1 kg of palay yields 0.65 kg of milled rice — so this is an indicative gap, not a margin."
+  }
+}

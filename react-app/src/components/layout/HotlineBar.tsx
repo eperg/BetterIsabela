@@ -3,17 +3,14 @@
 import { useEffect, useRef, useCallback } from 'react';
 
 const hotlines = [
-  { icon: 'bi-shield-fill', label: 'Police', number: '0927 400 8033', tel: '09274008033' },
-  { icon: 'bi-heart-fill', label: 'MSWDO', number: '0916 284 0885', tel: '09162840885' },
-  { icon: 'bi-fire', label: 'Fire', number: '0936 062 0305', tel: '09360620305' },
-  { icon: 'bi-building', label: 'DILG', number: '0906 188 086', tel: '0906188086' },
+  { icon: 'bi-shield-fill', label: 'IPPO (Police)', number: '0917 501 8212', tel: '09175018212' },
+  { icon: 'bi-fire', label: 'BFP (Fire)', number: '0916 556 2881', tel: '09165562881' },
   {
     icon: 'bi-exclamation-triangle-fill',
-    label: 'MDRRMO',
-    number: '0926 383 3744',
-    tel: '09263833744',
+    label: 'DART 831 (Rescue)',
+    number: '0915 819 3187',
+    tel: '09158193187',
   },
-  { icon: 'bi-truck', label: 'R2TMC', number: '0906 819 5569', tel: '09068195569' },
 ];
 
 export default function HotlineBar() {

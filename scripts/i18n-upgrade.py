@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Enterprise-grade i18n upgrade script for BetterSolano.
+Enterprise-grade i18n upgrade script for BetterIsabela.
 Phase 1: Scans all HTML files, adds data-i18n attributes to untranslated elements.
 Phase 2: Generates Filipino (fil) and Ilocano (ilo) translation entries.
 Phase 3: Updates translations.js with all new keys.
@@ -36,13 +36,13 @@ SKIP_CONTENT_PATTERNS = [
     r'^\d+°[CF]$',
     r'^--',
     r'^\d+\s*(sq\.?\s*km|hectares?|ha)$',
-    r'^(Police|MSWDO|Fire|DILG|MDRRMO|R2TMC):\s*\d',  # Hotline labels with numbers
+    r'^(Police|PSWDO|Fire|DILG|PDRRMO|R2TMC):\s*\d',  # Hotline labels with numbers
     r'^0\d{3}\s',  # Phone numbers starting with 0
     r'^\d{1,2}:\d{2}',  # Time patterns
     r'^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)',  # Day abbreviations in schedules
     r'^(Lunes|Martes|Miyerkules|Huwebes|Biyernes)',  # Filipino days
     r'^[A-Z]{2,5}$',  # Pure acronyms
-    r'^(CTC|RSBSA|PSA|LGU|DPWH|MSWDO|SEEDO|MDRRMO|DILG|BIR|DTI|SEC|NBI|PNP)$',
+    r'^(CTC|RSBSA|PSA|LGU|DPWH|PSWDO|PEEDO|PDRRMO|DILG|BIR|DTI|SEC|NBI|PNP)$',
     r'^(img|src|href|class|id|style|data-)',  # Attribute-like content
 ]
 
@@ -97,17 +97,17 @@ FILE_PREFIX_MAP = {
     'service-details/civil-registrar.html': 'cr',
     'service-details/general-services.html': 'gs',
     'service-details/human-resource-management.html': 'hrm',
-    'service-details/mswdo-services.html': 'mswdosvc',
-    'service-details/mswdo.html': 'mswdo',
-    'service-details/municipal-accounting.html': 'acct',
-    'service-details/municipal-agriculture.html': 'magri',
-    'service-details/municipal-assessor.html': 'assessor',
-    'service-details/municipal-budget.html': 'mbudget',
-    'service-details/municipal-civil-registrar.html': 'mcr',
-    'service-details/municipal-engineering.html': 'eng',
-    'service-details/municipal-general-services.html': 'mgs',
-    'service-details/municipal-planning.html': 'mpdo',
-    'service-details/municipal-treasurer.html': 'treas',
+    'service-details/pswdo-services.html': 'mswdosvc',
+    'service-details/pswdo.html': 'mswdo',
+    'service-details/provincial-accounting.html': 'acct',
+    'service-details/provincial-agriculture.html': 'magri',
+    'service-details/provincial-assessor.html': 'assessor',
+    'service-details/provincial-budget.html': 'mbudget',
+    'service-details/provincial-civil-registrar.html': 'mcr',
+    'service-details/provincial-engineering.html': 'eng',
+    'service-details/provincial-general-services.html': 'mgs',
+    'service-details/provincial-planning.html': 'mpdo',
+    'service-details/provincial-treasurer.html': 'treas',
     'service-details/property-declaration.html': 'propdec',
     'service-details/seedo-public-market.html': 'market',
     'service-details/seedo-slaughterhouse.html': 'slaughter',
@@ -203,19 +203,19 @@ FIL_TRANSLATIONS = {
     "Follow these steps to request your death certificate": "Sundin ang mga hakbang na ito upang humiling ng iyong sertipiko ng kamatayan",
     "Follow these steps to request your marriage certificate": "Sundin ang mga hakbang na ito upang humiling ng iyong sertipiko ng kasal",
     "Visit Civil Registrar": "Pumunta sa Civil Registrar",
-    "Municipal Civil Registrar": "Tagapagrehistro Sibil ng Munisipalidad",
-    "Municipal Treasurer": "Ingat-yaman ng Munisipalidad",
-    "Municipal Mayor": "Punong Bayan",
-    "Municipal Vice Mayor": "Bise Punong Bayan",
-    "Municipal Hall": "Munisipyo",
-    "Sangguniang Bayan": "Sangguniang Bayan",
+    "Provincial Civil Registry Coordinator": "Tagapagrehistro Sibil ng Munisipalidad",
+    "Provincial Treasurer": "Ingat-yaman ng Munisipalidad",
+    "Provincial Governor": "Punong Bayan",
+    "Vice Governor": "Bise Punong Bayan",
+    "Provincial Capitol": "Munisipyo",
+    "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
 
     # Government page
     "Elected Officials": "Mga Halal na Opisyal",
     "Executive Branch": "Ehekutibong Sangay",
     "Legislative Branch": "Sangay ng Lehislatura",
-    "Municipal Council": "Konseho ng Munisipalidad",
-    "Sangguniang Bayan Members": "Mga Miyembro ng Sangguniang Bayan",
+    "Provincial Council": "Konseho ng Munisipalidad",
+    "Sangguniang Panlalawigan Members": "Mga Miyembro ng Sangguniang Panlalawigan",
     "Department Heads": "Mga Pinuno ng Departamento",
 
     # Budget/Transparency
@@ -238,7 +238,7 @@ FIL_TRANSLATIONS = {
     "Economic Indicators": "Mga Tagapagpahiwatig ng Ekonomiya",
     "Population by Barangay": "Populasyon Ayon sa Barangay",
     "Barangays": "Mga Barangay",
-    "Municipality": "Munisipalidad",
+    "Province": "Munisipalidad",
     "Income Classification": "Klasipikasyon ng Kita",
 
     # Privacy/Terms common
@@ -285,7 +285,7 @@ FIL_TRANSLATIONS = {
     "Resources": "Mga Mapagkukunan",
     "Volunteer with us": "Mag-volunteer sa amin",
     "Contribute code with us": "Mag-ambag ng code sa amin",
-    "Solano Quiz": "Solano Quiz",
+    "Isabela Quiz": "Isabela Quiz",
 
     # Common descriptive text
     "Phone": "Telepono",
@@ -413,19 +413,19 @@ ILO_TRANSLATIONS = {
     "Follow these steps to request your death certificate": "Suroten dagitoy nga addang tapno agdawat ti sertipiko ti ipapatay",
     "Follow these steps to request your marriage certificate": "Suroten dagitoy nga addang tapno agdawat ti sertipiko ti kasar",
     "Visit Civil Registrar": "Bisitaen ti Civil Registrar",
-    "Municipal Civil Registrar": "Civil Registrar ti Munisipalidad",
-    "Municipal Treasurer": "Tesorero ti Munisipalidad",
-    "Municipal Mayor": "Mayor ti Munisipalidad",
-    "Municipal Vice Mayor": "Bise Mayor ti Munisipalidad",
-    "Municipal Hall": "Munisipio",
-    "Sangguniang Bayan": "Sangguniang Bayan",
+    "Provincial Civil Registry Coordinator": "Civil Registrar ti Munisipalidad",
+    "Provincial Treasurer": "Tesorero ti Munisipalidad",
+    "Provincial Governor": "Governor ti Munisipalidad",
+    "Vice Governor": "Bise Governor ti Munisipalidad",
+    "Provincial Capitol": "Munisipio",
+    "Sangguniang Panlalawigan": "Sangguniang Panlalawigan",
 
     # Government page
     "Elected Officials": "Dagiti Nahalal nga Opisial",
     "Executive Branch": "Ehekutibo a Sanga",
     "Legislative Branch": "Sanga ti Lehislatura",
-    "Municipal Council": "Konseho ti Munisipalidad",
-    "Sangguniang Bayan Members": "Dagiti Kameng ti Sangguniang Bayan",
+    "Provincial Council": "Konseho ti Munisipalidad",
+    "Sangguniang Panlalawigan Members": "Dagiti Kameng ti Sangguniang Panlalawigan",
     "Department Heads": "Dagiti Pangulo ti Departamento",
 
     # Budget/Transparency
@@ -448,7 +448,7 @@ ILO_TRANSLATIONS = {
     "Economic Indicators": "Dagiti Pagilasinan ti Ekonomiya",
     "Population by Barangay": "Populasion Sigun iti Barangay",
     "Barangays": "Dagiti Barangay",
-    "Municipality": "Munisipalidad",
+    "Province": "Munisipalidad",
     "Income Classification": "Klasipikasion ti Kita",
 
     # Privacy/Terms common
@@ -495,7 +495,7 @@ ILO_TRANSLATIONS = {
     "Resources": "Dagiti Rekurso",
     "Volunteer with us": "Ag-volunteer kadakami",
     "Contribute code with us": "Ag-ambag ti code kadakami",
-    "Solano Quiz": "Solano Quiz",
+    "Isabela Quiz": "Isabela Quiz",
 
     # Common descriptive text
     "Phone": "Telepono",
@@ -851,7 +851,7 @@ def update_translations_js(translations_js_path, new_translations, existing):
 def main():
     """Main entry point."""
     print("=" * 60)
-    print("BetterSolano i18n Upgrade Script")
+    print("BetterIsabela i18n Upgrade Script")
     print("=" * 60)
 
     # Phase 0: Load existing translations

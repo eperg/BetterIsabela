@@ -2,344 +2,351 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://bettersolano.org/</loc>
+    <loc>https://betterisabela.org/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
+
   <!-- Main Sections -->
   <url>
-    <loc>https://bettersolano.org/services/</loc>
+    <loc>https://betterisabela.org/services/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/government/</loc>
+    <loc>https://betterisabela.org/government/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/government/officials</loc>
+    <loc>https://betterisabela.org/government/officials</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/statistics/</loc>
+    <loc>https://betterisabela.org/statistics/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/budget/</loc>
+    <loc>https://betterisabela.org/prices/</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/budget/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/legislative/</loc>
+    <loc>https://betterisabela.org/legislative/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/news/</loc>
+    <loc>https://betterisabela.org/news/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/contact/</loc>
+    <loc>https://betterisabela.org/contact/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/faq/</loc>
+    <loc>https://betterisabela.org/faq/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/accessibility/</loc>
+    <loc>https://betterisabela.org/accessibility/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/sitemap/</loc>
+    <loc>https://betterisabela.org/sitemap/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/terms/</loc>
+    <loc>https://betterisabela.org/terms/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/privacy/</loc>
+    <loc>https://betterisabela.org/privacy/</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
-  
+
   <!-- Service Categories -->
   <url>
-    <loc>https://bettersolano.org/services/certificates</loc>
+    <loc>https://betterisabela.org/services/certificates</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/business</loc>
+    <loc>https://betterisabela.org/services/business</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/tax-payments</loc>
+    <loc>https://betterisabela.org/services/tax-payments</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/social-services</loc>
+    <loc>https://betterisabela.org/services/social-services</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/health</loc>
+    <loc>https://betterisabela.org/services/health</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/agriculture</loc>
+    <loc>https://betterisabela.org/services/agriculture</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/infrastructure</loc>
+    <loc>https://betterisabela.org/services/infrastructure</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/education</loc>
+    <loc>https://betterisabela.org/services/education</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/environment</loc>
+    <loc>https://betterisabela.org/services/environment</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/services/public-safety</loc>
+    <loc>https://betterisabela.org/services/public-safety</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <!-- Service Details - Certificates -->
   <url>
-    <loc>https://bettersolano.org/service-details/birth-certificate</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/death-certificate</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/marriage-certificate</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/civil-registrar</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/municipal-civil-registrar</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Service Details - Business & Licensing -->
-  <url>
-    <loc>https://bettersolano.org/service-details/business-permits-licensing</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/tricycle-franchising</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Service Details - SEEDO -->
-  <url>
-    <loc>https://bettersolano.org/service-details/seedo-public-market</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/seedo-slaughterhouse</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Service Details - Social Services -->
-  <url>
-    <loc>https://bettersolano.org/service-details/mswdo</loc>
-    <lastmod>2025-12-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bettersolano.org/service-details/mswdo-services</loc>
+    <loc>https://betterisabela.org/service-details/birth-certificate</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
-  <!-- Service Details - Municipal Offices -->
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-treasurer</loc>
+    <loc>https://betterisabela.org/service-details/death-certificate</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-budget</loc>
+    <loc>https://betterisabela.org/service-details/marriage-certificate</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-accounting</loc>
+    <loc>https://betterisabela.org/service-details/civil-registrar</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-assessor</loc>
+    <loc>https://betterisabela.org/service-details/provincial-civil-registrar</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
+  <!-- Service Details - Business & Licensing -->
   <url>
-    <loc>https://bettersolano.org/service-details/property-declaration</loc>
+    <loc>https://betterisabela.org/service-details/business-permits-licensing</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-engineering</loc>
+    <loc>https://betterisabela.org/service-details/tricycle-franchising</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
+  <!-- Service Details - PEEDO -->
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-planning</loc>
+    <loc>https://betterisabela.org/service-details/seedo-public-market</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-agriculture</loc>
+    <loc>https://betterisabela.org/service-details/seedo-slaughterhouse</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
+  <!-- Service Details - Social Services -->
   <url>
-    <loc>https://bettersolano.org/service-details/general-services</loc>
+    <loc>https://betterisabela.org/service-details/pswdo</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/service-details/municipal-general-services</loc>
+    <loc>https://betterisabela.org/service-details/pswdo-services</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
+  <!-- Service Details - Provincial Offices -->
   <url>
-    <loc>https://bettersolano.org/service-details/human-resource-management</loc>
+    <loc>https://betterisabela.org/service-details/provincial-treasurer</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-budget</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-accounting</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-assessor</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/property-declaration</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-engineering</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-planning</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-agriculture</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/general-services</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/provincial-general-services</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://betterisabela.org/service-details/human-resource-management</loc>
+    <lastmod>2025-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- Legislative -->
   <url>
-    <loc>https://bettersolano.org/legislative/ordinance-framework</loc>
+    <loc>https://betterisabela.org/legislative/ordinance-framework</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
+
   <url>
-    <loc>https://bettersolano.org/legislative/resolution-framework</loc>
+    <loc>https://betterisabela.org/legislative/resolution-framework</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

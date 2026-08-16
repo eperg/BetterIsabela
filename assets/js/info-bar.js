@@ -220,8 +220,8 @@ const CONFIG = {
   EXCHANGE_RATE_TTL: 30 * 60 * 1000, // 30 minutes
   WEATHER_TTL: 15 * 60 * 1000, // 15 minutes
   TIME_UPDATE_INTERVAL: 1000, // 1 second
-  SOLANO_LAT: 16.5167,
-  SOLANO_LON: 121.1833,
+  ISABELA_LAT: 17.1322,
+  ISABELA_LON: 121.86921,
   CURRENCIES: ['USD', 'GBP', 'SAR', 'AED', 'JPY', 'CAD', 'AUD'],
   CACHE_KEYS: {
     EXCHANGE_RATES: 'infobar_exchange_rates',
@@ -235,48 +235,12 @@ const CONFIG = {
 
 const ExchangeRateService = {
   /**
-   * Fetch exchange rates from API
-   * Uses frankfurter.app (free, no API key required)
-   * Note: This API uses EUR as base, so we need to convert to PHP
-   * @returns {Promise<object>} Exchange rates relative to PHP
+   * Fetch exchange rates relative to PHP.
+   * Uses open.er-api.com (free, no API key, PHP supported as base).
+   * @returns {Promise<object|null>} Rates keyed by currency, or null if unavailable
    */
   async fetchRates() {
     try {
-      // Using exchangerate.host which is free and supports PHP as base
-      const currencies = CONFIG.CURRENCIES.join(',');
-      const response = await fetch(
-        `https://api.exchangerate.host/latest?base=PHP&symbols=${currencies}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.success && data.rates) {
-        // Some APIs return rates directly
-        return this.processRates(data.rates);
-      }
-
-      if (data.rates) {
-        return this.processRates(data.rates);
-      }
-
-      throw new Error('Invalid API response');
-    } catch (error) {
-      console.error('ExchangeRateService: Failed to fetch rates', error);
-      // Try fallback API
-      return this.fetchRatesFallback();
-    }
-  },
-
-  /**
-   * Fallback API using Open Exchange Rates style endpoint
-   */
-  async fetchRatesFallback() {
-    try {
-      // Using a different free API as fallback
       const response = await fetch('https://open.er-api.com/v6/latest/PHP');
 
       if (!response.ok) {
@@ -285,13 +249,13 @@ const ExchangeRateService = {
 
       const data = await response.json();
 
-      if (data.rates) {
-        return this.processRates(data.rates);
+      if (!data.rates) {
+        throw new Error('Invalid API response: missing rates');
       }
 
-      throw new Error('Invalid fallback API response');
+      return this.processRates(data.rates);
     } catch (error) {
-      console.error('ExchangeRateService: Fallback also failed', error);
+      console.error('ExchangeRateService: Failed to fetch rates', error);
       return null;
     }
   },
@@ -382,7 +346,7 @@ const WeatherService = {
   async fetchWeather() {
     try {
       const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${CONFIG.SOLANO_LAT}&longitude=${CONFIG.SOLANO_LON}&current_weather=true`
+        `https://api.open-meteo.com/v1/forecast?latitude=${CONFIG.ISABELA_LAT}&longitude=${CONFIG.ISABELA_LON}&current_weather=true`
       );
 
       if (!response.ok) {
@@ -396,9 +360,9 @@ const WeatherService = {
           temperature: data.current_weather.temperature,
           timestamp: Date.now(),
           location: {
-            lat: CONFIG.SOLANO_LAT,
-            lon: CONFIG.SOLANO_LON,
-            name: 'Solano, Nueva Vizcaya',
+            lat: CONFIG.ISABELA_LAT,
+            lon: CONFIG.ISABELA_LON,
+            name: 'Isabela',
           },
         };
       }
@@ -453,9 +417,9 @@ const WeatherService = {
       temperature: null,
       timestamp: Date.now(),
       location: {
-        lat: CONFIG.SOLANO_LAT,
-        lon: CONFIG.SOLANO_LON,
-        name: 'Solano, Nueva Vizcaya',
+        lat: CONFIG.ISABELA_LAT,
+        lon: CONFIG.ISABELA_LON,
+        name: 'Isabela',
       },
     };
   },

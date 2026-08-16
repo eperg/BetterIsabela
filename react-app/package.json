@@ -1,21 +1,43 @@
 {
-  "name": "bettersolano-react",
+  "name": "betterisabela-react",
   "version": "1.1.19",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "verify:schema": "node scripts/verify-schema.mjs",
+    "verify:ratelimit": "node scripts/verify-ratelimit.mjs",
+    "typecheck": "tsc --noEmit",
+    "db:serve": "node scripts/db-serve.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "db:demo": "node scripts/seed-demo.mjs",
+    "db:projects": "node scripts/seed-projects.mjs",
+    "check:db": "node scripts/check-db-url.mjs",
+    "set:dburl": "node scripts/set-db-url.mjs",
+    "build:verify": "node --env-file=.env scripts/build-verify.mjs"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.5.5",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.3",
+    "drizzle-orm": "^0.45.2",
     "next": "^15.5.19",
+    "postgres": "^3.4.9",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "server-only": "^0.0.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite-socket": "^0.2.8",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "drizzle-kit": "^0.31.10",
     "typescript": "^5.4.5"
   },
   "overrides": {
