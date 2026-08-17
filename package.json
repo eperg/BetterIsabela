@@ -34,7 +34,7 @@
     "government",
     "lgu"
   ],
-  "author": "Jeferson Gaboni",
+  "author": "Eper Gaboni",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.23.9",

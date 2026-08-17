@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: { default: 'BetterIsabela.org | Official Portal', template: '%s | BetterIsabela.org' },
   description: 'BetterIsabela.org - Your digital gateway to PLGU Isabela services.',
   keywords: ['BetterIsabela', 'Isabela', 'PLGU Isabela', 'provincial services'],
-  authors: [{ name: 'Jeferson Gaboni' }],
+  authors: [{ name: 'Eper Gaboni' }],
   openGraph: {
     type: 'website',
     locale: 'en_PH',

@@ -84,5 +84,5 @@ Thank you to all contributors who helped develop this version.
 
 ---
 
-Jeferson Gaboni
+Eper Gaboni
 BetterIsabela.org

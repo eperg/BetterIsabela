@@ -7,7 +7,7 @@
 
 ### 1. Developer Team (Code Maintainers)
 
-- **Lead Maintainer:** Jeferson Gaboni (eperg) - Responsible for merge requests and deployment.
+- **Lead Maintainer:** Eper Gaboni (eperg) - Responsible for merge requests and deployment.
 - **Frontend Dev:** [Name] - Responsible for UI/UX and Accessibility updates.
 
 ### 2. Data Custodians (Source of Truth)
@@ -111,4 +111,4 @@ The following hotlines must be verified monthly against official LGU records:
 
 | Date       | Change                       | Verified By     |
 | ---------- | ---------------------------- | --------------- |
-| 2026-02-03 | Initial TEAM_SYNC.md created | Jeferson Gaboni |
+| 2026-02-03 | Initial TEAM_SYNC.md created | Eper Gaboni |
