@@ -84,5 +84,5 @@ Thank you to all contributors who helped develop this version.
 
 ---
 
-Ramon Logan Jr.
+Jeferson Gaboni
 BetterIsabela.org

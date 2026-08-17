@@ -1,5 +1,5 @@
 # Better Isabela - Robots.txt
-# Author: Ramon Logan Jr
+# Author: Jeferson Gaboni
 # This file tells search engine crawlers which pages to index
 
 User-agent: *

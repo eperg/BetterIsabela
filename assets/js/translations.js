@@ -2345,14 +2345,11 @@ const translations = {
     'err500-were-experiencing-technical-difficulties-our-team':
       "We're experiencing technical difficulties. Our team has been notified and is working to resolve the issue. Please try again later or contact us if the problem persists.",
     'faq-1x1-id-photo': '1x1 ID photo',
-    'faq-abakadaorg': 'Abakada.org',
-    'faq-about-the-developer': 'About the Developer',
     'faq-accessibility': 'Accessibility',
     'faq-agriculture': 'Agriculture',
     'faq-an-authorization-letter-signed-by-you': 'An authorization letter signed by you',
     'faq-barangay-clearance': 'Barangay Clearance',
     'faq-barangay-residence-certificate': 'Barangay Residence Certificate',
-    'faq-bettergovph': 'BetterGov.ph',
     'faq-birth-certificate-or-any-valid-id-showing-your':
       'Birth Certificate or any valid ID showing your age (60 and above)',
     'faq-blgf-portal': 'BLGF Portal',
@@ -2385,7 +2382,6 @@ const translations = {
       'Go to the Provincial Social Welfare and Development Office (PSWDO) with:',
     'faq-government-directory': 'Government Directory',
     'faq-health': 'Health',
-    'faq-hellopinascom': 'HelloPinas.com',
     'faq-home': 'Home',
     'faq-how-can-i-contact-a-specific-provincial-office':
       'How can I contact a specific provincial office?',
@@ -2401,15 +2397,11 @@ const translations = {
     'faq-location-sketchmap': 'Location Sketch/Map',
     'faq-official-plgu-isabela-portal': 'Official PLGU Isabela Portal',
     'faq-open-data-philippines': 'Open Data Philippines',
-    'faq-openjs-foundation': 'OpenJS Foundation',
     'faq-ordinance-framework': 'Ordinance Framework',
     'faq-photocopy-of-your-valid-id': 'Photocopy of your valid ID',
     'faq-privacy-policy': 'Privacy Policy',
     'faq-public-safety': 'Public Safety',
     'faq-quick-links': 'Quick Links',
-    'faq-ramon-has-made-the-isabela-project-open-source':
-      'Ramon has made the Isabela Project open source under MIT | CC BY 4.0 to empower community-driven development, and contributions are warmly welcomed from everyone; whether you are a developer, data researcher, designer, content writer, translator, or a concerned citizen of Isabela, your participation helps shape the project for all.',
-    'faq-ramon-logan-jr': 'Ramon Logan Jr.',
     'faq-resolution-framework': 'Resolution Framework',
     'faq-resources': 'Resources',
     'faq-sangguniang-panlalawigan': 'Sangguniang Panlalawigan',
@@ -2439,7 +2431,6 @@ const translations = {
       'What is the difference between PSA and local civil registrar certificates?',
     'faq-what-payment-methods-are-accepted': 'What payment methods are accepted?',
     'faq-when-should-i-renew-my-business-permit': 'When should I renew my business permit?',
-    'faq-who-developed-better-isabela': 'Who developed Better Isabela?',
     'faq-yes-better-isabela-is-fully-responsive-and':
       'Yes! Better Isabela is fully responsive and optimized for mobile phones, tablets, and desktop computers.',
     'faq-yes-but-they-must-bring': 'Yes, but they must bring:',
@@ -8352,14 +8343,11 @@ const translations = {
     'err500-were-experiencing-technical-difficulties-our-team':
       "We're experiencing technical difficulties. Our team has been notified and is working to resolve the ibigay. Please try again later or makipag-ugnayan us if the problem persists.",
     'faq-1x1-id-photo': '1x1 ID photo',
-    'faq-abakadaorg': 'Abakada.org',
-    'faq-about-the-developer': 'Tungkol sa Developer',
     'faq-accessibility': 'Aksesibilidad',
     'faq-agriculture': 'Agrikultura',
     'faq-an-authorization-letter-signed-by-you': 'Isang sulat ng awtorisasyon na nilagdaan mo',
     'faq-barangay-clearance': 'Barangay Clearance',
     'faq-barangay-residence-certificate': 'Barangay Residence Sertipiko',
-    'faq-bettergovph': 'BetterGov.ph',
     'faq-birth-certificate-or-any-valid-id-showing-your':
       'Sertipiko ng Kapanganakan o anumang balidong ID na nagpapakita ng iyong edad (60 pataas)',
     'faq-blgf-portal': 'BLGF Portal',
@@ -8392,7 +8380,6 @@ const translations = {
       'Pumunta sa Opisina ng Kagalingang Panlipunan at Pagpapaunlad ng Kapitolyo ng Lalawigan (PSWDO) na may dalang:',
     'faq-government-directory': 'Direktoryo ng Pamahalaan',
     'faq-health': 'Kalusugan',
-    'faq-hellopinascom': 'HelloPinas.com',
     'faq-home': 'Tahanan',
     'faq-how-can-i-contact-a-specific-provincial-office':
       'How can I makipag-ugnayan a tiyak panlalawigan opisina?',
@@ -8408,15 +8395,11 @@ const translations = {
     'faq-location-sketchmap': 'Sketch/Mapa ng Lokasyon',
     'faq-official-plgu-isabela-portal': 'Opisyal na Portal ng PLGU Isabela',
     'faq-open-data-philippines': 'Open Data Philippines',
-    'faq-openjs-foundation': 'OpenJS Foundation',
     'faq-ordinance-framework': 'Balangkas ng Ordinansa',
     'faq-photocopy-of-your-valid-id': 'Photocopy ng iyong balidong ID',
     'faq-privacy-policy': 'Patakaran sa Pagkapribado',
     'faq-public-safety': 'Kaligtasang Pampubliko',
     'faq-quick-links': 'Mga Mabilisang Link',
-    'faq-ramon-has-made-the-isabela-project-open-source':
-      'Ramon has made the Isabela Project bukas source under MIT | CC BY 4.0 to empower community-driven development, and contributions are warmly welcomed from everyone; whether you are a developer, datos researcher, designer, content writer, translator, or a concerned mamamayan of Isabela, your participation helps shape the project for all.',
-    'faq-ramon-logan-jr': 'Ramon Logan Jr.',
     'faq-resolution-framework': 'Balangkas ng Resolusyon',
     'faq-resources': 'Mga Mapagkukunan',
     'faq-sangguniang-panlalawigan': 'Sangguniang Panlalawigan',
@@ -8447,7 +8430,6 @@ const translations = {
     'faq-what-payment-methods-are-accepted': 'What pagbabayad mga pamamaraan ay accepted?',
     'faq-when-should-i-renew-my-business-permit':
       'Kailan ko dapat i-renew ang aking permiso sa negosyo?',
-    'faq-who-developed-better-isabela': 'Sino ang gumawa ng Better Isabela?',
     'faq-yes-better-isabela-is-fully-responsive-and':
       'Yes! Better Isabela is fully tumutugon and optimized for mobile phones, tablets, and desktop computers.',
     'faq-yes-but-they-must-bring': 'Yes, ngunit sila dapat bring:',
@@ -14421,14 +14403,11 @@ const translations = {
     'err500-were-experiencing-technical-difficulties-our-team':
       "We're experiencing technical difficulties. Our team has been notified and is working to resolve the ipaay. Please try again later or kontaken us if the problem persists.",
     'faq-1x1-id-photo': '1x1 ID photo',
-    'faq-abakadaorg': 'Abakada.org',
-    'faq-about-the-developer': 'Maipapan iti Developer',
     'faq-accessibility': 'Aksesibilidad',
     'faq-agriculture': 'Agrikultura',
     'faq-an-authorization-letter-signed-by-you': 'Maysa a surat ti autorisasion a pinirmaanmo',
     'faq-barangay-clearance': 'Barangay Clearance',
     'faq-barangay-residence-certificate': 'Barangay Residence Sertipiko',
-    'faq-bettergovph': 'BetterGov.ph',
     'faq-birth-certificate-or-any-valid-id-showing-your':
       'Sertipiko ti Kapanganakan wenno anumang balidong ID na nagpapakita ti iyong edad (60 pataas)',
     'faq-blgf-portal': 'BLGF Portal',
@@ -14461,7 +14440,6 @@ const translations = {
       'Mapan iti Opisina ti Kagalingang Panlipunan ken Pagpapaunlad ti Probinsia (PSWDO) na may dalang:',
     'faq-government-directory': 'Direktoryo ti Pamahalaan',
     'faq-health': 'Salun-at',
-    'faq-hellopinascom': 'HelloPinas.com',
     'faq-home': 'Pagtaengan',
     'faq-how-can-i-contact-a-specific-provincial-office':
       'How can I kontaken a espesipiko probinsial opisina?',
@@ -14477,15 +14455,11 @@ const translations = {
     'faq-location-sketchmap': 'Sketch/Mapa ti Lokasion',
     'faq-official-plgu-isabela-portal': 'Opisial a Portal ti PLGU Isabela',
     'faq-open-data-philippines': 'Open Data Philippines',
-    'faq-openjs-foundation': 'OpenJS Foundation',
     'faq-ordinance-framework': 'Balangkas ti Ordinansa',
     'faq-photocopy-of-your-valid-id': 'Photocopy ti iyong balidong ID',
     'faq-privacy-policy': 'Pagannurotan ti Pagkapribado',
     'faq-public-safety': 'Kaligtasan Pampubliko',
     'faq-quick-links': 'Dagiti Napartak a Silpo',
-    'faq-ramon-has-made-the-isabela-project-open-source':
-      'Ramon has made the Isabela Project nakalukat source under MIT | CC BY 4.0 to empower community-driven development, and contributions are warmly welcomed from everyone; whether you are a developer, datos researcher, designer, content writer, translator, or a concerned umili of Isabela, your participation helps shape the project for all.',
-    'faq-ramon-logan-jr': 'Ramon Logan Jr.',
     'faq-resolution-framework': 'Balangkas ti Resolusion',
     'faq-resources': 'Dagiti Rekurso',
     'faq-sangguniang-panlalawigan': 'Sangguniang Panlalawigan',
@@ -14516,7 +14490,6 @@ const translations = {
     'faq-what-payment-methods-are-accepted': 'What panagbayad dagiti pamamaraan ay accepted?',
     'faq-when-should-i-renew-my-business-permit':
       'Kailan ko dapat i-renew ti aking permiso iti negosio?',
-    'faq-who-developed-better-isabela': 'Sino ti gumawa ti Better Isabela?',
     'faq-yes-better-isabela-is-fully-responsive-and':
       'Yes! Better Isabela is fully responsibo and optimized for mobile phones, tablets, and desktop computers.',
     'faq-yes-but-they-must-bring': 'Yes, ngunit sila dapat bring:',

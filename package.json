@@ -34,7 +34,7 @@
     "government",
     "lgu"
   ],
-  "author": "Ramon Logan Jr.",
+  "author": "Jeferson Gaboni",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.23.9",

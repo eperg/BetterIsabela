@@ -986,26 +986,6 @@ export const LEGAL_CONTENT: Record<string, Block[]> = {
       "Yes! Better Isabela is fully responsive and optimized for mobile phones, tablets, and desktop computers."
     ],
     [
-      "h2",
-      "About the Developer"
-    ],
-    [
-      "p",
-      "Ramon Logan Jr. is the developer behind Abakada.org and BetterIsabela.org, a community-driven initiative building a digital bridge between the residents of Isabela and the local government of Isabela. Based in the United Arab Emirates, he works in IT and practices full-stack development, helping build practical digital solutions in web development, design, cloud services, and cybersecurity."
-    ],
-    [
-      "p",
-      "He also started HelloPinas.com, a small cloud-based solutions initiative. Ramon contributes to BetterGov.ph, a volunteer-driven civic-tech effort focused on improving access to local government information and services in the Philippines."
-    ],
-    [
-      "p",
-      "He is also an individual participant of the OpenJS Foundation, a nonprofit supporting open-source JavaScript communities worldwide."
-    ],
-    [
-      "p",
-      "Ramon has made the Isabela Project open source under MIT | CC BY 4.0 to empower community-driven development, and contributions are warmly welcomed from everyone; whether you are a developer, data researcher, designer, content writer, translator, or a concerned citizen of Isabela, your participation helps shape the project for all."
-    ],
-    [
       "h3",
       "Still have questions?"
     ],
