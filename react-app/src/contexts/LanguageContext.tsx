@@ -194,14 +194,6 @@ const translations: Record<string, Record<string, string>> = {
     'health-roxas-bhs': 'Roxas BHS',
     'health-tucal-bhs': 'Tucal BHS',
     'health-uddiawan-bhs': 'Uddiawan BHS',
-    'health-hivcare-cta-eyebrow': 'Official DOH-Sourced Directory',
-    'health-hivcare-cta-heading': 'Find HIV Treatment & Care Facilities Near You',
-    'health-hivcare-cta-desc':
-      'A searchable, mobile-first web directory of all 338 DOH-designated HIV treatment and care facilities in the Philippines, sourced from DOH Circular No. 2026-0065.',
-    'health-hivcare-cta-btn': 'Find HIV Care Facilities',
-    'health-hivcare-cta-stat-facilities': 'Facilities Nationwide',
-    'health-hivcare-cta-stat-mobile': 'Mobile-Friendly Search',
-    'health-hivcare-cta-stat-verified': 'DOH-Verified Listings',
 
     // Agriculture Page
     'agri-page-title': 'Agriculture Services',
@@ -628,14 +620,6 @@ const translations: Record<string, Record<string, string>> = {
     'health-roxas-bhs': 'Roxas BHS',
     'health-tucal-bhs': 'Tucal BHS',
     'health-uddiawan-bhs': 'Uddiawan BHS',
-    'health-hivcare-cta-eyebrow': 'Opisyal na Direktoryo mula sa DOH',
-    'health-hivcare-cta-heading': 'Hanapin ang Pasilidad para sa Paggamot at Pangangalaga sa HIV',
-    'health-hivcare-cta-desc':
-      'A searchable, mobile-first web directory of all 338 DOH-designated HIV treatment and care facilities in the Philippines, sourced from DOH Circular No. 2026-0065.',
-    'health-hivcare-cta-btn': 'Find HIV Care Facilities',
-    'health-hivcare-cta-stat-facilities': 'Pasilidad sa Buong Bansa',
-    'health-hivcare-cta-stat-mobile': 'Mobile-Friendly na Paghahanap',
-    'health-hivcare-cta-stat-verified': 'Beripikado ng DOH',
 
     // Agriculture Page - Filipino
     'agri-page-title': 'Serbisyong Agrikultura',
@@ -1064,15 +1048,6 @@ const translations: Record<string, Record<string, string>> = {
     'health-roxas-bhs': 'Roxas BHS',
     'health-tucal-bhs': 'Tucal BHS',
     'health-uddiawan-bhs': 'Uddiawan BHS',
-    'health-hivcare-cta-eyebrow': 'Opisial a Direktorio manipud iti DOH',
-    'health-hivcare-cta-heading':
-      'Birukem ti Pasilidad para iti Panangagas ken Panangaywan iti HIV',
-    'health-hivcare-cta-desc':
-      'A searchable, mobile-first web directory of all 338 DOH-designated HIV treatment and care facilities in the Philippines, sourced from DOH Circular No. 2026-0065.',
-    'health-hivcare-cta-btn': 'Find HIV Care Facilities',
-    'health-hivcare-cta-stat-facilities': 'Pasilidad iti Intero a Pagilian',
-    'health-hivcare-cta-stat-mobile': 'Mobile-Friendly a Panagbirok',
-    'health-hivcare-cta-stat-verified': 'Naverify ti DOH',
 
     // Agriculture Page - Ilocano
     'agri-page-title': 'Serbisio ti Agrikultura',

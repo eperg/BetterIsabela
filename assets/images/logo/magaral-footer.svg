@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="MAGARAL.XYZ">
+  <!-- Monochrome white treatment of the MAGARAL.XYZ mark for the dark footer.
+       The brand mark is a coral rounded square with an open book knocked out;
+       here the square carries the white and the book is cut back out of it, so
+       the logo reads the same way as the other partner marks in the strip. -->
+  <mask id="magaral-book">
+    <rect width="32" height="32" rx="8" fill="#fff"/>
+    <path d="M7 11a2.5 2.5 0 0 1 2.5-2.5H15v15H9.5A2.5 2.5 0 0 1 7 21Z" fill="#000" opacity=".45"/>
+    <path d="M17 8.5h5.5A2.5 2.5 0 0 1 25 11v10a2.5 2.5 0 0 1-2.5 2.5H17Z" fill="#000"/>
+  </mask>
+  <rect width="32" height="32" rx="8" fill="#fff" mask="url(#magaral-book)"/>
+</svg>

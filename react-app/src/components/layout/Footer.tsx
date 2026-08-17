@@ -114,14 +114,14 @@ export default function Footer() {
             </a>
             <div className="footer-partners">
               <a
-                href="https://hivcareph.org/"
+                href="https://magaral.xyz"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="HIV Care Philippines"
+                aria-label="MAGARAL.XYZ"
               >
                 <img
-                  src="/assets/images/logo/hiv-care-logo-footer.svg"
-                  alt="HIV Care Philippines"
+                  src="/assets/images/logo/magaral-footer.svg"
+                  alt="MAGARAL.XYZ"
                   className="footer-partner-logo"
                   width="120"
                   height="28"

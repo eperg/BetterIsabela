@@ -299,55 +299,6 @@ export default function HealthPage() {
           </div>
         </div>
       </section>
-
-      {/* HIV Care Philippines CTA */}
-      <section
-        className="section hivcare-cta-section"
-        aria-label="HIV Care Philippines facility directory"
-      >
-        <div className="container">
-          <div className="hivcare-cta-card">
-            <span className="hivcare-cta-eyebrow">
-              <i className="bi bi-shield-check" aria-hidden="true"></i>
-              <span>{t('health-hivcare-cta-eyebrow')}</span>
-            </span>
-            <img
-              src="/assets/images/logo/hivcareph-logo.svg"
-              alt="HIV Care Philippines"
-              className="hivcare-cta-logo"
-              width={168}
-              height={50}
-              loading="lazy"
-            />
-            <h2 className="hivcare-cta-heading">{t('health-hivcare-cta-heading')}</h2>
-            <p className="hivcare-cta-text">{t('health-hivcare-cta-desc')}</p>
-            <div className="hivcare-cta-stats">
-              <span className="hivcare-cta-stat">
-                <i className="bi bi-hospital" aria-hidden="true"></i>
-                <strong>338</strong>
-                <span>{t('health-hivcare-cta-stat-facilities')}</span>
-              </span>
-              <span className="hivcare-cta-stat">
-                <i className="bi bi-phone" aria-hidden="true"></i>
-                <span>{t('health-hivcare-cta-stat-mobile')}</span>
-              </span>
-              <span className="hivcare-cta-stat">
-                <i className="bi bi-patch-check-fill" aria-hidden="true"></i>
-                <span>{t('health-hivcare-cta-stat-verified')}</span>
-              </span>
-            </div>
-            <a
-              href="https://hivcareph.org/"
-              className="hivcare-cta-btn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="bi bi-box-arrow-up-right" aria-hidden="true"></i>
-              <span>{t('health-hivcare-cta-btn')}</span>
-            </a>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
