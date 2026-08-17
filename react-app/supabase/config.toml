@@ -196,8 +196,10 @@ password_requirements = ""
 
 [auth.rate_limit]
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
-# Raise this once custom SMTP is configured; 2 is the default provider's cap.
-email_sent = 2
+# 2 was the default provider's cap. Custom SMTP (Resend) lifts it; 100/hour is
+# well inside Resend's free tier of 3,000/month and is a sane abuse ceiling for
+# a province-sized audience. Raise it if sign-ups ever legitimately hit it.
+email_sent = 100
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.
 sms_sent = 30
 # Number of anonymous sign-ins that can be made per hour per IP address. Requires enable_anonymous_sign_ins = true.
@@ -234,7 +236,7 @@ otp_length = 8
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Custom SMTP. Two reasons this is needed, not optional:
+# Custom SMTP, via Resend. Three things it buys, none of them optional:
 #
 #  1. Supabase refuses template customisation on the free tier while the
 #     default email provider is in use ("Email template modification is not
@@ -244,29 +246,48 @@ otp_expiry = 3600
 #  2. The default provider is capped at 2 emails per hour for the whole
 #     project and Supabase does not intend it for production. That cap is one
 #     busy afternoon away from turning sign-ups off.
+#  3. The From name, which otherwise reads as Supabase rather than
+#     Better Isabela — the most visible branding of the lot, since it is what
+#     shows in the inbox list before the email is even opened.
 #
-# It also fixes the most visible branding of all: the From name, which
-# otherwise reads as Supabase rather than Better Isabela.
+# `user` is the literal string "resend" for every Resend account; the API key
+# is the password. Port 465 is implicit TLS, which Resend documents as the
+# default and which avoids the STARTTLS upgrade step on 587.
 #
-# To enable: fill in the host/port/user for the chosen provider, put the API
-# key in the environment as SMTP_PASSWORD, uncomment this block and the
-# template block below, then run `supabase config push`.
-#
-# [auth.email.smtp]
-# enabled = true
-# host = "smtp-relay.brevo.com"   # Resend: smtp.resend.com (port 465)
-# port = 587
-# user = ""                       # Resend: the literal string "resend"
-# pass = "env(SMTP_PASSWORD)"
-# admin_email = "noreply@betterisabela.org"
-# sender_name = "Better Isabela"
+# The API key is read from the environment, never committed:
+#   SMTP_PASSWORD=re_… supabase config push
+# Keep the domain verified at resend.com/domains (SPF + DKIM + DMARC on
+# betterisabela.org) or Gmail will file this in spam.
+[auth.email.smtp]
+enabled = true
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(SMTP_PASSWORD)"
+admin_email = "noreply@betterisabela.org"
+sender_name = "Better Isabela"
 
-# Blocked on the free tier with the default email provider: Supabase returns
-# 400 "Email template modification is not available". Re-enable once custom
-# SMTP is configured below.
-# [auth.email.template.confirmation]
-# subject = "Confirm your email address"
-# content_path = "./supabase/templates/confirmation.html"
+# The branded sign-up email.
+#
+# The template deliberately does not use the default ConfirmationURL variable.
+# That expands to https://<project-ref>.supabase.co/auth/v1/verify?… — a domain
+# the recipient has never heard of, in the one link the email asks them to
+# trust — and it finishes by bouncing them to the site root, which reads as
+# "nothing happened". Instead the template passes TokenHash to our own
+# /auth/confirm route, which redeems it server-side, signs the citizen in and
+# lands them on /welcome. Nothing outside betterisabela.org appears anywhere in
+# the email, including in its source.
+#
+# Keep it that way: anything added to the template that mentions the
+# ConfirmationURL variable in braces will be expanded by Go even inside an HTML
+# comment, putting a working supabase.co link back into every email.
+#
+# content_path resolves against the working directory, NOT against supabase/ —
+# unlike db.seed.sql_paths just above, which does resolve against supabase/.
+# So `supabase config push` only works from react-app/.
+[auth.email.template.confirmation]
+subject = "Confirm your email address"
+content_path = "./supabase/templates/confirmation.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]

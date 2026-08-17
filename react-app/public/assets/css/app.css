@@ -692,3 +692,116 @@
 @media (max-width: 560px) {
   .dcontact > div { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* ---- welcome (post email confirmation) ---- */
+.welcome {
+  position: relative;
+  overflow: hidden;
+  background: var(--app-surface);
+  border: 1px solid var(--app-line);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow-2);
+  padding: 34px 30px 30px;
+  margin-bottom: 40px;
+}
+/* Accent rule along the top edge, tying the panel to the brand band used in
+   the confirmation email the visitor has just come from. */
+.welcome::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--app-accent);
+}
+.welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 999px;
+  background: rgba(30, 122, 75, 0.1);
+  color: var(--app-ok);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.welcome-tick {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--app-ok);
+  color: #fff;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+.welcome-title {
+  margin: 0 0 12px;
+  font-size: clamp(1.7rem, 1.2rem + 2vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--app-ink);
+}
+.welcome-lead {
+  margin: 0 0 14px;
+  max-width: 54ch;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--app-muted);
+}
+.welcome-account {
+  margin: 0 0 22px;
+  font-size: 0.88rem;
+  color: var(--app-muted);
+}
+.welcome-account strong { color: var(--app-ink); overflow-wrap: anywhere; }
+.welcome-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.welcome-heading {
+  margin: 0 0 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--app-muted);
+}
+.welcome-steps {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  border-top: 1px solid var(--app-line);
+}
+.welcome-steps li { border-bottom: 1px solid var(--app-line); }
+.welcome-steps a {
+  display: block;
+  padding: 16px 18px 16px 16px;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background var(--app-fast) var(--app-ease),
+    border-color var(--app-fast) var(--app-ease);
+}
+.welcome-steps a:hover,
+.welcome-steps a:focus-visible {
+  background: var(--app-tint);
+  border-left-color: var(--app-accent);
+}
+.welcome-step-title {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--app-ink);
+}
+.welcome-steps a:hover .welcome-step-title { color: var(--app-accent-ink); }
+.welcome-step-body {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--app-muted);
+}
+@media (max-width: 560px) {
+  .welcome { padding: 26px 20px 24px; }
+}

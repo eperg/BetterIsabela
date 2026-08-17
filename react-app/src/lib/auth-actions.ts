@@ -8,11 +8,8 @@
  * app session. Nothing downstream knows or cares which provider was used.
  */
 import { redirect } from 'next/navigation';
-import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { db } from '@/db';
-import { users } from '@/db/schema';
-import { createSession } from '@/lib/session';
+import { linkAndSignIn } from '@/lib/auth-link';
 import { supabaseServer } from '@/lib/supabase';
 
 export type AuthResult = { ok: true; message?: string } | { ok: false; error: string };
@@ -21,38 +18,6 @@ const credentials = z.object({
   email: z.string().trim().toLowerCase().email('Enter a valid email address.'),
   password: z.string().min(8, 'Use at least 8 characters.').max(200),
 });
-
-/** Links a confirmed Supabase identity to an app user, creating one if needed. */
-async function linkAndSignIn(subject: string, email: string | null, name: string) {
-  const existing = await db
-    .select({ id: users.id, bannedAt: users.bannedAt })
-    .from(users)
-    .where(and(eq(users.authProvider, 'supabase'), eq(users.authSubject, subject)))
-    .limit(1);
-
-  if (existing[0]?.bannedAt) return { ok: false as const, error: 'This account has been suspended.' };
-
-  let userId: number;
-  if (existing[0]) {
-    userId = existing[0].id;
-    await db.update(users).set({ email, lastSeenAt: new Date() }).where(eq(users.id, userId));
-  } else {
-    const [row] = await db
-      .insert(users)
-      .values({
-        authProvider: 'supabase',
-        authSubject: subject,
-        email,
-        displayName: name,
-        lastSeenAt: new Date(),
-      })
-      .returning({ id: users.id });
-    userId = row.id;
-  }
-
-  await createSession(userId);
-  return { ok: true as const };
-}
 
 export async function registerWithEmail(form: FormData): Promise<AuthResult> {
   const parsed = credentials.safeParse({
@@ -77,11 +42,13 @@ export async function registerWithEmail(form: FormData): Promise<AuthResult> {
 
     if (error) return { ok: false, error: error.message };
 
-    // With email confirmation on, there is no session until the link is clicked.
+    // With email confirmation on, there is no session until the link is
+    // clicked. That link goes to /auth/confirm, which signs them in — so do
+    // not tell them to come back and sign in afterwards.
     if (!data.session || !data.user) {
       return {
         ok: true,
-        message: 'Check your email for a confirmation link, then sign in.',
+        message: `Almost done. We have sent a confirmation link to ${parsed.data.email} — open it and you will be signed in.`,
       };
     }
     const linked = await linkAndSignIn(data.user.id, data.user.email ?? null, displayName);
