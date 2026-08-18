@@ -138,12 +138,25 @@ export interface JobInput {
   title: string;
   employer: string;
   description: string;
+  /** The job_type enum value, mapped to a schema.org employmentType below. */
+  type?: string | null;
   salaryMinCentavos?: number | null;
   salaryMaxCentavos?: number | null;
   townName?: string | null;
   createdAt: Date;
+  expiresAt?: Date | null;
   path: string;
 }
+
+/** job_type enum to schema.org employmentType. */
+const EMPLOYMENT_TYPE: Record<string, string> = {
+  full_time: 'FULL_TIME',
+  part_time: 'PART_TIME',
+  contract: 'CONTRACTOR',
+  seasonal: 'TEMPORARY',
+  internship: 'INTERN',
+  volunteer: 'VOLUNTEER',
+};
 
 export function jobPostingSchema(j: JobInput): Record<string, unknown> {
   const node: Record<string, unknown> = {
@@ -152,6 +165,10 @@ export function jobPostingSchema(j: JobInput): Record<string, unknown> {
     title: j.title,
     description: summarise(j.description, 500),
     datePosted: j.createdAt.toISOString(),
+    // Google demotes and eventually drops a posting with no expiry. Ours do
+    // expire, so say when rather than letting it be inferred.
+    ...(j.expiresAt ? { validThrough: j.expiresAt.toISOString() } : {}),
+    ...(j.type && EMPLOYMENT_TYPE[j.type] ? { employmentType: EMPLOYMENT_TYPE[j.type] } : {}),
     hiringOrganization: {
       '@type': 'Organization',
       name: j.employer,
@@ -195,34 +212,36 @@ export interface ListingInput {
   path: string;
 }
 
-/** Maps free-text condition to a schema.org OfferItemCondition, when recognisable. */
-function offerCondition(condition?: string | null): string | undefined {
-  switch ((condition ?? '').toLowerCase()) {
-    case 'new':
-      return 'https://schema.org/NewCondition';
-    case 'used':
-    case 'second-hand':
-    case 'secondhand':
-      return 'https://schema.org/UsedCondition';
-    case 'refurbished':
-      return 'https://schema.org/RefurbishedCondition';
-    default:
-      return undefined;
-  }
-}
+/** The listing_condition enum, mapped to a schema.org OfferItemCondition. */
+const ITEM_CONDITION: Record<string, string> = {
+  new: 'https://schema.org/NewCondition',
+  like_new: 'https://schema.org/UsedCondition',
+  used: 'https://schema.org/UsedCondition',
+  for_parts: 'https://schema.org/DamagedCondition',
+};
+
+const offerCondition = (condition?: string | null): string | undefined =>
+  ITEM_CONDITION[(condition ?? '').toLowerCase()];
 
 export function productSchema(l: ListingInput): Record<string, unknown> {
   const cond = offerCondition(l.condition);
-  const offer: Record<string, unknown> = {
-    '@type': 'Offer',
-    priceCurrency: 'PHP',
-    availability: 'https://schema.org/InStock',
-    ...(l.priceCentavos != null ? { price: peso(l.priceCentavos) } : {}),
-    ...(cond ? { itemCondition: cond } : {}),
-    ...(l.townName
-      ? { areaServed: { '@type': 'Place', name: `${l.townName}, Isabela` } }
-      : {}),
-  };
+  // An Offer with no price is invalid to Google, and "open to offers" listings
+  // genuinely have none. Better a plain Product than an Offer that fails
+  // validation on every priceless listing.
+  const offer =
+    l.priceCentavos != null
+      ? {
+          '@type': 'Offer',
+          priceCurrency: 'PHP',
+          price: peso(l.priceCentavos),
+          availability: 'https://schema.org/InStock',
+          url: absUrl(l.path),
+          ...(cond ? { itemCondition: cond } : {}),
+          ...(l.townName
+            ? { areaServed: { '@type': 'Place', name: `${l.townName}, Isabela` } }
+            : {}),
+        }
+      : undefined;
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -231,7 +250,7 @@ export function productSchema(l: ListingInput): Record<string, unknown> {
     url: absUrl(l.path),
     ...(l.category ? { category: l.category } : {}),
     ...(cond ? { itemCondition: cond } : {}),
-    offers: offer,
+    ...(offer ? { offers: offer } : {}),
   };
 }
 

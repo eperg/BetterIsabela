@@ -42,10 +42,12 @@ export default async function JobDetail({ params }: { params: Promise<{ id: stri
             title: job.title,
             employer: job.employer,
             description: job.description,
+            type: job.type,
             salaryMinCentavos: job.salaryMinCentavos,
             salaryMaxCentavos: job.salaryMaxCentavos,
             townName,
             createdAt: job.createdAt,
+            expiresAt: job.expiresAt,
             path: `/jobs/${job.id}`,
           }),
           breadcrumbSchema([
