@@ -26,6 +26,7 @@ export const LIMITS = {
   rate_official: { max: 20, windowSeconds: 86_400 },
   review_official: { max: 5, windowSeconds: 86_400 },
   report_content: { max: 20, windowSeconds: 86_400 },
+  report_service: { max: 15, windowSeconds: 86_400 },
 } as const satisfies Record<string, Limit>;
 
 export type LimitedAction = keyof typeof LIMITS;

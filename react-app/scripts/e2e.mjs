@@ -184,6 +184,69 @@ await step('the takedown is recorded in the audit log', async () => {
   return `${log.action} · snapshot kept · report ${rep.status}`;
 });
 
+console.log('\nCHARTER WATCH');
+await step('report what a service actually took', async () => {
+  // The moderation steps left the moderator signed in. Sign out, then back in
+  // as an ordinary citizen: reporting a service is a citizen's action.
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  await p.click('.authbar-link--button');
+  await p.waitForLoadState('networkidle');
+  await p.fill('input[name=handle]', 'maria');
+  await p.locator('.devlogin button[type=submit]').click();
+  await p.waitForLoadState('networkidle');
+
+  await p.goto(BASE + '/charter/birth-certificate', { waitUntil: 'networkidle' });
+  const promised = await p.locator('.charter-compare dd').first().innerText();
+  await p.selectOption('select[name=waited]', '1_3h');
+  await p.selectOption('select[name=succeeded]', 'yes');
+  await p.fill('input[name=paidPesos]', '220');
+  await p.selectOption('select[name=townSlug]', 'ilagan-city');
+  await p.fill('textarea[name=note]', 'Queue was long. Bring your own copy of the requirements.');
+  await p.locator('form.stack button[type=submit]').click();
+  await p.waitForSelector('.formmsg--ok', { timeout: 15000 });
+  await p.reload({ waitUntil: 'networkidle' });
+  const verdict = await p.locator('.charter-verdict').innerText();
+  if (!/slower/i.test(verdict)) throw new Error('expected a slower-than-charter verdict, got: ' + verdict);
+  return `charter says ${promised} → reported 1-3 hours → "${verdict}"`;
+});
+
+await step('the reported fee and distribution are shown', async () => {
+  const cells = await p.locator('.charter-compare dd').allInnerTexts();
+  if (!cells.some((c) => c.includes('220'))) throw new Error('reported fee missing: ' + cells.join(' | '));
+  const bars = await p.locator('.waitchart li').count();
+  if (bars !== 1) throw new Error(`expected one bucket in the distribution, got ${bars}`);
+  return `${cells.join(' | ')} · ${bars} bucket`;
+});
+
+await step('a second report from the same person corrects the first', async () => {
+  await p.selectOption('select[name=waited]', 'under_30m');
+  await p.locator('form.stack button[type=submit]').click();
+  await p.waitForSelector('.formmsg--ok', { timeout: 15000 });
+  await p.reload({ waitUntil: 'networkidle' });
+  const verdict = await p.locator('.charter-verdict').innerText();
+  const footnote = await p.locator('.panel .footnote').first().innerText();
+  if (!/matches/i.test(verdict)) throw new Error('verdict did not follow the correction: ' + verdict);
+  if (!/From 1 report/.test(footnote)) throw new Error('the correction was counted twice: ' + footnote);
+  return `${verdict} · ${footnote.split('.')[0]}`;
+});
+
+await step('the form reopens pre-filled with what was already reported', async () => {
+  await p.goto(BASE + '/charter/birth-certificate', { waitUntil: 'networkidle' });
+  await p.waitForSelector('select[name=waited]');
+  const waited = await p.locator('select[name=waited]').inputValue();
+  const paid = await p.locator('input[name=paidPesos]').inputValue();
+  if (waited !== 'under_30m') throw new Error('waited not pre-filled: ' + waited);
+  if (paid !== '220') throw new Error('fee not pre-filled: ' + paid);
+  return `waited=${waited}, paid=${paid}`;
+});
+
+await step('the charter index counts the service as measured', async () => {
+  await p.goto(BASE + '/charter', { waitUntil: 'networkidle' });
+  const lead = await p.locator('.pagehead-lead').innerText();
+  if (!/1 of 52 services have reports/.test(lead)) throw new Error('index did not count it: ' + lead);
+  return lead.split('. ').pop();
+});
+
 console.log('\nFILTERS (applied in the browser, so the pages stay cacheable)');
 await step('town filter narrows the job board and survives a reload', async () => {
   await p.goto(BASE + '/jobs', { waitUntil: 'networkidle' });

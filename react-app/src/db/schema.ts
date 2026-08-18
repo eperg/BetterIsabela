@@ -81,7 +81,28 @@ export const targetType = pgEnum('target_type', [
   'question',
   'answer',
   'official_review',
+  'service_report',
   'user',
+]);
+
+/**
+ * How long a citizen actually waited, in buckets rather than minutes.
+ *
+ * Nobody remembers that a queue took 47 minutes, and asking for a number would
+ * produce false precision that the median then dresses up as fact. The order of
+ * these values is the ordering used to take that median, so keep them sorted
+ * from quickest to slowest. `unresolved` sorts last on purpose: a transaction
+ * that never completed is the worst outcome, not a missing one.
+ */
+export const serviceWait = pgEnum('service_wait', [
+  'under_30m',
+  '30m_1h',
+  '1_3h',
+  'same_day',
+  '1_3d',
+  '4_7d',
+  'over_week',
+  'unresolved',
 ]);
 
 // ---------------------------------------------------------------------------
@@ -405,6 +426,43 @@ export const officialReviews = pgTable(
 // ---------------------------------------------------------------------------
 
 /** A citizen flagging content. One open report per user per target. */
+/**
+ * What a service actually cost a citizen, against what the Citizen's Charter
+ * promises. One row per person per service, updatable, mirroring how ratings
+ * work: a resident who transacts twice is correcting their report, not voting
+ * twice.
+ *
+ * `serviceId` references services.json rather than a table. The catalogue is
+ * curated reference data that ships with the app and is redeployed when it
+ * changes, so a foreign key would mean maintaining a mirror of it in the
+ * database for no gain. Writes validate the id against the catalogue.
+ */
+export const serviceReports = pgTable(
+  'service_reports',
+  {
+    id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
+    serviceId: varchar('service_id', { length: 64 }).notNull(),
+    userId: bigint('user_id', { mode: 'number' })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    /** Where they transacted. Experience of the same service varies by office. */
+    townSlug: varchar('town_slug', { length: 64 }).references(() => towns.slug),
+    waited: serviceWait('waited').notNull(),
+    /** What they actually paid. Null where they did not say. */
+    paidCentavos: bigint('paid_centavos', { mode: 'number' }),
+    /** Whether they walked away with the thing they came for. */
+    succeeded: boolean('succeeded').notNull(),
+    note: text('note'),
+    status: contentStatus('status').notNull().default('published'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex('service_reports_one_per_user').on(t.serviceId, t.userId),
+    index('service_reports_service_idx').on(t.serviceId, t.status),
+  ]
+);
+
 export const reports = pgTable(
   'reports',
   {

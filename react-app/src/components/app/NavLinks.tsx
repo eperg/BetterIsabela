@@ -9,6 +9,7 @@ const LINKS = [
   { href: '/prices', label: 'Prices' },
   { href: '/progress', label: 'Progress' },
   { href: '/services', label: 'Services' },
+  { href: '/charter', label: 'Charter Watch' },
   { href: '/statistics', label: 'Statistics' },
   { href: '/ask', label: 'Q&A' },
   { href: '/officials', label: 'Officials' },

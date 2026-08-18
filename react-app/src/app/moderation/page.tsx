@@ -25,6 +25,7 @@ const TARGET_HREF: Record<string, (id: number) => string> = {
   question: (id) => `/ask/${id}`,
   answer: () => '/ask',
   official_review: () => '/officials',
+  service_report: () => '/charter',
 };
 
 export default async function Moderation() {

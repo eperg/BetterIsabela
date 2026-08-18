@@ -19,6 +19,7 @@ import {
   answers,
   projects,
   officials,
+  serviceReports,
   officialReviews,
   officialRatings,
   reports,
@@ -40,6 +41,7 @@ export const TAGS = {
   questions: 'questions',
   projects: 'projects',
   officials: 'officials',
+  serviceReports: 'service-reports',
 } as const;
 
 /** How long a cached read may serve before it is refreshed anyway. */
@@ -429,4 +431,116 @@ export async function homepageSnippets() {
     officials: value<{ id: number; name: string; position: string; townName: string | null; ratingCount: number; ratingSum: number }[]>(4, []),
     counts: counts[0] ?? { jobs: 0, listings: 0, questions: 0, projects: 0, officials: 0 },
   };
+}
+
+// ---------------------------------------------------------------------------
+// Citizen's Charter: what residents report against what the charter promises
+// ---------------------------------------------------------------------------
+
+export interface ServiceReportTally {
+  serviceId: string;
+  /** Count per wait bucket, for the median. */
+  waits: Record<string, number>;
+  total: number;
+  succeeded: number;
+  /** Median of what people actually paid, in centavos, or null if nobody said. */
+  medianPaidCentavos: number | null;
+}
+
+/**
+ * One tally per service, for every service anybody has reported on.
+ *
+ * Aggregated in SQL and cached: the charter index compares 52 services at once,
+ * and doing that by fetching rows would be a query per service or a large read
+ * per page view. Medians are taken over the enum's own ordering, which is why
+ * the enum is declared quickest-first.
+ */
+const serviceReportTalliesUncached = async (): Promise<ServiceReportTally[]> => {
+  const rows = await db
+    .select({
+      serviceId: serviceReports.serviceId,
+      waited: serviceReports.waited,
+      n: count(),
+      succeeded: sql<number>`count(*) filter (where ${serviceReports.succeeded})`.mapWith(Number),
+    })
+    .from(serviceReports)
+    .where(eq(serviceReports.status, PUBLISHED))
+    .groupBy(serviceReports.serviceId, serviceReports.waited);
+
+  const paid = await db
+    .select({
+      serviceId: serviceReports.serviceId,
+      median:
+        sql<number | null>`percentile_disc(0.5) within group (order by ${serviceReports.paidCentavos})`.mapWith(
+          (v) => (v === null ? null : Number(v))
+        ),
+    })
+    .from(serviceReports)
+    .where(and(eq(serviceReports.status, PUBLISHED), sql`${serviceReports.paidCentavos} is not null`))
+    .groupBy(serviceReports.serviceId);
+
+  const medianById = new Map(paid.map((p) => [p.serviceId, p.median]));
+  const byService = new Map<string, ServiceReportTally>();
+  for (const row of rows) {
+    const entry = byService.get(row.serviceId) ?? {
+      serviceId: row.serviceId,
+      waits: {},
+      total: 0,
+      succeeded: 0,
+      medianPaidCentavos: medianById.get(row.serviceId) ?? null,
+    };
+    entry.waits[row.waited] = row.n;
+    entry.total += row.n;
+    entry.succeeded += row.succeeded;
+    byService.set(row.serviceId, entry);
+  }
+  return [...byService.values()];
+};
+
+export const serviceReportTallies = unstable_cache(
+  serviceReportTalliesUncached,
+  ['service-reports:tallies'],
+  { tags: [TAGS.serviceReports], revalidate: TTL.live }
+);
+
+/** The published notes for one service, newest first. */
+const serviceReportNotesUncached = async (serviceId: string) =>
+  db
+    .select({
+      id: serviceReports.id,
+      waited: serviceReports.waited,
+      paidCentavos: serviceReports.paidCentavos,
+      succeeded: serviceReports.succeeded,
+      note: serviceReports.note,
+      createdAt: serviceReports.createdAt,
+      townName: towns.name,
+      authorName: users.displayName,
+    })
+    .from(serviceReports)
+    .innerJoin(users, eq(users.id, serviceReports.userId))
+    .leftJoin(towns, eq(towns.slug, serviceReports.townSlug))
+    .where(and(eq(serviceReports.serviceId, serviceId), eq(serviceReports.status, PUBLISHED)))
+    .orderBy(desc(serviceReports.createdAt))
+    .limit(50);
+
+export const serviceReportNotes = unstable_cache(
+  serviceReportNotesUncached,
+  ['service-reports:notes'],
+  { tags: [TAGS.serviceReports], revalidate: TTL.live }
+);
+
+/** The reader's own report for one service, so the form can be pre-filled. */
+export async function getMyServiceReport(serviceId: string, userId: number) {
+  const rows = await db
+    .select({
+      waited: serviceReports.waited,
+      paidCentavos: serviceReports.paidCentavos,
+      succeeded: serviceReports.succeeded,
+      townSlug: serviceReports.townSlug,
+      note: serviceReports.note,
+    })
+    .from(serviceReports)
+    .where(and(eq(serviceReports.serviceId, serviceId), eq(serviceReports.userId, userId)))
+    .limit(1);
+  return rows[0] ?? null;
 }

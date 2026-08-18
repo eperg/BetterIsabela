@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { listServiceDetails } from '@/lib/static-data';
+import { listServiceDetails, getServices } from '@/lib/static-data';
 
 /**
  * Generated rather than hand-maintained, so a new service detail page cannot be
@@ -24,6 +24,7 @@ const PAGES: Entry[] = [
   { path: '/ask', changeFrequency: 'daily', priority: 0.9 },
   { path: '/prices', changeFrequency: 'daily', priority: 0.9 },
   { path: '/services', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/charter', changeFrequency: 'daily', priority: 0.9 },
   { path: '/officials', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/progress', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/news', changeFrequency: 'weekly', priority: 0.7 },
@@ -39,8 +40,11 @@ const PAGES: Entry[] = [
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
+  // One charter page per service, which is where the long-tail question
+  // ("how long does a business permit take in Isabela") actually gets answered.
+  const { services } = await getServices();
 
   return [
     ...PAGES.map((p) => ({
@@ -55,6 +59,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
+    ...services.map((s) => ({
+      url: `${BASE}/charter/${s.id}`,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })),
     ...listServiceDetails().map((d) => ({
       url: `${BASE}/services/${d.slug}`,
       lastModified,

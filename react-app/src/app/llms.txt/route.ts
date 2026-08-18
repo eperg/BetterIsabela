@@ -23,6 +23,7 @@ const SECTIONS: { heading: string; links: string[] }[] = [
     links: [
       link('Provincial services', '/services', 'Every service the province offers, with requirements, fees, processing time and the responsible office'),
       link('Frequently asked questions', '/faq', 'Direct answers on office hours, certificates, business permits, real property tax and senior citizen benefits'),
+      link('Charter watch', '/charter', "What each service actually takes and costs, reported by residents, against what the Citizen's Charter promises"),
       link('Government directory', '/government', 'Provincial offices, department heads and how to reach them'),
       link('Contact', '/contact', 'Capitol address, hotlines and office contact details'),
     ],

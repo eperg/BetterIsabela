@@ -18,7 +18,8 @@
     "db:projects": "node scripts/seed-projects.mjs",
     "check:db": "node scripts/check-db-url.mjs",
     "set:dburl": "node scripts/set-db-url.mjs",
-    "build:verify": "node --env-file=.env scripts/build-verify.mjs"
+    "build:verify": "node --env-file=.env scripts/build-verify.mjs",
+    "verify:charter": "node scripts/verify-charter.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.5",

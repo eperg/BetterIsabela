@@ -19,6 +19,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
 import {
+  towns,
   jobs,
   listings,
   questions,
@@ -26,12 +27,15 @@ import {
   officials,
   officialRatings,
   officialReviews,
+  serviceReports,
   reports,
   moderationLog,
 } from '@/db/schema';
 import { requireUser, requireModerator } from '@/lib/session';
 import { TAGS } from '@/lib/queries';
 import { consume, RateLimited, type LimitedAction } from '@/lib/rate-limit';
+import { getServices } from '@/lib/static-data';
+import { isWaitValue } from '@/lib/charter';
 
 export type ActionResult =
   | { ok: true; id?: number }
@@ -360,6 +364,74 @@ export async function reviewOfficial(form: FormData): Promise<ActionResult> {
 }
 
 // ---------------------------------------------------------------------------
+// Citizen's Charter: what it actually took
+// ---------------------------------------------------------------------------
+
+/**
+ * A citizen's account of what a service actually cost them, against what the
+ * Citizen's Charter promises.
+ *
+ * Upserted on (service, person) so a second visit corrects the first rather than
+ * counting twice, the same rule the official ratings use. The service id is
+ * checked against the shipped catalogue: there is no foreign key to check it for
+ * us, and an unrecognised id would create a tally nothing can display.
+ */
+export async function reportServiceExperience(form: FormData): Promise<ActionResult> {
+  return run('report_service', async (userId) => {
+    const serviceId = String(form.get('serviceId') ?? '').trim();
+    const { services } = await getServices();
+    if (!services.some((s) => s.id === serviceId)) {
+      return { ok: false, error: 'Unknown service.' };
+    }
+
+    const waited = String(form.get('waited') ?? '');
+    if (!isWaitValue(waited)) return { ok: false, error: 'Say roughly how long it took.' };
+
+    const succeeded = String(form.get('succeeded') ?? '') === 'yes';
+
+    // Blank means "would rather not say", which is not the same as "it was free".
+    const paidRaw = String(form.get('paidPesos') ?? '').trim();
+    let paidCentavos: number | null = null;
+    if (paidRaw !== '') {
+      const pesos = Number(paidRaw);
+      if (!Number.isFinite(pesos) || pesos < 0) {
+        return { ok: false, error: 'Enter what you paid in pesos, or leave it blank.' };
+      }
+      if (pesos > 100_000) {
+        return { ok: false, error: 'That fee looks wrong. Enter the amount in pesos.' };
+      }
+      paidCentavos = Math.round(pesos * 100);
+    }
+
+    const townSlugRaw = String(form.get('townSlug') ?? '').trim();
+    const townSlug = townSlugRaw === '' ? null : townSlugRaw;
+    if (townSlug) {
+      const known = await db
+        .select({ slug: towns.slug })
+        .from(towns)
+        .where(eq(towns.slug, townSlug))
+        .limit(1);
+      if (!known.length) return { ok: false, error: 'Unknown town.' };
+    }
+
+    const note = String(form.get('note') ?? '').trim().slice(0, 2000) || null;
+
+    await db
+      .insert(serviceReports)
+      .values({ serviceId, userId, townSlug, waited, paidCentavos, succeeded, note })
+      .onConflictDoUpdate({
+        target: [serviceReports.serviceId, serviceReports.userId],
+        set: { townSlug, waited, paidCentavos, succeeded, note, updatedAt: new Date() },
+      });
+
+    revalidateTag(TAGS.serviceReports);
+    revalidatePath('/charter');
+    revalidatePath(`/charter/${serviceId}`);
+    return { ok: true };
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Reporting and moderation
 // ---------------------------------------------------------------------------
 
@@ -379,7 +451,7 @@ export async function reportContent(form: FormData): Promise<ActionResult> {
     const targetId = Number(form.get('targetId'));
     const reason = String(form.get('reason'));
 
-    const valid = ['job', 'listing', 'question', 'answer', 'official_review', 'user'];
+    const valid = ['job', 'listing', 'question', 'answer', 'official_review', 'service_report', 'user'];
     if (!valid.includes(targetType)) return { ok: false, error: 'Unknown content.' };
     if (!Number.isInteger(targetId)) return { ok: false, error: 'Unknown content.' };
     if (!REPORT_REASONS.includes(reason as (typeof REPORT_REASONS)[number])) {
@@ -451,6 +523,7 @@ export async function moderateTakedown(form: FormData): Promise<ActionResult> {
           question: questions,
           answer: answers,
           official_review: officialReviews,
+          service_report: serviceReports,
         }[report.targetType as 'job'];
 
         if (table) {
@@ -530,6 +603,10 @@ function detailPathFor(
     case 'official_review': {
       const officialId = snapshot?.officialId;
       return typeof officialId === 'number' ? `/officials/${officialId}` : null;
+    }
+    case 'service_report': {
+      const serviceId = snapshot?.serviceId;
+      return typeof serviceId === 'string' ? `/charter/${serviceId}` : null;
     }
     default:
       return null;
