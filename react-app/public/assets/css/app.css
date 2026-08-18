@@ -194,7 +194,15 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   align-items: stretch;
 }
-.cardlist--grid .card { flex-direction: column; justify-content: flex-start; }
+/*
+ * A grid card stacks, so it must not wrap: `.card` sets `flex-wrap: wrap` for
+ * the row-direction cards in a single-column list, and left on a column-direction
+ * card it inflates the card's intrinsic height well past its content. On the
+ * charter cards, whose content is short, that added about 90px of blank space
+ * between the last row of the table and the button. Cards with taller content
+ * were unaffected, which is why it went unnoticed until a sparse page existed.
+ */
+.cardlist--grid .card { flex-direction: column; justify-content: flex-start; flex-wrap: nowrap; }
 .cardlist--grid .card-main { display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .cardlist--grid .card-actions {
   width: 100%;
