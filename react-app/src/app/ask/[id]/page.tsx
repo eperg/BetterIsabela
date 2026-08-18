@@ -1,16 +1,31 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getQuestion } from '@/lib/queries';
-import { getCurrentUser } from '@/lib/session';
 import { postAnswer } from '@/lib/actions';
 import ActionForm from '@/components/app/ActionForm';
 import { since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import SignedIn from '@/components/app/SignedIn';
 import JsonLd from '@/components/seo/JsonLd';
 import { qaPageSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
-// Reads the signed-in user, so it must render per request.
-export const dynamic = 'force-dynamic';
+// The question and its answers read the same to everyone; only the answer form
+// depends on who is asking, and that resolves client-side. So this is cached.
+export const revalidate = 300;
+
+/**
+ * Empty on purpose, and load-bearing.
+ *
+ * A dynamic segment with no generateStaticParams at all is served uncached in
+ * Next 15, whatever `revalidate` says: verified by watching the response go from
+ * `Cache-Control: private, no-store` to `s-maxage`/`x-nextjs-cache: HIT` the
+ * moment this function exists. Returning nothing means no page is built ahead of
+ * time; each is rendered on first request and cached from then on, which is the
+ * right trade for rows that appear and expire constantly.
+ */
+export function generateStaticParams(): { id: string }[] {
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -33,7 +48,7 @@ export async function generateMetadata({
 
 export default async function QuestionDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [row, user] = await Promise.all([getQuestion(Number(id)), getCurrentUser()]);
+  const row = await getQuestion(Number(id));
   if (!row) notFound();
   const { question, askerName, answers } = row;
 
@@ -92,7 +107,7 @@ export default async function QuestionDetail({ params }: { params: Promise<{ id:
         </ul>
       )}
 
-      {user ? (
+      <SignedIn fallback={<p className="empty">Sign in to answer.</p>}>
         <>
           <h2 className="sectionhead">Your answer</h2>
           <ActionForm action={postAnswer} submitLabel="Post answer" successMessage="Answer posted." className="stack">
@@ -100,9 +115,7 @@ export default async function QuestionDetail({ params }: { params: Promise<{ id:
             <textarea name="body" required rows={6} maxLength={5000} aria-label="Your answer" />
           </ActionForm>
         </>
-      ) : (
-        <p className="empty">Sign in to answer.</p>
-      )}
+      </SignedIn>
     </main>
   );
 }

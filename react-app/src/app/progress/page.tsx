@@ -1,5 +1,7 @@
-import { listProjects, projectSummary, listTowns } from '@/lib/queries';
+import { Suspense } from 'react';
+import { listProjects, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, peso } from '@/components/app/ui';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { datasetSchema } from '@/lib/schema';
 
@@ -11,66 +13,51 @@ export const metadata = {
   alternates: { canonical: '/progress' },
 };
 
+// Prerendered and revalidated; the town filter is applied in the browser, and
+// the status tally is recounted there from the same rows.
 export const revalidate = 900;
-
 
 const STATUS_LABEL: Record<string, string> = {
   proposed: 'Proposed', funded: 'Funded', ongoing: 'Ongoing',
   suspended: 'Suspended', completed: 'Completed', cancelled: 'Cancelled',
 };
 
-export default async function ProgressPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ town?: string }>;
-}) {
-  const { town } = await searchParams;
-  const [items, summary, towns] = await Promise.all([
-    listProjects({ townSlug: town }),
-    projectSummary(town),
-    listTowns(),
-  ]);
+export default async function ProgressPage() {
+  const [items, towns] = await Promise.all([listProjects(), listTowns()]);
 
   return (
     <main className="wrap">
-      {!town && (
-        <JsonLd
-          data={datasetSchema({
-            name: 'Public project tracker (Province of Isabela)',
-            description:
-              'Public infrastructure and development projects across the towns of Isabela, with ' +
-              'status, percent complete, cost and funding source.',
-            path: '/progress',
-            keywords: ['public projects', 'infrastructure', 'Isabela', 'local government', 'budget'],
-          })}
-        />
-      )}
+      <JsonLd
+        data={datasetSchema({
+          name: 'Public project tracker (Province of Isabela)',
+          description:
+            'Public infrastructure and development projects across the towns of Isabela, with ' +
+            'status, percent complete, cost and funding source.',
+          path: '/progress',
+          keywords: ['public projects', 'infrastructure', 'Isabela', 'local government', 'budget'],
+        })}
+      />
       <PageHeader
         title="Town progress tracker"
         lead="Public projects across Isabela — what is funded, what is running, what is finished."
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Town
-          <select name="town" defaultValue={town ?? ''}>
-            <option value="">All of Isabela</option>
-            {towns.map((t) => <option key={t.slug} value={t.slug}>{t.name}</option>)}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">Filter</button>
-      </form>
-
-      {summary.length > 0 && (
-        <ul className="statstrip">
-          {summary.map((s) => (
-            <li key={s.status}>
-              <span className="statstrip-n">{s.n}</span>
-              <span className="statstrip-l">{STATUS_LABEL[s.status] ?? s.status}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="projectlist"
+          facets={[
+            {
+              key: 'town',
+              label: 'Town',
+              all: 'All of Isabela',
+              options: towns.map((t) => ({ value: t.slug, label: t.name })),
+            },
+          ]}
+          rows={items.map((p) => ({ town: p.townSlug ?? '', status: p.status }))}
+          emptyMessage="No projects recorded for that town yet."
+          summary={{ key: 'status', labels: STATUS_LABEL }}
+        />
+      </Suspense>
 
       {items.length === 0 ? (
         <Empty>
@@ -79,9 +66,9 @@ export default async function ProgressPage({
           named source and a verification date.
         </Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
+        <ul className="cardlist cardlist--grid" id="projectlist">
           {items.map((p) => (
-            <li key={p.id} className="card">
+            <li key={p.id} className="card" data-town={p.townSlug ?? ''}>
               <div className="card-main">
                 <h2 className="card-title">{p.title}</h2>
                 <p className="card-meta">

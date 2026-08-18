@@ -98,7 +98,9 @@ await step('answer it, and the count updates', async () => {
 console.log('\nOFFICIALS');
 await step('rate an official', async () => {
   await p.goto(BASE + '/officials?town=ilagan-city', { waitUntil: 'networkidle' });
-  await p.click('.card-title a');
+  // Filtering happens in the browser, so non-matching rows are still in the DOM
+  // and hidden. Scope the click to what a reader can actually see.
+  await p.locator('#officialslist > li:visible .card-title a').first().click();
   await p.waitForLoadState('networkidle');
   const who = await p.locator('h1').innerText();
   await p.click('.rate-star:nth-child(4)');
@@ -180,6 +182,59 @@ await step('the takedown is recorded in the audit log', async () => {
   if (!log.has_snapshot) throw new Error('takedown logged without a content snapshot');
   if (rep.status !== 'upheld' || !rep.resolved_by) throw new Error('report not resolved');
   return `${log.action} · snapshot kept · report ${rep.status}`;
+});
+
+console.log('\nFILTERS (applied in the browser, so the pages stay cacheable)');
+await step('town filter narrows the job board and survives a reload', async () => {
+  await p.goto(BASE + '/jobs', { waitUntil: 'networkidle' });
+  const all = await p.locator('#jobboard > li:visible').count();
+  if (all < 1) throw new Error('no jobs on the board to filter');
+  // The seeded job is in Ilagan; pick a town that is not, so the count must drop.
+  await p.selectOption('.filterbar select', 'tumauini');
+  await p.waitForFunction(
+    (n) => document.querySelectorAll('#jobboard > li:not([style*="display"])').length >= 0 &&
+      [...document.querySelectorAll('#jobboard > li')].filter((li) => getComputedStyle(li).display !== 'none').length !== n,
+    all,
+    { timeout: 5000 }
+  );
+  const filtered = await p.locator('#jobboard > li:visible').count();
+  if (filtered >= all) throw new Error(`filter did not narrow: ${all} -> ${filtered}`);
+  if (!p.url().includes('town=tumauini')) throw new Error('URL did not record the filter: ' + p.url());
+  await p.reload({ waitUntil: 'networkidle' });
+  const afterReload = await p.locator('#jobboard > li:visible').count();
+  if (afterReload !== filtered) throw new Error(`reload lost the filter: ${filtered} -> ${afterReload}`);
+  return `${all} jobs -> ${filtered} in Tumauini, filter held across reload`;
+});
+
+await step('clearing the filter restores every row', async () => {
+  await p.click('.filterbar button');
+  await p.waitForFunction(() => !location.search.includes('town='), null, { timeout: 5000 });
+  const n = await p.locator('#jobboard > li:visible').count();
+  if (n < 1) throw new Error('clear left the board empty');
+  return `${n} jobs visible again`;
+});
+
+await step('services search filters without a page load', async () => {
+  await p.goto(BASE + '/services', { waitUntil: 'networkidle' });
+  const total = await p.locator('#servicelist > li:visible').count();
+  await p.fill('.filterbar input[type=search]', 'birth certificate');
+  await p.waitForFunction(
+    (n) => [...document.querySelectorAll('#servicelist > li')]
+      .filter((li) => getComputedStyle(li).display !== 'none').length < n,
+    total,
+    { timeout: 5000 }
+  );
+  const found = await p.locator('#servicelist > li:visible').count();
+  const count = await p.locator('.resultcount').innerText();
+  if (found === 0) throw new Error('search matched nothing');
+  return `${total} services -> ${found} for "birth certificate" (${count})`;
+});
+
+await step('an unknown filter value is ignored rather than hiding everything', async () => {
+  await p.goto(BASE + '/jobs?town=%22%3E%3Cscript%3E', { waitUntil: 'networkidle' });
+  const n = await p.locator('#jobboard > li:visible').count();
+  if (n < 1) throw new Error('a bogus town value hid the whole board');
+  return `${n} jobs still shown`;
 });
 
 console.log('\nHOMEPAGE');

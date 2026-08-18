@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { listQuestions, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, since } from '@/components/app/ui';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { collectionPageSchema } from '@/lib/schema';
 
@@ -11,23 +13,15 @@ export const metadata = {
   alternates: { canonical: '/ask' },
 };
 
+// Prerendered and revalidated; the town filter is applied in the browser.
 export const revalidate = 300;
 
-
-export default async function AskPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ town?: string }>;
-}) {
-  const { town } = await searchParams;
-  const [items, towns] = await Promise.all([listQuestions({ townSlug: town }), listTowns()]);
-  // Filtered views are not the canonical page, so they do not advertise a list,
-  // and an empty board has no list worth advertising.
-  const unfiltered = !town;
+export default async function AskPage() {
+  const [items, towns] = await Promise.all([listQuestions(), listTowns()]);
 
   return (
     <main className="wrap">
-      {unfiltered && items.length > 0 && (
+      {items.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Ask & answer (Province of Isabela)',
@@ -45,23 +39,28 @@ export default async function AskPage({
         action={<a className="btn btn--primary" href="/ask/new">Ask a question</a>}
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Town
-          <select name="town" defaultValue={town ?? ''}>
-            <option value="">All of Isabela</option>
-            {towns.map((t) => <option key={t.slug} value={t.slug}>{t.name}</option>)}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">Filter</button>
-      </form>
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="askboard"
+          facets={[
+            {
+              key: 'town',
+              label: 'Town',
+              all: 'All of Isabela',
+              options: towns.map((t) => ({ value: t.slug, label: t.name })),
+            },
+          ]}
+          rows={items.map((q) => ({ town: q.townSlug ?? '' }))}
+          emptyMessage="No questions from that town yet. Ask the first one."
+        />
+      </Suspense>
 
       {items.length === 0 ? (
         <Empty>No questions yet. Ask the first one.</Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
+        <ul className="cardlist cardlist--grid" id="askboard">
           {items.map((q) => (
-            <li key={q.id} className="card">
+            <li key={q.id} className="card" data-town={q.townSlug ?? ''}>
               <div className="card-main">
                 <h2 className="card-title">
                   <a href={`/ask/${q.id}`}>{q.title}</a>

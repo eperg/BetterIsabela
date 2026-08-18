@@ -6,8 +6,25 @@ import ReportButton from '@/components/app/ReportButton';
 import JsonLd from '@/components/seo/JsonLd';
 import { jobPostingSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
-// Reads the signed-in user, so it must render per request.
-export const dynamic = 'force-dynamic';
+// Nothing on this page depends on who is reading it: the only interactive
+// element, ReportButton, is a client component that authenticates itself. So it
+// is cached and revalidated rather than rendered per request, which keeps a
+// crawler hitting every job from costing a function invocation each time.
+export const revalidate = 300;
+
+/**
+ * Empty on purpose, and load-bearing.
+ *
+ * A dynamic segment with no generateStaticParams at all is served uncached in
+ * Next 15, whatever `revalidate` says: verified by watching the response go from
+ * `Cache-Control: private, no-store` to `s-maxage`/`x-nextjs-cache: HIT` the
+ * moment this function exists. Returning nothing means no page is built ahead of
+ * time; each is rendered on first request and cached from then on, which is the
+ * right trade for rows that appear and expire constantly.
+ */
+export function generateStaticParams(): { id: string }[] {
+  return [];
+}
 
 export async function generateMetadata({
   params,

@@ -215,6 +215,9 @@ export async function markListingSold(form: FormData): Promise<ActionResult> {
 
     if (!result.length) return { ok: false, error: 'That is not your listing.' };
     revalidatePath('/market');
+    // The listing page is cached now, so "sold" would otherwise sit invisible
+    // on it until the window expired.
+    revalidatePath(`/market/${id}`);
     return { ok: true, id };
   });
 }
@@ -419,6 +422,10 @@ export async function moderateTakedown(form: FormData): Promise<ActionResult> {
     const note = String(form.get('note') ?? '').trim() || null;
     if (!Number.isInteger(reportId)) return { ok: false, error: 'Unknown report.' };
 
+    // Captured inside the transaction, used after it: the page a takedown has to
+    // clear depends on the row that was removed.
+    let removedFrom: string | null = null;
+
     await db.transaction(async (tx) => {
       const [report] = await tx
         .select()
@@ -460,6 +467,12 @@ export async function moderateTakedown(form: FormData): Promise<ActionResult> {
         }
       }
 
+      removedFrom = detailPathFor(
+        report.targetType,
+        report.targetId,
+        snapshot as Record<string, unknown> | null
+      );
+
       await tx.insert(moderationLog).values({
         actorId: mod.id,
         action: uphold ? 'takedown' : 'dismiss_report',
@@ -471,6 +484,10 @@ export async function moderateTakedown(form: FormData): Promise<ActionResult> {
     });
 
     for (const tag of [TAGS.jobs, TAGS.listings, TAGS.questions, TAGS.officials]) revalidateTag(tag);
+    // Tags only reach the pages that read a tagged query. Detail pages read the
+    // row directly, so the page the removed content sits on has to be named. A
+    // takedown that stays visible for another fifteen minutes is not a takedown.
+    if (uphold && removedFrom) revalidatePath(removedFrom);
     revalidatePath('/moderation');
     return { ok: true, id: reportId };
   } catch (error) {
@@ -485,5 +502,36 @@ export async function moderateTakedown(form: FormData): Promise<ActionResult> {
     }
     console.error('moderation failed', error);
     return { ok: false, error: 'Something went wrong.' };
+  }
+}
+
+/**
+ * The public page a moderated row appears on, so a takedown can clear it.
+ *
+ * Answers and reviews have no page of their own: they live on their parent's,
+ * which is why the snapshot taken before the update is needed here.
+ */
+function detailPathFor(
+  targetType: string,
+  targetId: number,
+  snapshot: Record<string, unknown> | null
+): string | null {
+  switch (targetType) {
+    case 'job':
+      return `/jobs/${targetId}`;
+    case 'listing':
+      return `/market/${targetId}`;
+    case 'question':
+      return `/ask/${targetId}`;
+    case 'answer': {
+      const questionId = snapshot?.questionId;
+      return typeof questionId === 'number' ? `/ask/${questionId}` : null;
+    }
+    case 'official_review': {
+      const officialId = snapshot?.officialId;
+      return typeof officialId === 'number' ? `/officials/${officialId}` : null;
+    }
+    default:
+      return null;
   }
 }

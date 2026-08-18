@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { listOfficials, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, Stars } from '@/components/app/ui';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { collectionPageSchema } from '@/lib/schema';
 
@@ -11,27 +13,18 @@ export const metadata = {
   alternates: { canonical: '/officials' },
 };
 
+// Prerendered and revalidated; the scope filter is applied in the browser.
 export const revalidate = 900;
 
+/** Provincial officials have no town, so they get their own facet value. */
+const PROVINCIAL = 'provincial';
 
-export default async function OfficialsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ town?: string }>;
-}) {
-  const { town } = await searchParams;
-  const scope = town === 'provincial' ? null : town;
-  const [people, towns] = await Promise.all([
-    listOfficials({ townSlug: scope }),
-    listTowns(),
-  ]);
-  // Filtered views are not the canonical page, so they do not advertise a list,
-  // and an empty board has no list worth advertising.
-  const unfiltered = !town;
+export default async function OfficialsPage() {
+  const [people, towns] = await Promise.all([listOfficials(), listTowns()]);
 
   return (
     <main className="wrap">
-      {unfiltered && people.length > 0 && (
+      {people.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Public officials (Province of Isabela)',
@@ -51,24 +44,31 @@ export default async function OfficialsPage({
         lead="Rate and review the officials serving your town. One rating per person, per official."
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Scope
-          <select name="town" defaultValue={town ?? ''}>
-            <option value="">Everyone</option>
-            <option value="provincial">Provincial officials</option>
-            {towns.map((t) => <option key={t.slug} value={t.slug}>{t.name}</option>)}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">Filter</button>
-      </form>
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="officialslist"
+          facets={[
+            {
+              key: 'town',
+              label: 'Scope',
+              all: 'Everyone',
+              options: [
+                { value: PROVINCIAL, label: 'Provincial officials' },
+                ...towns.map((t) => ({ value: t.slug, label: t.name })),
+              ],
+            },
+          ]}
+          rows={people.map((o) => ({ town: o.townSlug ?? PROVINCIAL }))}
+          emptyMessage="No officials listed for that scope."
+        />
+      </Suspense>
 
       {people.length === 0 ? (
-        <Empty>No officials listed for that scope.</Empty>
+        <Empty>No officials listed yet.</Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
+        <ul className="cardlist cardlist--grid" id="officialslist">
           {people.map((o) => (
-            <li key={o.id} className="card">
+            <li key={o.id} className="card" data-town={o.townSlug ?? PROVINCIAL}>
               <div className="card-main">
                 <h2 className="card-title">
                   <a href={`/officials/${o.id}`}>{o.name}</a>

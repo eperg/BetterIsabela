@@ -1,5 +1,19 @@
 import AuthBar from './AuthBar';
 import NavLinks from './NavLinks';
+import { isSsoConfigured } from '@/lib/egov';
+import { isEmailAuthConfigured } from '@/lib/supabase';
+
+/**
+ * Whether the local sign-in shortcut should be offered. This is deployment
+ * configuration, not per-request state, so it is resolved here during render
+ * rather than asked for over the network: the header cannot work it out for
+ * itself, and /api/me is skipped entirely for anonymous readers.
+ */
+function devLoginAvailable(): boolean {
+  return (
+    process.env.NODE_ENV !== 'production' && !isSsoConfigured() && !isEmailAuthConfigured()
+  );
+}
 
 export default function Nav() {
   return (
@@ -11,7 +25,7 @@ export default function Nav() {
         <nav aria-label="Main">
           <NavLinks />
         </nav>
-        <AuthBar />
+        <AuthBar devLogin={devLoginAvailable()} />
       </div>
     </header>
   );

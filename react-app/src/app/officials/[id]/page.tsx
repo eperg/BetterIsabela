@@ -1,17 +1,33 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getOfficial, getMyOfficialRating } from '@/lib/queries';
-import { getCurrentUser } from '@/lib/session';
+import { getOfficial } from '@/lib/queries';
 import { reviewOfficial } from '@/lib/actions';
 import ActionForm from '@/components/app/ActionForm';
 import RateWidget from '@/components/app/RateWidget';
 import ReportButton from '@/components/app/ReportButton';
+import SignedIn from '@/components/app/SignedIn';
 import JsonLd from '@/components/seo/JsonLd';
 import { personSchema, breadcrumbSchema } from '@/lib/schema';
 import { Stars, since } from '@/components/app/ui';
 
-// Reads the signed-in user, so it must render per request.
-export const dynamic = 'force-dynamic';
+// The page itself is the same for every reader. The two per-user affordances,
+// the rating widget and the review form, resolve who is reading client-side, so
+// this can be cached instead of rendered per request.
+export const revalidate = 900;
+
+/**
+ * Empty on purpose, and load-bearing.
+ *
+ * A dynamic segment with no generateStaticParams at all is served uncached in
+ * Next 15, whatever `revalidate` says: verified by watching the response go from
+ * `Cache-Control: private, no-store` to `s-maxage`/`x-nextjs-cache: HIT` the
+ * moment this function exists. Returning nothing means no page is built ahead of
+ * time; each is rendered on first request and cached from then on, which is the
+ * right trade for rows that appear and expire constantly.
+ */
+export function generateStaticParams(): { id: string }[] {
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -36,11 +52,9 @@ export async function generateMetadata({
 
 export default async function OfficialDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const user = await getCurrentUser();
   const row = await getOfficial(Number(id));
   if (!row) notFound();
   const { official, townName, reviews } = row;
-  const myRating = user ? await getMyOfficialRating(official.id, user.id) : null;
 
   return (
     <main className="wrap wrap--narrow">
@@ -73,7 +87,7 @@ export default async function OfficialDetail({ params }: { params: Promise<{ id:
 
       <section className="panel">
         <Stars sum={official.ratingSum} count={official.ratingCount} />
-        <RateWidget officialId={official.id} mine={myRating} signedIn={Boolean(user)} />
+        <RateWidget officialId={official.id} />
       </section>
 
       <h2 className="sectionhead">
@@ -96,7 +110,7 @@ export default async function OfficialDetail({ params }: { params: Promise<{ id:
         </ul>
       )}
 
-      {user ? (
+      <SignedIn fallback={<p className="empty">Sign in to write a review.</p>}>
         <>
           <h2 className="sectionhead">Write a review</h2>
           <p className="muted">
@@ -108,9 +122,7 @@ export default async function OfficialDetail({ params }: { params: Promise<{ id:
             <textarea name="body" required rows={5} minLength={10} maxLength={2000} aria-label="Your review" />
           </ActionForm>
         </>
-      ) : (
-        <p className="empty">Sign in to rate or review.</p>
-      )}
+      </SignedIn>
 
       {official.sourceUrl && (
         <p className="footnote">

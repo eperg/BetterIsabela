@@ -1,10 +1,9 @@
+import { Suspense } from 'react';
 import { getServices } from '@/lib/static-data';
 import { PageHeader, Empty } from '@/components/app/ui';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { collectionPageSchema } from '@/lib/schema';
-
-export const revalidate = 3600;
-
 
 export const metadata = {
   title: 'Provincial services',
@@ -13,33 +12,16 @@ export const metadata = {
   alternates: { canonical: '/services' },
 };
 
-export default async function ServicesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string; q?: string }>;
-}) {
-  const { category, q } = await searchParams;
+// Curated reference data, so this is prerendered outright. Search and category
+// are applied in the browser, which also makes them instant.
+export const revalidate = 3600;
+
+export default async function ServicesPage() {
   const { services, total, withDetail, categories } = await getServices();
-
-  const needle = (q ?? '').trim().toLowerCase();
-  const shown = services.filter((s) => {
-    if (category && s.categoryId !== category) return false;
-    if (!needle) return true;
-    return (
-      s.title.toLowerCase().includes(needle) ||
-      s.description.toLowerCase().includes(needle) ||
-      (s.office ?? '').toLowerCase().includes(needle) ||
-      (s.keywords ?? []).some((k) => k.toLowerCase().includes(needle))
-    );
-  });
-
-  // Filtered and searched views are not the canonical page, so they do not
-  // advertise a list. Only services with a detail page have a URL to list.
-  const unfiltered = !category && !needle;
 
   return (
     <main className="wrap">
-      {unfiltered && services.length > 0 && (
+      {services.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Provincial services (Province of Isabela)',
@@ -59,56 +41,39 @@ export default async function ServicesPage({
         lead={`${total} services offered across the Province of Isabela — what each one costs, how long it takes, and which office handles it. ${withDetail} have a full step-by-step guide.`}
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Search
-          <input
-            type="search"
-            name="q"
-            defaultValue={q ?? ''}
-            placeholder="e.g. birth certificate, business permit"
-          />
-        </label>
-        <label>
-          Category
-          <select name="category" defaultValue={category ?? ''}>
-            <option value="">All categories</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name} ({c.count})
-              </option>
-            ))}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">
-          Filter
-        </button>
-        {(category || q) && (
-          <a className="btn btn--sm" href="/services">
-            Clear
-          </a>
-        )}
-      </form>
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="servicelist"
+          search={{ key: 'q', label: 'Search', placeholder: 'e.g. birth certificate, business permit' }}
+          facets={[
+            {
+              key: 'category',
+              label: 'Category',
+              all: 'All categories',
+              options: categories.map((c) => ({
+                value: c.id,
+                label: `${c.name} (${c.count})`,
+              })),
+            },
+          ]}
+          rows={services.map((s) => ({
+            category: s.categoryId,
+            search: searchText(s),
+          }))}
+          countNoun="services"
+          emptyMessage="Nothing matches that search. Try a broader term."
+        />
+      </Suspense>
 
-      <p className="resultcount">
-        {shown.length === total
-          ? `${total} services`
-          : `${shown.length} of ${total} services`}
-      </p>
-
-      {shown.length === 0 ? (
-        <Empty>Nothing matches that search. Try a broader term.</Empty>
+      {services.length === 0 ? (
+        <Empty>No services are listed yet.</Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
-          {shown.map((s) => (
-            <li key={s.id} className="card">
+        <ul className="cardlist cardlist--grid" id="servicelist">
+          {services.map((s) => (
+            <li key={s.id} className="card" data-category={s.categoryId} data-search={searchText(s)}>
               <div className="card-main">
                 <h2 className="card-title">
-                  {s.detailSlug ? (
-                    <a href={`/services/${s.detailSlug}`}>{s.title}</a>
-                  ) : (
-                    s.title
-                  )}
+                  {s.detailSlug ? <a href={`/services/${s.detailSlug}`}>{s.title}</a> : s.title}
                 </h2>
                 <p className="card-desc">{s.description}</p>
                 <dl className="svc-facts">
@@ -139,20 +104,25 @@ export default async function ServicesPage({
           ))}
         </ul>
       )}
-
-      <div className="footnote">
-        Service details are migrated from the provincial Citizen&rsquo;s Charter. Fees and
-        processing times change — confirm with the handling office before travelling.
-        <p>
-          <a
-            href="https://provinceofisabela.gov.ph/transparency/citizens-charter/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Official Citizen&rsquo;s Charter
-          </a>
-        </p>
-      </div>
     </main>
   );
+}
+
+/**
+ * Everything a reader might type, flattened and normalised the same way the
+ * search box normalises the query, so a CSS substring match behaves like a
+ * search rather than a coincidence.
+ */
+function searchText(s: {
+  title: string;
+  description: string;
+  office?: string;
+  keywords?: string[];
+}): string {
+  return [s.title, s.description, s.office ?? '', ...(s.keywords ?? [])]
+    .join(' ')
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }

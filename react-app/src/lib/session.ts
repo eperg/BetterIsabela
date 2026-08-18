@@ -13,6 +13,14 @@ import { db } from '@/db';
 import { sessions, users } from '@/db/schema';
 
 const COOKIE = 'bi_session';
+/**
+ * A readable companion to the httpOnly session cookie, carrying no secret and
+ * saying only "somebody is signed in". It exists so the browser can skip the
+ * /api/me call entirely for anonymous readers, which is almost all traffic and
+ * all crawlers. Never trust it for anything: the server still resolves the real
+ * session from COOKIE on every write.
+ */
+const FLAG_COOKIE = 'bi_signedin';
 const TTL_DAYS = 30;
 
 export interface CurrentUser {
@@ -30,13 +38,15 @@ export async function createSession(userId: number, userAgent?: string): Promise
 
   await db.insert(sessions).values({ id, userId, expiresAt, userAgent: userAgent ?? null });
 
-  (await cookies()).set(COOKIE, id, {
-    httpOnly: true,
+  const jar = await cookies();
+  const shared = {
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'lax' as const,
     path: '/',
     expires: expiresAt,
-  });
+  };
+  jar.set(COOKIE, id, { httpOnly: true, ...shared });
+  jar.set(FLAG_COOKIE, '1', { httpOnly: false, ...shared });
 }
 
 /** Resolves the signed-in citizen, or null. Banned accounts resolve to null. */
@@ -77,6 +87,7 @@ export async function destroySession(): Promise<void> {
   const id = jar.get(COOKIE)?.value;
   if (id) await db.delete(sessions).where(eq(sessions.id, id));
   jar.delete(COOKIE);
+  jar.delete(FLAG_COOKIE);
 }
 
 /** Throws unless a citizen is signed in. Use at the top of every write path. */

@@ -1,13 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-interface Me {
-  id: number;
-  displayName: string;
-  role: 'citizen' | 'moderator' | 'admin';
-  verified: boolean;
-}
+import { useMe } from '@/hooks/useMe';
 
 /**
  * Sign-in state, fetched after render.
@@ -16,26 +9,10 @@ interface Me {
  * forced every page in the app to render per-request. The trade is a brief
  * placeholder on first paint, in exchange for the entire site being cacheable.
  */
-export default function AuthBar() {
-  const [me, setMe] = useState<Me | null | undefined>(undefined);
-  const [devLogin, setDevLogin] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch('/api/me', { cache: 'no-store' })
-      .then((r) => (r.ok ? r.json() : { user: null }))
-      .then((d) => {
-        if (cancelled) return;
-        setMe(d.user ?? null);
-        setDevLogin(Boolean(d.devLogin));
-      })
-      .catch(() => {
-        if (!cancelled) setMe(null);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+export default function AuthBar({ devLogin = false }: { devLogin?: boolean }) {
+  // Shared with every other per-user widget on the page, so the answer is
+  // fetched at most once per page load and not at all when nobody is signed in.
+  const { me } = useMe();
 
   // Reserve the space so the header does not jump when the answer arrives.
   if (me === undefined) return <div className="authbar authbar--loading" aria-hidden="true" />;

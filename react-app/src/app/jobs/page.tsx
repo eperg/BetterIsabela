@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { listJobs, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, salaryRange, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { collectionPageSchema } from '@/lib/schema';
 
@@ -12,28 +14,22 @@ export const metadata = {
   alternates: { canonical: '/jobs' },
 };
 
+// Prerendered and revalidated rather than rendered per request: the board is the
+// same for every reader, and the town filter is applied in the browser from the
+// URL. A crawler walking the board no longer costs a query per hit.
 export const revalidate = 300;
-
 
 const TYPE_LABEL: Record<string, string> = {
   full_time: 'Full time', part_time: 'Part time', contract: 'Contract',
   seasonal: 'Seasonal', internship: 'Internship', volunteer: 'Volunteer',
 };
 
-export default async function JobsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ town?: string }>;
-}) {
-  const { town } = await searchParams;
-  const [jobs, towns] = await Promise.all([listJobs({ townSlug: town }), listTowns()]);
-  // Filtered views are not the canonical page, so they do not advertise a list,
-  // and an empty board has no list worth advertising.
-  const unfiltered = !town;
+export default async function JobsPage() {
+  const [jobs, towns] = await Promise.all([listJobs(), listTowns()]);
 
   return (
     <main className="wrap">
-      {unfiltered && jobs.length > 0 && (
+      {jobs.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Job board (Province of Isabela)',
@@ -54,25 +50,29 @@ export default async function JobsPage({
         action={<a className="btn btn--primary" href="/jobs/new">Post a job</a>}
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Town
-          <select name="town" defaultValue={town ?? ''}>
-            <option value="">Anywhere in Isabela</option>
-            {towns.map((t) => (
-              <option key={t.slug} value={t.slug}>{t.name}</option>
-            ))}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">Filter</button>
-      </form>
+      {/* useSearchParams needs a boundary for the prerender to resolve. */}
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="jobboard"
+          facets={[
+            {
+              key: 'town',
+              label: 'Town',
+              all: 'Anywhere in Isabela',
+              options: towns.map((t) => ({ value: t.slug, label: t.name })),
+            },
+          ]}
+          rows={jobs.map((j) => ({ town: j.townSlug }))}
+          emptyMessage="No jobs posted for that town yet. Be the first."
+        />
+      </Suspense>
 
       {jobs.length === 0 ? (
-        <Empty>No jobs posted{town ? ' for that town' : ''} yet. Be the first.</Empty>
+        <Empty>No jobs posted yet. Be the first.</Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
+        <ul className="cardlist cardlist--grid" id="jobboard">
           {jobs.map((j) => (
-            <li key={j.id} className="card">
+            <li key={j.id} className="card" data-town={j.townSlug}>
               <div className="card-main">
                 <h2 className="card-title">{j.title}</h2>
                 <p className="card-sub">{j.employer} · {j.townName}</p>

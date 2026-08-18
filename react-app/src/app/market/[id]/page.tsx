@@ -1,16 +1,31 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getListing } from '@/lib/queries';
-import { getCurrentUser } from '@/lib/session';
 import { markListingSold } from '@/lib/actions';
 import ActionForm from '@/components/app/ActionForm';
 import { peso, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import OwnerOnly from '@/components/app/OwnerOnly';
 import JsonLd from '@/components/seo/JsonLd';
 import { productSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
-// Reads the signed-in user, so it must render per request.
-export const dynamic = 'force-dynamic';
+// Only the seller sees anything different here, and that is decided in the
+// browser, so the listing itself is cached rather than rendered per request.
+export const revalidate = 300;
+
+/**
+ * Empty on purpose, and load-bearing.
+ *
+ * A dynamic segment with no generateStaticParams at all is served uncached in
+ * Next 15, whatever `revalidate` says: verified by watching the response go from
+ * `Cache-Control: private, no-store` to `s-maxage`/`x-nextjs-cache: HIT` the
+ * moment this function exists. Returning nothing means no page is built ahead of
+ * time; each is rendered on first request and cached from then on, which is the
+ * right trade for rows that appear and expire constantly.
+ */
+export function generateStaticParams(): { id: string }[] {
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -34,10 +49,9 @@ export async function generateMetadata({
 
 export default async function ListingDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [row, user] = await Promise.all([getListing(Number(id)), getCurrentUser()]);
+  const row = await getListing(Number(id));
   if (!row) notFound();
   const { listing, townName, sellerName } = row;
-  const isMine = user?.id === listing.postedBy;
 
   return (
     <main className="wrap wrap--narrow">
@@ -78,10 +92,12 @@ export default async function ListingDetail({ params }: { params: Promise<{ id: 
         {listing.contactPhone && <p><a href={`tel:${listing.contactPhone}`}>{listing.contactPhone}</a></p>}
       </section>
 
-      {isMine && !listing.soldAt && (
-        <ActionForm action={markListingSold} submitLabel="Mark as sold" successMessage="Marked sold.">
-          <input type="hidden" name="id" value={listing.id} />
-        </ActionForm>
+      {!listing.soldAt && (
+        <OwnerOnly ownerId={listing.postedBy}>
+          <ActionForm action={markListingSold} submitLabel="Mark as sold" successMessage="Marked sold.">
+            <input type="hidden" name="id" value={listing.id} />
+          </ActionForm>
+        </OwnerOnly>
       )}
 
       <div className="footnote">

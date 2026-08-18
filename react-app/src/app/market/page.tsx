@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { listListings, listTowns, listingCategories } from '@/lib/queries';
 import { PageHeader, Empty, peso, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import ListFilter from '@/components/app/ListFilter';
 import JsonLd from '@/components/seo/JsonLd';
 import { collectionPageSchema } from '@/lib/schema';
 
@@ -12,27 +14,19 @@ export const metadata = {
   alternates: { canonical: '/market' },
 };
 
+// Prerendered and revalidated; town and category are applied in the browser.
 export const revalidate = 300;
 
-
-export default async function MarketPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ town?: string; category?: string }>;
-}) {
-  const { town, category } = await searchParams;
+export default async function MarketPage() {
   const [items, towns, cats] = await Promise.all([
-    listListings({ townSlug: town, category }),
+    listListings(),
     listTowns(),
     listingCategories(),
   ]);
-  // Filtered views are not the canonical page, so they do not advertise a list,
-  // and an empty board has no list worth advertising.
-  const unfiltered = !town && !category;
 
   return (
     <main className="wrap">
-      {unfiltered && items.length > 0 && (
+      {items.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Buy & sell (Province of Isabela)',
@@ -50,30 +44,37 @@ export default async function MarketPage({
         action={<a className="btn btn--primary" href="/market/new">Post a listing</a>}
       />
 
-      <form className="filterbar" method="get">
-        <label>
-          Town
-          <select name="town" defaultValue={town ?? ''}>
-            <option value="">Anywhere</option>
-            {towns.map((t) => <option key={t.slug} value={t.slug}>{t.name}</option>)}
-          </select>
-        </label>
-        <label>
-          Category
-          <select name="category" defaultValue={category ?? ''}>
-            <option value="">All</option>
-            {cats.map((c) => <option key={c.category} value={c.category}>{c.category} ({c.n})</option>)}
-          </select>
-        </label>
-        <button type="submit" className="btn btn--sm">Filter</button>
-      </form>
+      <Suspense fallback={null}>
+        <ListFilter
+          targetId="marketboard"
+          facets={[
+            {
+              key: 'town',
+              label: 'Town',
+              all: 'Anywhere',
+              options: towns.map((t) => ({ value: t.slug, label: t.name })),
+            },
+            {
+              key: 'category',
+              label: 'Category',
+              all: 'All',
+              options: cats.map((c) => ({
+                value: c.category,
+                label: `${c.category} (${c.n})`,
+              })),
+            },
+          ]}
+          rows={items.map((l) => ({ town: l.townSlug, category: l.category }))}
+          emptyMessage="Nothing listed for that filter yet."
+        />
+      </Suspense>
 
       {items.length === 0 ? (
         <Empty>Nothing listed here yet.</Empty>
       ) : (
-        <ul className="cardlist cardlist--grid">
+        <ul className="cardlist cardlist--grid" id="marketboard">
           {items.map((l) => (
-            <li key={l.id} className="card">
+            <li key={l.id} className="card" data-town={l.townSlug} data-category={l.category}>
               <div className="card-main">
                 <h2 className="card-title">{l.title}</h2>
                 <p className="card-price">
