@@ -39,7 +39,7 @@ export default async function ServicesPage({
 
   return (
     <main className="wrap">
-      {unfiltered && (
+      {unfiltered && services.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Provincial services (Province of Isabela)',

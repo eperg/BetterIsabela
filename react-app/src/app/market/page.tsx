@@ -26,12 +26,13 @@ export default async function MarketPage({
     listTowns(),
     listingCategories(),
   ]);
-  // Filtered views are not the canonical page, so they do not advertise a list.
+  // Filtered views are not the canonical page, so they do not advertise a list,
+  // and an empty board has no list worth advertising.
   const unfiltered = !town && !category;
 
   return (
     <main className="wrap">
-      {unfiltered && (
+      {unfiltered && items.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Buy & sell (Province of Isabela)',

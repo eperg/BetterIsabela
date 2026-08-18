@@ -21,12 +21,13 @@ export default async function AskPage({
 }) {
   const { town } = await searchParams;
   const [items, towns] = await Promise.all([listQuestions({ townSlug: town }), listTowns()]);
-  // Filtered views are not the canonical page, so they do not advertise a list.
+  // Filtered views are not the canonical page, so they do not advertise a list,
+  // and an empty board has no list worth advertising.
   const unfiltered = !town;
 
   return (
     <main className="wrap">
-      {unfiltered && (
+      {unfiltered && items.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Ask & answer (Province of Isabela)',

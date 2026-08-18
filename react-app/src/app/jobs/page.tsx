@@ -27,12 +27,13 @@ export default async function JobsPage({
 }) {
   const { town } = await searchParams;
   const [jobs, towns] = await Promise.all([listJobs({ townSlug: town }), listTowns()]);
-  // Filtered views are not the canonical page, so they do not advertise a list.
+  // Filtered views are not the canonical page, so they do not advertise a list,
+  // and an empty board has no list worth advertising.
   const unfiltered = !town;
 
   return (
     <main className="wrap">
-      {unfiltered && (
+      {unfiltered && jobs.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Job board (Province of Isabela)',

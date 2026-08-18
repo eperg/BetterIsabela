@@ -25,12 +25,13 @@ export default async function OfficialsPage({
     listOfficials({ townSlug: scope }),
     listTowns(),
   ]);
-  // Filtered views are not the canonical page, so they do not advertise a list.
+  // Filtered views are not the canonical page, so they do not advertise a list,
+  // and an empty board has no list worth advertising.
   const unfiltered = !town;
 
   return (
     <main className="wrap">
-      {unfiltered && (
+      {unfiltered && people.length > 0 && (
         <JsonLd
           data={collectionPageSchema({
             name: 'Public officials (Province of Isabela)',
