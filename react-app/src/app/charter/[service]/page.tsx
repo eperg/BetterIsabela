@@ -19,13 +19,22 @@ import {
   type WaitValue,
 } from '@/lib/charter';
 
-// Curated catalogue, so every service page is built ahead of time. Reports
-// revalidate the page they were filed against.
+// Cached, and revalidated when a report is filed against this service.
 export const revalidate = 300;
 
-export async function generateStaticParams(): Promise<{ service: string }[]> {
-  const { services } = await getServices();
-  return services.map((s) => ({ service: s.id }));
+/**
+ * Empty, and load-bearing twice over.
+ *
+ * A dynamic segment with no generateStaticParams at all is served uncached in
+ * Next 15 whatever `revalidate` says, so the function has to exist. Returning
+ * the 52 service ids instead would prerender all of them, and doing that in
+ * parallel against Supabase's pooler exhausts its 200-client limit and fails the
+ * build — Next forks a worker per batch and each one opens its own pool. So each
+ * page is rendered on first request and cached from then on, which also keeps
+ * build minutes down.
+ */
+export function generateStaticParams(): { service: string }[] {
+  return [];
 }
 
 async function load(id: string) {
