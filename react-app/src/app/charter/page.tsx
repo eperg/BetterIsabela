@@ -108,7 +108,7 @@ export default async function CharterPage() {
         />
       </Suspense>
 
-      <ul className="cardlist charterlist" id="charterlist">
+      <ul className="cardlist cardlist--grid" id="charterlist">
         {rows.map((r) => (
           <li
             key={r.service.id}

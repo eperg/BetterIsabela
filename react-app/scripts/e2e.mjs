@@ -300,6 +300,60 @@ await step('an unknown filter value is ignored rather than hiding everything', a
   return `${n} jobs still shown`;
 });
 
+console.log('\nSIGN-IN STATE ACROSS NAVIGATION');
+await step('the header keeps the reader signed in across a client-side navigation', async () => {
+  // The regression this guards: the shared identity lookup is cached at module
+  // scope, and a client-side navigation never re-evaluates the layout. Signing in
+  // with email runs a server action that redirects, so without invalidating that
+  // cache the header keeps saying "Sign in" to somebody who just signed in. The
+  // dev-login form is a plain POST and reloads the page, which is why it hid the
+  // bug — so this step navigates the way the router does instead.
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  const who = await p.locator('.authbar-who').innerText();
+  for (const href of ['/jobs', '/officials', '/charter']) {
+    await p.locator(`.appnav-links a[href="${href}"]`).click();
+    await p.waitForLoadState('networkidle');
+    const still = await p.locator('.authbar-who').innerText();
+    if (still !== who) throw new Error(`identity lost navigating to ${href}: "${who}" -> "${still}"`);
+  }
+  return `${who} held across 3 client-side navigations`;
+});
+
+await step('a session with no bi_signedin flag is still recognised', async () => {
+  // This is the shape of every session that predated the flag cookie: valid
+  // server-side, with no readable marker. Treating the missing marker as proof of
+  // being signed out logged all of those readers out of the interface while their
+  // session was still live. The marker may only invalidate the cache, never stand
+  // in for the answer.
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  const before = await p.locator('.authbar-who').innerText();
+  const cookies = await ctx.cookies();
+  if (!cookies.some((c) => c.name === 'bi_signedin')) throw new Error('flag cookie was never set');
+  await ctx.clearCookies({ name: 'bi_signedin' });
+  // A FULL load, not a click: the module-scope cache has to start empty for this
+  // to test anything. With a warm cache the old code answered from the earlier
+  // fetch and looked fine, which is precisely why this needs spelling out.
+  await p.goto(BASE + '/officials', { waitUntil: 'networkidle' });
+  const after = await p.locator('.authbar-who').innerText();
+  if (after !== before) throw new Error(`flagless session read as signed out: "${before}" -> "${after}"`);
+  // Put it back so later steps run against a normal session.
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  return `${before} still recognised with the marker removed`;
+});
+
+await step('a signed-in reader sees the per-user affordances on a cached page', async () => {
+  // Same hazard, seen from the page rather than the header: these forms are
+  // client-gated on the same lookup, so a stale cache hides them on a cached page.
+  await p.goto(BASE + '/charter/birth-certificate', { waitUntil: 'networkidle' });
+  await p.waitForSelector('select[name=waited]', { timeout: 10000 });
+  await p.locator('.appnav-links a[href="/ask"]').click();
+  await p.waitForLoadState('networkidle');
+  const q = await p.locator('#askboard .card-title a').first().getAttribute('href');
+  await p.goto(BASE + q, { waitUntil: 'networkidle' });
+  await p.waitForSelector('textarea[name=body]', { timeout: 10000 });
+  return 'report form and answer form both offered';
+});
+
 console.log('\nHOMEPAGE');
 await step('snippets show the new content', async () => {
   await p.goto(BASE, { waitUntil: 'networkidle' });
