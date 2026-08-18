@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getQuestion } from '@/lib/queries';
 import { getCurrentUser } from '@/lib/session';
@@ -5,10 +6,30 @@ import { postAnswer } from '@/lib/actions';
 import ActionForm from '@/components/app/ActionForm';
 import { since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import JsonLd from '@/components/seo/JsonLd';
+import { qaPageSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const row = await getQuestion(Number(id));
+  if (!row) return { title: 'Question not found' };
+  const { question, answers } = row;
+  const answered = answers.length
+    ? `${answers.length} ${answers.length === 1 ? 'answer' : 'answers'} from the community.`
+    : 'Be the first to answer.';
+  return {
+    title: question.title,
+    description: summarise(`${question.body} ${answered}`, 200),
+    alternates: { canonical: `/ask/${id}` },
+  };
+}
 
 export default async function QuestionDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,6 +39,28 @@ export default async function QuestionDetail({ params }: { params: Promise<{ id:
 
   return (
     <main className="wrap wrap--narrow">
+      <JsonLd
+        data={[
+          qaPageSchema({
+            title: question.title,
+            body: question.body,
+            askerName,
+            createdAt: question.createdAt,
+            answers: answers.map((a) => ({
+              body: a.body,
+              authorName: a.authorName,
+              isAccepted: a.isAccepted,
+              createdAt: a.createdAt,
+            })),
+            path: `/ask/${question.id}`,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Ask & answer', path: '/ask' },
+            { name: question.title, path: `/ask/${question.id}` },
+          ]),
+        ]}
+      />
       <p className="crumb"><a href="/ask">← Ask &amp; answer</a></p>
       <h1>{question.title}</h1>
       <div className="card-meta">

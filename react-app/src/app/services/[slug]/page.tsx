@@ -7,6 +7,8 @@ import {
   serviceDetailRoutes,
 } from '@/lib/static-data';
 import ServiceBlocks from '@/components/app/ServiceBlocks';
+import JsonLd from '@/components/seo/JsonLd';
+import { governmentServiceSchema, breadcrumbSchema } from '@/lib/schema';
 
 // Curated reference content — it only changes when the data file is regenerated
 // and redeployed, so there is nothing to revalidate against.
@@ -51,6 +53,23 @@ export default async function ServiceDetailPage({
 
   return (
     <main className="wrap">
+      <JsonLd
+        data={[
+          governmentServiceSchema({
+            title: detail.title,
+            description: detail.description,
+            category: detail.category,
+            phones: detail.contact.phones,
+            emails: detail.contact.emails,
+            path: `/services/${detail.slug}`,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Services', path: '/services' },
+            { name: detail.title, path: `/services/${detail.slug}` },
+          ]),
+        ]}
+      />
       <p className="crumb">
         <a href="/services">← All services</a>
       </p>

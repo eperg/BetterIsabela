@@ -1,5 +1,15 @@
 import { listOfficials, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, Stars } from '@/components/app/ui';
+import JsonLd from '@/components/seo/JsonLd';
+import { collectionPageSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Public officials',
+  description:
+    'Directory of public officials serving the Province of Isabela and its towns — positions, ' +
+    'offices, and resident ratings and reviews. Find and rate the officials who serve your town.',
+  alternates: { canonical: '/officials' },
+};
 
 export const revalidate = 900;
 
@@ -15,9 +25,26 @@ export default async function OfficialsPage({
     listOfficials({ townSlug: scope }),
     listTowns(),
   ]);
+  // Filtered views are not the canonical page, so they do not advertise a list.
+  const unfiltered = !town;
 
   return (
     <main className="wrap">
+      {unfiltered && (
+        <JsonLd
+          data={collectionPageSchema({
+            name: 'Public officials (Province of Isabela)',
+            description:
+              'Directory of the public officials serving the Province of Isabela and its towns, ' +
+              'with position, office and resident ratings.',
+            path: '/officials',
+            items: people.map((o) => ({
+              name: `${o.name}, ${o.position}`,
+              path: `/officials/${o.id}`,
+            })),
+          })}
+        />
+      )}
       <PageHeader
         title="Public officials"
         lead="Rate and review the officials serving your town. One rating per person, per official."

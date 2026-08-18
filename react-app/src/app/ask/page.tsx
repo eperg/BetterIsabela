@@ -1,5 +1,15 @@
 import { listQuestions, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, since } from '@/components/app/ui';
+import JsonLd from '@/components/seo/JsonLd';
+import { collectionPageSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Ask & answer',
+  description:
+    'Community questions and answers about living in Isabela — government services, documents, ' +
+    'schools, transport and more. Ask a question or help answer your neighbours’.',
+  alternates: { canonical: '/ask' },
+};
 
 export const revalidate = 300;
 
@@ -11,9 +21,23 @@ export default async function AskPage({
 }) {
   const { town } = await searchParams;
   const [items, towns] = await Promise.all([listQuestions({ townSlug: town }), listTowns()]);
+  // Filtered views are not the canonical page, so they do not advertise a list.
+  const unfiltered = !town;
 
   return (
     <main className="wrap">
+      {unfiltered && (
+        <JsonLd
+          data={collectionPageSchema({
+            name: 'Ask & answer (Province of Isabela)',
+            description:
+              'Questions from residents of Isabela about government services, requirements and ' +
+              'processes, answered by neighbours and by LGU staff.',
+            path: '/ask',
+            items: items.map((q) => ({ name: q.title, path: `/ask/${q.id}` })),
+          })}
+        />
+      )}
       <PageHeader
         title="Ask &amp; answer"
         lead="Questions about government services, requirements and processes — answered by neighbours and by LGU staff."

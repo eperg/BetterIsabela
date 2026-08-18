@@ -7,6 +7,16 @@ import { PageHeader, TownSelect } from '@/components/app/ui';
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
 
+// Sign-in gated and per-user, so there is nothing stable for a crawler to index.
+// robots.txt already disallows the path; this keeps the page out of the index even
+// if it is reached by a link a crawler already knows about.
+export const metadata = {
+  title: 'Post a job',
+  description:
+    'Advertise a vacancy on the Isabela community job board. Free, and the post expires automatically after 60 days.',
+  robots: { index: false, follow: true },
+};
+
 
 export default async function NewJob() {
   const [towns, user] = await Promise.all([listTowns(), getCurrentUser()]);

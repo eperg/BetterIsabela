@@ -1,11 +1,32 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getJob } from '@/lib/queries';
 import { salaryRange, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import JsonLd from '@/components/seo/JsonLd';
+import { jobPostingSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const row = await getJob(Number(id));
+  if (!row) return { title: 'Job not found' };
+  const { job, townName } = row;
+  return {
+    title: `${job.title} at ${job.employer}`,
+    description: summarise(
+      `${job.title} — ${job.employer}, ${townName}, Isabela. ${job.description}`,
+      200
+    ),
+    alternates: { canonical: `/jobs/${id}` },
+  };
+}
 
 export default async function JobDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -15,6 +36,25 @@ export default async function JobDetail({ params }: { params: Promise<{ id: stri
 
   return (
     <main className="wrap wrap--narrow">
+      <JsonLd
+        data={[
+          jobPostingSchema({
+            title: job.title,
+            employer: job.employer,
+            description: job.description,
+            salaryMinCentavos: job.salaryMinCentavos,
+            salaryMaxCentavos: job.salaryMaxCentavos,
+            townName,
+            createdAt: job.createdAt,
+            path: `/jobs/${job.id}`,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Job board', path: '/jobs' },
+            { name: job.title, path: `/jobs/${job.id}` },
+          ]),
+        ]}
+      />
       <p className="crumb"><a href="/jobs">← Job board</a></p>
       <h1>{job.title}</h1>
       <p className="card-sub">{job.employer} · {townName}</p>

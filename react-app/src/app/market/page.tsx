@@ -1,6 +1,16 @@
 import { listListings, listTowns, listingCategories } from '@/lib/queries';
 import { PageHeader, Empty, peso, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import JsonLd from '@/components/seo/JsonLd';
+import { collectionPageSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Buy & sell',
+  description:
+    'Local buy & sell marketplace for Isabela — furniture, electronics, vehicles, farm goods and ' +
+    'more, listed by residents across the province’s towns.',
+  alternates: { canonical: '/market' },
+};
 
 export const revalidate = 300;
 
@@ -16,9 +26,23 @@ export default async function MarketPage({
     listTowns(),
     listingCategories(),
   ]);
+  // Filtered views are not the canonical page, so they do not advertise a list.
+  const unfiltered = !town && !category;
 
   return (
     <main className="wrap">
+      {unfiltered && (
+        <JsonLd
+          data={collectionPageSchema({
+            name: 'Buy & sell (Province of Isabela)',
+            description:
+              'Items for sale across the Province of Isabela: produce, livestock, tools, ' +
+              'vehicles, electronics and household goods listed by residents.',
+            path: '/market',
+            items: items.map((l) => ({ name: l.title, path: `/market/${l.id}` })),
+          })}
+        />
+      )}
       <PageHeader
         title="Buy &amp; sell"
         lead="Goods, tools, livestock and produce, offered by people across Isabela."

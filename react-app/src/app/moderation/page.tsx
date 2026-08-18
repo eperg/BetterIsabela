@@ -8,6 +8,16 @@ import { PageHeader, Empty, since } from '@/components/app/ui';
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
 
+// Sign-in gated and per-user, so there is nothing stable for a crawler to index.
+// robots.txt already disallows the path; this keeps the page out of the index even
+// if it is reached by a link a crawler already knows about.
+export const metadata = {
+  title: 'Moderation queue',
+  description:
+    'Internal moderation queue for reported community content.',
+  robots: { index: false, follow: true },
+};
+
 
 const TARGET_HREF: Record<string, (id: number) => string> = {
   job: (id) => `/jobs/${id}`,

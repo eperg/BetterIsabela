@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getListing } from '@/lib/queries';
 import { getCurrentUser } from '@/lib/session';
@@ -5,10 +6,31 @@ import { markListingSold } from '@/lib/actions';
 import ActionForm from '@/components/app/ActionForm';
 import { peso, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import JsonLd from '@/components/seo/JsonLd';
+import { productSchema, breadcrumbSchema, summarise } from '@/lib/schema';
 
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const row = await getListing(Number(id));
+  if (!row) return { title: 'Listing not found' };
+  const { listing, townName } = row;
+  const price = listing.priceCentavos != null ? peso(listing.priceCentavos) : 'Open to offers';
+  return {
+    title: `${listing.title} — ${price}`,
+    description: summarise(
+      `${listing.title} for sale in ${townName}, Isabela. ${price}. ${listing.description}`,
+      200
+    ),
+    alternates: { canonical: `/market/${id}` },
+  };
+}
 
 export default async function ListingDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,6 +41,24 @@ export default async function ListingDetail({ params }: { params: Promise<{ id: 
 
   return (
     <main className="wrap wrap--narrow">
+      <JsonLd
+        data={[
+          productSchema({
+            title: listing.title,
+            description: listing.description,
+            category: listing.category,
+            priceCentavos: listing.priceCentavos,
+            condition: listing.condition,
+            townName,
+            path: `/market/${listing.id}`,
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Buy & sell', path: '/market' },
+            { name: listing.title, path: `/market/${listing.id}` },
+          ]),
+        ]}
+      />
       <p className="crumb"><a href="/market">← Buy &amp; sell</a></p>
       <h1>{listing.title}</h1>
       <p className="card-price card-price--lg">

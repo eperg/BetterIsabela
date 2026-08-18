@@ -5,6 +5,8 @@ import Nav from '@/components/app/Nav';
 import InfoBar from '@/components/layout/InfoBar';
 import Footer from '@/components/layout/Footer';
 import PWAManager from '@/components/PWAManager';
+import JsonLd from '@/components/seo/JsonLd';
+import { organizationSchema, websiteSchema } from '@/lib/schema';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 
 export const viewport: Viewport = {
@@ -71,6 +73,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="/assets/css/accessibility.css" />
         <link rel="stylesheet" href="/assets/css/footer.css" />
         <link rel="stylesheet" href="/assets/css/app.css" />
+        {/* Site-wide entity graph: publisher + website, referenced by @id from
+            every page-level node so answer engines resolve one organisation. */}
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
       </head>
       <body>
         <LanguageProvider>

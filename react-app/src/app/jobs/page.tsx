@@ -1,6 +1,16 @@
 import { listJobs, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, salaryRange, since } from '@/components/app/ui';
 import ReportButton from '@/components/app/ReportButton';
+import JsonLd from '@/components/seo/JsonLd';
+import { collectionPageSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Job board',
+  description:
+    'Local jobs and hiring across the Province of Isabela — roles, employers, salary ranges and ' +
+    'how to apply, posted by employers and the community.',
+  alternates: { canonical: '/jobs' },
+};
 
 export const revalidate = 300;
 
@@ -17,9 +27,26 @@ export default async function JobsPage({
 }) {
   const { town } = await searchParams;
   const [jobs, towns] = await Promise.all([listJobs({ townSlug: town }), listTowns()]);
+  // Filtered views are not the canonical page, so they do not advertise a list.
+  const unfiltered = !town;
 
   return (
     <main className="wrap">
+      {unfiltered && (
+        <JsonLd
+          data={collectionPageSchema({
+            name: 'Job board (Province of Isabela)',
+            description:
+              'Current job vacancies across the Province of Isabela, with employer, town, ' +
+              'salary range and how to apply.',
+            path: '/jobs',
+            items: jobs.map((j) => ({
+              name: `${j.title} at ${j.employer}`,
+              path: `/jobs/${j.id}`,
+            })),
+          })}
+        />
+      )}
       <PageHeader
         title="Job board"
         lead="Work available across Isabela. Posted by employers and neighbours."

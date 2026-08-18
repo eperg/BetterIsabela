@@ -1,5 +1,7 @@
 import { getServices } from '@/lib/static-data';
 import { PageHeader, Empty } from '@/components/app/ui';
+import JsonLd from '@/components/seo/JsonLd';
+import { collectionPageSchema } from '@/lib/schema';
 
 export const revalidate = 3600;
 
@@ -8,6 +10,7 @@ export const metadata = {
   title: 'Provincial services',
   description:
     'Every service offered by the Province of Isabela — requirements, fees, processing time and the office that handles it.',
+  alternates: { canonical: '/services' },
 };
 
 export default async function ServicesPage({
@@ -30,8 +33,27 @@ export default async function ServicesPage({
     );
   });
 
+  // Filtered and searched views are not the canonical page, so they do not
+  // advertise a list. Only services with a detail page have a URL to list.
+  const unfiltered = !category && !needle;
+
   return (
     <main className="wrap">
+      {unfiltered && (
+        <JsonLd
+          data={collectionPageSchema({
+            name: 'Provincial services (Province of Isabela)',
+            description:
+              `Every service offered by the Province of Isabela: requirements, fees, processing ` +
+              `time and the office that handles it. ${withDetail} of ${total} have a full ` +
+              `step-by-step guide.`,
+            path: '/services',
+            items: services
+              .filter((s) => s.detailSlug)
+              .map((s) => ({ name: s.title, path: `/services/${s.detailSlug}` })),
+          })}
+        />
+      )}
       <PageHeader
         title="Provincial services"
         lead={`${total} services offered across the Province of Isabela — what each one costs, how long it takes, and which office handles it. ${withDetail} have a full step-by-step guide.`}

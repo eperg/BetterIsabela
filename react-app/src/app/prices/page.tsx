@@ -1,6 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { PageHeader, Empty } from '@/components/app/ui';
+import JsonLd from '@/components/seo/JsonLd';
+import { datasetSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Palay & corn prices',
+  description:
+    'What farmers in Isabela are paid for palay and corn, and what the markets charge for rice ' +
+    'and other basic goods — farmgate and retail prices side by side, with the gap between them.',
+  alternates: { canonical: '/prices' },
+};
 
 export const revalidate = 1800;
 
@@ -47,9 +57,23 @@ export default async function PricesPage() {
   }
 
   const spread = data.spread;
+  const sourceName = data.farmgate._sourceName ?? data.retail?._sourceName;
+  const sourceUrl = data.farmgate._source ?? data.retail?._source;
 
   return (
     <main className="wrap">
+      <JsonLd
+        data={datasetSchema({
+          name: 'Palay, corn and retail food prices (Province of Isabela)',
+          description:
+            'Farmgate prices paid to farmers for palay and corn in Isabela alongside retail ' +
+            'market prices for rice and other basic goods, with the gap between the two.',
+          path: '/prices',
+          keywords: ['palay price', 'corn price', 'rice price', 'farmgate', 'Isabela', 'food prices'],
+          sourceName,
+          sourceUrl,
+        })}
+      />
       <PageHeader
         title="Palay &amp; corn prices"
         lead="What farmers are paid, and what the markets charge. Know the number before you agree to it."

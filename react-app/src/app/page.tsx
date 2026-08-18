@@ -7,6 +7,15 @@ import {
 } from '@/lib/static-data';
 import { Stars, peso, salaryRange, since } from '@/components/app/ui';
 
+export const metadata = {
+  title: 'BetterIsabela.org | Services, officials and community for Isabela',
+  description:
+    'The civic portal for the Province of Isabela, Philippines. Find government services and the ' +
+    'Citizen’s Charter, rate public officials, track local projects and market prices, and use the ' +
+    'community job board, buy & sell, and Q&A.',
+  alternates: { canonical: '/' },
+};
+
 export const revalidate = 300;
 
 

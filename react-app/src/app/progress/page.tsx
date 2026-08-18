@@ -1,5 +1,15 @@
 import { listProjects, projectSummary, listTowns } from '@/lib/queries';
 import { PageHeader, Empty, peso } from '@/components/app/ui';
+import JsonLd from '@/components/seo/JsonLd';
+import { datasetSchema } from '@/lib/schema';
+
+export const metadata = {
+  title: 'Town progress & projects',
+  description:
+    'Track public projects across the towns of Isabela — status, percent complete, cost, and ' +
+    'funding source — so residents can see what is being built and how far along it is.',
+  alternates: { canonical: '/progress' },
+};
 
 export const revalidate = 900;
 
@@ -23,6 +33,18 @@ export default async function ProgressPage({
 
   return (
     <main className="wrap">
+      {!town && (
+        <JsonLd
+          data={datasetSchema({
+            name: 'Public project tracker (Province of Isabela)',
+            description:
+              'Public infrastructure and development projects across the towns of Isabela, with ' +
+              'status, percent complete, cost and funding source.',
+            path: '/progress',
+            keywords: ['public projects', 'infrastructure', 'Isabela', 'local government', 'budget'],
+          })}
+        />
+      )}
       <PageHeader
         title="Town progress tracker"
         lead="Public projects across Isabela — what is funded, what is running, what is finished."

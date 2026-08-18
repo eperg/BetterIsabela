@@ -6,6 +6,7 @@
  * listing by omission.
  */
 import 'server-only';
+import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 import { and, desc, eq, gt, isNull, or, sql, count } from 'drizzle-orm';
 import { db } from '@/db';
@@ -98,7 +99,13 @@ const listJobsUncached = async (opts: { townSlug?: string; limit?: number } = {}
 };
 
 export const listJobs = unstable_cache(listJobsUncached, ['jobs:list'], { tags: [TAGS.jobs], revalidate: TTL.live });
-export async function getJob(id: number) {
+/**
+ * Per-request memoised: generateMetadata and the page body both need the same
+ * row, and React's cache() collapses that into one query per request. Not
+ * unstable_cache — a detail page renders per request and must not serve a
+ * stale row from a cross-request cache.
+ */
+export const getJob = cache(async (id: number) => {
   const rows = await db
     .select({ job: jobs, townName: towns.name })
     .from(jobs)
@@ -106,7 +113,7 @@ export async function getJob(id: number) {
     .where(and(eq(jobs.id, id), eq(jobs.status, PUBLISHED)))
     .limit(1);
   return rows[0] ?? null;
-}
+});
 
 // ---------------------------------------------------------------------------
 // Buy & sell
@@ -139,7 +146,8 @@ const listListingsUncached = async (opts: { townSlug?: string; category?: string
 };
 
 export const listListings = unstable_cache(listListingsUncached, ['listings:list'], { tags: [TAGS.listings], revalidate: TTL.live });
-export async function getListing(id: number) {
+/** Per-request memoised, see getJob. */
+export const getListing = cache(async (id: number) => {
   const rows = await db
     .select({ listing: listings, townName: towns.name, sellerName: users.displayName })
     .from(listings)
@@ -148,7 +156,7 @@ export async function getListing(id: number) {
     .where(and(eq(listings.id, id), eq(listings.status, PUBLISHED)))
     .limit(1);
   return rows[0] ?? null;
-}
+});
 
 const listingCategoriesUncached = async () => {
   return db
@@ -187,7 +195,8 @@ const listQuestionsUncached = async (opts: { townSlug?: string; limit?: number }
 };
 
 export const listQuestions = unstable_cache(listQuestionsUncached, ['questions:list'], { tags: [TAGS.questions], revalidate: TTL.live });
-export async function getQuestion(id: number) {
+/** Per-request memoised, see getJob. */
+export const getQuestion = cache(async (id: number) => {
   const rows = await db
     .select({ question: questions, askerName: users.displayName })
     .from(questions)
@@ -211,7 +220,7 @@ export async function getQuestion(id: number) {
     .orderBy(desc(answers.isAccepted), answers.createdAt);
 
   return { ...rows[0], answers: replies };
-}
+});
 
 // ---------------------------------------------------------------------------
 // Town progress
@@ -279,7 +288,12 @@ const listOfficialsUncached = async (opts: { townSlug?: string | null; limit?: n
 };
 
 export const listOfficials = unstable_cache(listOfficialsUncached, ['officials:list'], { tags: [TAGS.officials], revalidate: TTL.slow });
-export async function getOfficial(id: number, viewerId?: number) {
+/**
+ * Per-request memoised, see getJob. The viewer's own rating is deliberately not
+ * fetched here: it varies per user and would make the row uncacheable for the
+ * metadata pass. Call getMyOfficialRating for that.
+ */
+export const getOfficial = cache(async (id: number) => {
   const rows = await db
     .select({ official: officials, townName: towns.name })
     .from(officials)
@@ -302,17 +316,17 @@ export async function getOfficial(id: number, viewerId?: number) {
     .orderBy(desc(officialReviews.createdAt))
     .limit(100);
 
-  let myRating: number | null = null;
-  if (viewerId) {
-    const mine = await db
-      .select({ score: officialRatings.score })
-      .from(officialRatings)
-      .where(and(eq(officialRatings.officialId, id), eq(officialRatings.userId, viewerId)))
-      .limit(1);
-    myRating = mine[0]?.score ?? null;
-  }
+  return { ...rows[0], reviews };
+});
 
-  return { ...rows[0], reviews, myRating };
+/** The signed-in viewer's own score for one official, or null if unrated. */
+export async function getMyOfficialRating(officialId: number, viewerId: number) {
+  const mine = await db
+    .select({ score: officialRatings.score })
+    .from(officialRatings)
+    .where(and(eq(officialRatings.officialId, officialId), eq(officialRatings.userId, viewerId)))
+    .limit(1);
+  return mine[0]?.score ?? null;
 }
 
 // ---------------------------------------------------------------------------
