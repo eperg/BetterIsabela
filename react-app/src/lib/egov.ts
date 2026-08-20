@@ -6,22 +6,32 @@
  * would publish the province's partner credentials to every visitor. Nothing in
  * this module may be imported from a Client Component.
  *
- * Flow (per the eGov developer portal):
+ * The flow is identity-provider-initiated. There is no authorise URL on our
+ * side and no `state` parameter to round-trip:
  *
- *   1. The citizen authenticates in the eGov PH app, which hands our callback an
- *      `exchange_code`.
+ *   1. The citizen authenticates in the eGov PH app, which redirects to a base
+ *      URL we register with eGov, with `?exchange_code=` appended.
  *   2. We POST that code plus our partner credentials to /api/token and receive
  *      a one-time access token.
- *   3. We call /api/partner/sso_authentication with the token to get the
- *      citizen's profile.
+ *   3. We POST to /api/partner/sso_authentication with that token as a bearer
+ *      and no body, and get the citizen's profile.
  *
- * The exact `scope` value and the response shapes are documented behind the
- * partner login at platforms.e.gov.ph/dashboard/api-catalogs/egov-sso. Probing
- * the live endpoint confirms it validates `scope` against a fixed list and
- * rejects everything not on it, so EGOV_SSO_SCOPE is configuration rather than a
- * constant — set it from the catalog page and the flow completes without a code
- * change. The response parsers below are defensive for the same reason: they
- * accept the documented field names and the common aliases.
+ * Verified against the live gateway on 20 Aug 2026:
+ *
+ *   - EGOV_OAUTH_BASE is the gateway base URL printed on the portal's API
+ *     credential page (https://platforms-api.e.gov.ph/egov-sso), not the bare
+ *     oauth.e.gov.ph host the docs imply.
+ *   - EGOV_PARTNER_CODE is the opaque hex id from that same page, not the
+ *     readable partner name shown elsewhere in the portal.
+ *   - `scope` is validated against a fixed list and is case-sensitive:
+ *     SSO_AUTHENTICATION.
+ *   - /api/token checks `exchange_code` BEFORE the credentials, so a 422
+ *     "Invalid exchange_code" proves nothing about the secret. Codes are
+ *     single-use and expire in seconds — scripts/egov-sso-smoke.mjs exists so a
+ *     fresh one can be tested in a single command.
+ *
+ * The response parsers below stay defensive: they accept the documented field
+ * names and the common aliases, so an upstream rename cannot lock citizens out.
  */
 import 'server-only';
 import { z } from 'zod';
@@ -52,15 +62,19 @@ function required(name: string): string {
   return value;
 }
 
-async function post(path: string, body: Record<string, unknown>, bearer?: string) {
+/**
+ * POSTs to eGov. `body` is optional: sso_authentication authenticates with the
+ * bearer token alone and rejects a JSON body, so callers omit it there.
+ */
+async function post(path: string, body?: Record<string, unknown>, bearer?: string) {
   const response = await fetch(`${OAUTH_BASE}${path}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
       Accept: 'application/json',
       ...(bearer ? { Authorization: `Bearer ${bearer}` } : {}),
     },
-    body: JSON.stringify(body),
+    ...(body ? { body: JSON.stringify(body) } : {}),
     signal: AbortSignal.timeout(TIMEOUT_MS),
     cache: 'no-store',
   });
@@ -129,12 +143,13 @@ export async function exchangeCodeForToken(exchangeCode: string): Promise<EgovTo
 // ---------------------------------------------------------------------------
 
 /**
- * The citizen profile. Only `sub` is depended upon — it is the stable join key
- * to our users table. Everything else is treated as optional presentation data
+ * The citizen profile. Only the subject is depended upon — the catalog returns
+ * it as `uniqid`, and it is the stable join key to our users table. Everything else is treated as optional presentation data
  * so a change in the upstream payload cannot lock people out.
  */
 const profileResponse = z
   .object({
+    uniqid: z.string().optional(),
     sub: z.string().optional(),
     id: z.union([z.string(), z.number()]).optional(),
     uuid: z.string().optional(),
@@ -147,26 +162,29 @@ const profileResponse = z
   })
   .passthrough();
 
+/**
+ * Deliberately narrow. The upstream payload also carries the citizen's
+ * signature as an inline base64 image, their PhilID PCN, passport number, face
+ * photo URL, birth date and mobile. None of that is needed to sign someone in,
+ * and holding it on a returned object is one stray log line away from writing a
+ * national ID into our server logs — so it is dropped here rather than passed on.
+ */
 export interface EgovProfile {
-  /** Stable subject identifier. Never display this. */
+  /** Stable subject identifier (`data.uniqid`). Never display this. */
   subject: string;
   email: string | null;
   displayName: string;
-  raw: unknown;
 }
 
 export async function fetchProfile(accessToken: string): Promise<EgovProfile> {
-  const body = await post('/api/partner/sso_authentication', {
-    partner_code: required('EGOV_PARTNER_CODE'),
-    access_token: accessToken,
-  }, accessToken);
+  const body = await post('/api/partner/sso_authentication', undefined, accessToken);
 
   const parsed = profileResponse.parse(body);
   const inner = (parsed.data ?? {}) as Record<string, unknown>;
   const pick = (key: string) =>
     (parsed as Record<string, unknown>)[key] ?? inner[key];
 
-  const subject = String(pick('sub') ?? pick('uuid') ?? pick('id') ?? '');
+  const subject = String(pick('uniqid') ?? pick('sub') ?? pick('uuid') ?? pick('id') ?? '');
   if (!subject) {
     throw new EgovError('eGov profile contained no subject identifier', 200, {
       keys: Object.keys(parsed),
@@ -185,7 +203,6 @@ export async function fetchProfile(accessToken: string): Promise<EgovProfile> {
     subject,
     email: (pick('email') as string) ?? null,
     displayName,
-    raw: body,
   };
 }
 

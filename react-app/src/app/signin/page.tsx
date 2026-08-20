@@ -24,11 +24,17 @@ export default async function SignInPage() {
         lead="An account lets you post jobs and listings, ask and answer questions, and rate the officials serving your town."
       />
 
+      {/*
+        eGov SSO is identity-provider-initiated: there is no URL we can send a
+        citizen to. eGov hands our /auth/callback an exchange_code after they
+        sign in inside the eGov PH app, so the only honest thing to show here is
+        where to start. A button would 404.
+      */}
       {sso && (
-        <p style={{ marginBottom: 18 }}>
-          <a className="btn btn--primary" href="/auth/start">
-            Sign in with eGov PH
-          </a>
+        <p className="footnote" style={{ marginBottom: 18 }}>
+          Signed up through <strong>eGov PH</strong>? Open BetterIsabela from the
+          eGov PH app and you will arrive here already signed in. There is no
+          eGov button on this page — the sign-in starts on their side.
         </p>
       )}
 
