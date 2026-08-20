@@ -3,7 +3,6 @@ import AuthForms from '@/components/app/AuthForms';
 import { PageHeader, Empty } from '@/components/app/ui';
 import { getCurrentUser } from '@/lib/session';
 import { isEmailAuthConfigured } from '@/lib/supabase';
-import { isSsoConfigured } from '@/lib/egov';
 
 // Reads the signed-in user, so it must render per request.
 export const dynamic = 'force-dynamic';
@@ -15,7 +14,6 @@ export default async function SignInPage() {
   if (user) redirect('/');
 
   const email = isEmailAuthConfigured();
-  const sso = isSsoConfigured();
 
   return (
     <main className="wrap wrap--narrow">
@@ -25,19 +23,14 @@ export default async function SignInPage() {
       />
 
       {/*
-        eGov SSO is identity-provider-initiated: there is no URL we can send a
-        citizen to. eGov hands our /auth/callback an exchange_code after they
-        sign in inside the eGov PH app, so the only honest thing to show here is
-        where to start. A button would 404.
+        eGov SSO is deliberately not mentioned here yet. The flow is
+        identity-provider-initiated, so nothing on this page can start it: eGov
+        appends an exchange_code to a base URL we register with them, and that
+        registration is still outstanding. Announcing the route before it works
+        would send citizens looking for a door that is not open. /auth/callback
+        stays live and configured, so restoring this is a matter of putting the
+        paragraph back once eGov confirms the callback URL.
       */}
-      {sso && (
-        <p className="footnote" style={{ marginBottom: 18 }}>
-          Signed up through <strong>eGov PH</strong>? Open BetterIsabela from the
-          eGov PH app and you will arrive here already signed in. There is no
-          eGov button on this page — the sign-in starts on their side.
-        </p>
-      )}
-
       {email ? (
         <AuthForms />
       ) : (
