@@ -228,7 +228,9 @@ export const getQuestion = cache(async (id: number) => {
 // Town progress
 // ---------------------------------------------------------------------------
 
-const listProjectsUncached = async (opts: { townSlug?: string; limit?: number } = {}) => {
+const listProjectsUncached = async (
+  opts: { townSlug?: string; limit?: number; offset?: number } = {}
+) => {
   const where = opts.townSlug ? eq(projects.townSlug, opts.townSlug) : undefined;
   return db
     .select({
@@ -246,8 +248,12 @@ const listProjectsUncached = async (opts: { townSlug?: string; limit?: number } 
     })
     .from(projects)
     .where(where)
-    .orderBy(desc(projects.updatedAt))
-    .limit(opts.limit ?? 50);
+    // A bulk sync stamps every row with the same updated_at, which leaves the
+    // sort order undefined, and an undefined order paginates by repeating some
+    // rows and skipping others. The id breaks the tie.
+    .orderBy(desc(projects.updatedAt), desc(projects.id))
+    .limit(opts.limit ?? 50)
+    .offset(opts.offset ?? 0);
 };
 
 export const listProjects = unstable_cache(listProjectsUncached, ['projects:list'], { tags: [TAGS.projects], revalidate: TTL.slow });
@@ -262,6 +268,54 @@ const projectSummaryUncached = async (townSlug?: string) => {
 };
 
 export const projectSummary = unstable_cache(projectSummaryUncached, ['projects:summary'], { tags: [TAGS.projects], revalidate: TTL.slow });
+
+/**
+ * One row per town: how many projects, how many still running, and what they
+ * cost together. The tracker holds thousands of contracts, far more than a page
+ * can carry, so the province view is this breakdown rather than a list — and a
+ * town's own page holds the projects themselves.
+ *
+ * Projects that cross municipal boundaries carry no town and are counted
+ * separately by `projectsProvinceWide`, not silently dropped.
+ */
+const projectTownTotalsUncached = async () => {
+  const rows = await db
+    .select({
+      townSlug: projects.townSlug,
+      total: count(),
+      ongoing: sql<number>`count(*) FILTER (WHERE ${projects.status} = 'ongoing')::int`,
+      completed: sql<number>`count(*) FILTER (WHERE ${projects.status} = 'completed')::int`,
+      costCentavos: sql<number | null>`sum(${projects.costCentavos})::bigint`,
+    })
+    .from(projects)
+    .groupBy(projects.townSlug);
+  return rows;
+};
+
+export const projectTownTotals = unstable_cache(projectTownTotalsUncached, ['projects:towns'], { tags: [TAGS.projects], revalidate: TTL.slow });
+
+/** Contracts that span more than one municipality, so belong to no single town. */
+const projectsProvinceWideUncached = async (limit = 40) =>
+  db
+    .select({
+      id: projects.id,
+      title: projects.title,
+      description: projects.description,
+      category: projects.category,
+      status: projects.status,
+      percentComplete: projects.percentComplete,
+      costCentavos: projects.costCentavos,
+      townSlug: projects.townSlug,
+      sourceName: projects.sourceName,
+      sourceUrl: projects.sourceUrl,
+      targetOn: projects.targetOn,
+    })
+    .from(projects)
+    .where(isNull(projects.townSlug))
+    .orderBy(desc(projects.costCentavos))
+    .limit(limit);
+
+export const projectsProvinceWide = unstable_cache(projectsProvinceWideUncached, ['projects:province'], { tags: [TAGS.projects], revalidate: TTL.slow });
 // ---------------------------------------------------------------------------
 // Officials
 // ---------------------------------------------------------------------------

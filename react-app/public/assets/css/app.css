@@ -74,6 +74,9 @@
 }
 .appnav-inner > nav::-webkit-scrollbar { display: none; }
 .appnav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--app-ink);
@@ -81,6 +84,10 @@
   white-space: nowrap;
 }
 .appnav-brand strong { color: var(--app-accent); }
+/* The provincial seal at header size. Fixed box, so it cannot shift the row
+   height while it loads. The seal's artwork carries its own ring of white, so it
+   is set a touch larger than the cap height to sit level with the wordmark. */
+.appnav-seal { width: 38px; height: 38px; flex: none; }
 .appnav-links {
   display: flex;
   gap: 2px;
@@ -88,6 +95,12 @@
   margin: 0;
   padding: 0;
   flex-wrap: nowrap;
+  /* The slack in the row sits between the brand and the links, so the menu ends
+     up next to sign-in rather than trailing off in the middle. min-width keeps
+     the first link reachable once the list is wide enough to scroll — flex-end
+     alone would push it out of the scroll container's start. */
+  justify-content: flex-end;
+  min-width: max-content;
 }
 .appnav-links li { flex: none; }
 .appnav-links a {
@@ -238,6 +251,15 @@
   font-size: 0.9rem;
   line-height: 1.6;
   max-width: 74ch;
+}
+/* A DPWH contract name is a paragraph in itself, and a grid row is as tall as
+   its tallest card. Clamped here rather than shortened in the database, so the
+   full name is still in the page for anyone searching it. */
+#projectlist .card-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
 }
 /* Rows in a single-column list should hug their content, not stretch. */
 .cardlist:not(.cardlist--grid) .card { align-items: flex-start; }
@@ -1010,6 +1032,55 @@
 .charter-verdict--within { color: var(--app-ok); }
 .charter-verdict--no_promise { color: var(--app-warn); }
 .charter-verdict--no_reports { color: var(--app-muted); }
+
+/* ---- pager ---- */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 26px 0 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--app-line);
+}
+.pager-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pager-list li { display: flex; align-items: center; gap: 4px; }
+.pager-n,
+.pager-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  color: var(--app-ink);
+  transition: background-color var(--app-fast) var(--app-ease);
+}
+.pager-n:hover,
+.pager-step:hover { background: var(--app-tint); color: var(--app-accent-ink); }
+.pager-n.is-here {
+  background: var(--app-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.pager-n.is-here:hover { background: var(--app-accent); color: #fff; }
+/* Kept in place rather than removed, so the row does not jump between pages. */
+.pager-step.is-off { color: var(--app-muted); opacity: 0.45; }
+.pager-step.is-off:hover { background: none; color: var(--app-muted); }
+.pager-gap { color: var(--app-muted); padding: 0 2px; }
 
 /* A distribution, not a chart library: one row per bucket, width by count. */
 .waitchart { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }

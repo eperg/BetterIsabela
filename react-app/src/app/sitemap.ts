@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { listServiceDetails, getServices } from '@/lib/static-data';
+import { projectTownTotals } from '@/lib/queries';
 
 /**
  * Generated rather than hand-maintained, so a new service detail page cannot be
@@ -45,6 +46,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // One charter page per service, which is where the long-tail question
   // ("how long does a business permit take in Isabela") actually gets answered.
   const { services } = await getServices();
+  // One page per town that has projects. Page two onwards is left out: the
+  // pager links it, and a crawler that wants page four can follow page three.
+  const townsWithProjects = (await projectTownTotals()).filter(
+    (t) => t.townSlug && Number(t.total) > 0
+  );
 
   return [
     ...PAGES.map((p) => ({
@@ -61,6 +67,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...services.map((s) => ({
       url: `${BASE}/charter/${s.id}`,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })),
+    ...townsWithProjects.map((t) => ({
+      url: `${BASE}/progress/${t.townSlug}`,
       lastModified,
       changeFrequency: 'weekly' as const,
       priority: 0.6,

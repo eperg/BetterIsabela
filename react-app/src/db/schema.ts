@@ -327,6 +327,13 @@ export const projects = pgTable(
     /** Every figure here must be traceable to a published record. */
     sourceName: text('source_name').notNull(),
     sourceUrl: text('source_url'),
+    /**
+     * The publisher's own identifier for this project, namespaced by source
+     * (`dime:P01001928LZ`). Unique, so re-running an ingest updates the row it
+     * already wrote instead of adding a second copy. Null for rows entered by
+     * hand, which have no upstream record.
+     */
+    sourceRef: varchar('source_ref', { length: 64 }),
     verifiedOn: timestamp('verified_on', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -334,6 +341,7 @@ export const projects = pgTable(
   (t) => [
     index('projects_town_idx').on(t.townSlug),
     index('projects_status_idx').on(t.status),
+    uniqueIndex('projects_source_ref_key').on(t.sourceRef),
   ]
 );
 
