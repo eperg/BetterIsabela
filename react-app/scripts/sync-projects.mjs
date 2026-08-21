@@ -375,17 +375,46 @@ if (unknown.length) {
   process.exit(1);
 }
 
+/**
+ * Written in batches rather than a statement per contract. Two thousand
+ * round-trips to a hosted database is eight minutes of waiting; the same rows in
+ * chunks is seconds, which is the difference between a script somebody runs and
+ * one they schedule.
+ */
+const COLUMNS = [
+  'town_slug', 'title', 'description', 'category', 'status', 'percent_complete',
+  'cost_centavos', 'funding_source', 'contractor', 'started_on', 'target_on',
+  'completed_on', 'source_name', 'source_url', 'source_ref', 'verified_on', 'updated_at',
+];
+const BATCH = 200;
+const now = new Date();
+
+const record = (r) => ({
+  town_slug: r.townSlug,
+  title: r.title,
+  description: r.description,
+  category: r.category,
+  status: r.status,
+  percent_complete: r.percentComplete,
+  cost_centavos: r.costCentavos,
+  funding_source: r.fundingSource,
+  contractor: r.contractor,
+  started_on: r.startedOn,
+  target_on: r.targetOn,
+  completed_on: r.completedOn,
+  source_name: SOURCE_NAME,
+  source_url: r.sourceUrl,
+  source_ref: r.sourceRef,
+  verified_on: now,
+  updated_at: now,
+});
+
 let inserted = 0;
 let updated = 0;
-for (const r of batch) {
-  const [res] = await sql`
-    INSERT INTO projects (town_slug, title, description, category, status, percent_complete,
-                          cost_centavos, funding_source, contractor, started_on, target_on,
-                          completed_on, source_name, source_url, source_ref, verified_on, updated_at)
-    VALUES (${r.townSlug}, ${r.title}, ${r.description}, ${r.category}, ${r.status},
-            ${r.percentComplete}, ${r.costCentavos}, ${r.fundingSource}, ${r.contractor},
-            ${r.startedOn}, ${r.targetOn}, ${r.completedOn}, ${SOURCE_NAME}, ${r.sourceUrl},
-            ${r.sourceRef}, now(), now())
+for (let i = 0; i < batch.length; i += BATCH) {
+  const chunk = batch.slice(i, i + BATCH).map(record);
+  const written = await sql`
+    INSERT INTO projects ${sql(chunk, ...COLUMNS)}
     ON CONFLICT (source_ref) DO UPDATE SET
       town_slug = EXCLUDED.town_slug, title = EXCLUDED.title,
       description = EXCLUDED.description, category = EXCLUDED.category,
@@ -393,11 +422,13 @@ for (const r of batch) {
       cost_centavos = EXCLUDED.cost_centavos, funding_source = EXCLUDED.funding_source,
       contractor = EXCLUDED.contractor, started_on = EXCLUDED.started_on,
       target_on = EXCLUDED.target_on, completed_on = EXCLUDED.completed_on,
-      source_url = EXCLUDED.source_url, verified_on = now(), updated_at = now()
+      source_url = EXCLUDED.source_url, verified_on = EXCLUDED.verified_on,
+      updated_at = EXCLUDED.updated_at
     RETURNING (xmax = 0) AS is_insert`;
-  if (res.is_insert) inserted += 1;
-  else updated += 1;
+  for (const row of written) row.is_insert ? (inserted += 1) : (updated += 1);
+  process.stdout.write(`\r  written ${Math.min(i + BATCH, batch.length)}/${batch.length}   `);
 }
+process.stdout.write('\r' + ' '.repeat(40) + '\r');
 
 const tally = await sql`SELECT status, count(*)::int AS n FROM projects GROUP BY status ORDER BY n DESC`;
 const [{ n: unsourced }] = await sql`SELECT count(*)::int AS n FROM projects WHERE source_url IS NULL`;

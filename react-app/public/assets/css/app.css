@@ -71,6 +71,24 @@
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
+  /* Swiping lands on a link rather than half of one. */
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 8px;
+  /* The scrollbar is hidden, so without this the menu is silently truncated:
+     at 1024px two links sit off the edge and nothing says so. Four layers do
+     it with no JavaScript — the two solid fades scroll away with the content
+     (attachment: local) while the two shadows stay pinned to the edges
+     (attachment: scroll), so each shadow only shows while there is still
+     something in that direction. */
+  background-image:
+    linear-gradient(to right, var(--app-surface) 40%, rgba(255, 255, 255, 0)),
+    linear-gradient(to left, var(--app-surface) 40%, rgba(255, 255, 255, 0)),
+    radial-gradient(farthest-side at 0 50%, rgba(16, 24, 40, 0.16), rgba(16, 24, 40, 0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(16, 24, 40, 0.16), rgba(16, 24, 40, 0));
+  background-position: left center, right center, left center, right center;
+  background-size: 32px 100%, 32px 100%, 13px 100%, 13px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
 }
 .appnav-inner > nav::-webkit-scrollbar { display: none; }
 .appnav-brand {
@@ -103,11 +121,16 @@
   min-width: max-content;
 }
 .appnav-links li { flex: none; }
+.appnav-links li { scroll-snap-align: start; }
 .appnav-links a {
-  display: block;
-  padding: 6px 9px;
+  /* A flex box with a floor rather than padding alone, so every link is the
+     same comfortable size to hit whatever the label length. */
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 11px;
   border-radius: 7px;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   white-space: nowrap;
   font-weight: 500;
   color: var(--app-muted);
@@ -597,11 +620,22 @@
   .row { grid-template-columns: 1fr; }
   .card { flex-direction: column; }
   /* Too narrow for one line: brand and sign-in share the top row, the menu
-     scrolls beneath them. */
-  .appnav-inner { flex-wrap: wrap; gap: 8px 12px; }
+     scrolls beneath them, full width. */
+  .appnav-inner { flex-wrap: wrap; gap: 6px 12px; padding: 6px 16px 4px; }
   .appnav-inner > nav { order: 3; flex-basis: 100%; }
   .authbar { margin-left: auto; }
-  .appnav-links { gap: 0; }
+  /* The menu has the row to itself here, so it reads left to right from the
+     start instead of being pushed against sign-in. */
+  .appnav-links { gap: 0; justify-content: flex-start; }
+  .appnav-links a { min-height: 44px; padding: 6px 10px; }
+}
+
+/* The brand shares its row with sign-in only, since the menu has wrapped to its
+   own line by this width, so the wordmark stays: dropping it would buy the menu
+   nothing and leave the top row half empty. */
+@media (max-width: 420px) {
+  .appnav-brand { gap: 7px; font-size: 0.98rem; }
+  .appnav-brand .appnav-seal { width: 32px; height: 32px; }
 }
 
 /* ---- services & statistics ---- */
