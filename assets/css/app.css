@@ -345,11 +345,164 @@
 .progress-label { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; color: var(--app-ink); }
 
 /* ---- homepage ---- */
-.hhero { padding: 40px 0 34px; border-bottom: 1px solid var(--app-line); margin-bottom: 28px; }
+/* Copy left, crops right. The illustration is a decorative column, so it is the
+   only thing that gives way on a narrow screen. */
+.hhero {
+  padding: 40px 0 34px;
+  border-bottom: 1px solid var(--app-line);
+  margin-bottom: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 30vw, 380px);
+  gap: clamp(16px, 4vw, 44px);
+  align-items: center;
+}
 .hhero h1 { margin: 0 0 10px; font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem); letter-spacing: -0.03em; line-height: 1.05; }
 .hhero h1 span { color: var(--app-accent); }
 .hhero p { margin: 0 0 20px; max-width: 56ch; color: var(--app-muted); font-size: 1.05rem; }
 .hhero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---- hero illustration: rice and mungbean ----------------------------------
+   Inline SVG so there is no image request and no layout shift. Colour lives
+   here rather than on the elements; the SVG only carries geometry.
+   Every sway keyframe returns to the neutral pose at 0% and 100%, so the frame
+   a reduced-motion visitor is left with still looks like a finished drawing.
+   -------------------------------------------------------------------------- */
+.hhero-art { justify-self: end; width: 100%; max-width: 400px; }
+.hhero-art svg { display: block; width: 100%; height: auto; }
+
+.ci-disc-ring { fill: none; stroke: rgba(0, 50, 160, 0.1); }
+.ci-ground { fill: rgba(22, 33, 26, 0.07); }
+.ci-ridge { opacity: 0.5; }
+.ci-field { fill: #dcebd2; }
+.ci-sun-core { fill: #ffdd88; }
+.ci-rows { fill: none; stroke: rgba(255, 255, 255, 0.75); stroke-width: 1.6; stroke-linecap: round; }
+
+.ci-stem { fill: none; stroke: #5f8f4e; stroke-width: 2.6; stroke-linecap: round; }
+.ci-stem--mung { stroke: #4b8a4f; stroke-width: 3; }
+.ci-stem--thin { stroke-width: 2; }
+.ci-blade { fill: url(#ci-leaf); opacity: 0.92; }
+.ci-blade--low { opacity: 0.7; }
+.ci-rachis { fill: none; stroke: #c9a24a; stroke-width: 1.9; stroke-linecap: round; }
+.ci-grain { fill: url(#ci-grain); }
+.ci-awn { fill: none; stroke: rgba(196, 143, 44, 0.5); stroke-width: 0.9; stroke-linecap: round; }
+/* Distant crop, paled back so the front plants keep their contrast. */
+.ci-far { opacity: 0.3; }
+
+.ci-leaf { fill: url(#ci-leaf); }
+.ci-rib { fill: none; stroke: rgba(255, 255, 255, 0.38); stroke-width: 1; }
+/* A wider stroke under each pod stands in for an outline, which keeps the pods
+   off the leaves they hang against. */
+.ci-pod-edge { fill: none; stroke: #2f6b3d; stroke-width: 6.4; stroke-linecap: round; }
+.ci-pod { fill: none; stroke: #5cab63; stroke-width: 5; stroke-linecap: round; }
+/* A ripe mungbean pod goes dark brown before it splits — one of the three shows it. */
+.ci-pod--ripe { stroke: #8a6a3a; }
+.ci-pod-tip { fill: none; stroke: #2f6b3d; stroke-width: 1.6; stroke-linecap: round; }
+.ci-bean-mark { fill: rgba(18, 58, 30, 0.14); }
+.ci-bean { fill: #5fae63; }
+.ci-bean-gloss { fill: rgba(255, 255, 255, 0.5); }
+
+/* One sway animation, five amplitudes. Offset delays keep the plants from moving
+   as a block, which is what makes a real field look artificial. */
+.ci-plant {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: ci-sway 8s ease-in-out infinite;
+  will-change: transform;
+}
+.ci-sway-a { --ci-amp: 2.2deg; animation-duration: 7.5s; }
+.ci-sway-b { --ci-amp: -2.8deg; animation-duration: 9.5s; }
+.ci-sway-c { --ci-amp: 1.7deg; animation-duration: 6.5s; }
+.ci-sway-slow { --ci-amp: 1.1deg; animation-duration: 12s; }
+.ci-sway-far { --ci-amp: 0.8deg; animation-duration: 14s; }
+@keyframes ci-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(var(--ci-amp, 2deg)); }
+}
+
+.ci-flutter {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  animation: ci-flutter 5.5s ease-in-out infinite;
+}
+@keyframes ci-flutter {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg) translateY(-1px); }
+}
+
+.ci-swing {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: ci-swing 6.5s ease-in-out infinite;
+}
+@keyframes ci-swing {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.ci-sun {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ci-glow 10s ease-in-out infinite;
+}
+@keyframes ci-glow {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.07); }
+}
+
+.ci-row { animation: ci-shimmer 6s ease-in-out infinite; }
+@keyframes ci-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.85; }
+}
+
+/* Chaff lifting off the field. Hidden at rest, so freezing the animation simply
+   removes it rather than parking specks in mid-air. */
+.ci-mote {
+  fill: #d8b45f;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: ci-lift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes ci-lift {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  18% { opacity: 0.8; }
+  70% { opacity: 0.45; }
+  100% { transform: translate(30px, -128px) rotate(150deg); opacity: 0; }
+}
+
+.ci-bird {
+  fill: none;
+  stroke: rgba(64, 86, 104, 0.5);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  /* Visible at rest so a frozen frame keeps its birds; the keyframes fade them
+     in and out as they cross. */
+  opacity: 0.85;
+  transform-box: fill-box;
+  animation: ci-fly 22s linear infinite;
+}
+@keyframes ci-fly {
+  0% { transform: translate(0, 0); opacity: 0; }
+  12% { opacity: 0.85; }
+  50% { transform: translate(78px, -22px); }
+  88% { opacity: 0.85; }
+  100% { transform: translate(158px, -8px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hhero-art * { animation: none !important; }
+}
+
+@media (max-width: 900px) {
+  .hhero { grid-template-columns: 1fr; gap: 6px; }
+  .hhero-art { justify-self: center; max-width: 260px; }
+}
+@media (max-width: 520px) {
+  .hhero-art { max-width: 208px; }
+}
 /* Panels carry very different amounts of content, and a grid row is only as
    short as its tallest cell — which leaves a void under every short panel.
    Multi-column packs them vertically instead, so each column closes up and the

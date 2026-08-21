@@ -6,6 +6,7 @@ import {
   getTransparency,
 } from '@/lib/static-data';
 import { Stars, peso, salaryRange, since } from '@/components/app/ui';
+import CropArt from '@/components/app/CropArt';
 
 export const metadata = {
   title: 'BetterIsabela.org | Services, officials and community for Isabela',
@@ -67,18 +68,21 @@ export default async function Home() {
   return (
     <main className="wrap">
       <section className="hhero">
-        <h1>
-          Isabela, <span>in the open</span>
-        </h1>
-        <p>
-          Prices, work, goods, public projects and the people in office — for the
-          province that grows the country&rsquo;s rice and corn.
-        </p>
-        <div className="hhero-actions">
-          <a className="btn btn--primary" href="/prices">Today&rsquo;s prices</a>
-          <a className="btn" href="/jobs">Find work</a>
-          <a className="btn" href="/ask">Ask a question</a>
+        <div>
+          <h1>
+            Isabela, <span>in the open</span>
+          </h1>
+          <p>
+            Prices, work, goods, public projects and the people in office — for the
+            province that grows the country&rsquo;s rice and corn.
+          </p>
+          <div className="hhero-actions">
+            <a className="btn btn--primary" href="/prices">Today&rsquo;s prices</a>
+            <a className="btn" href="/jobs">Find work</a>
+            <a className="btn" href="/ask">Ask a question</a>
+          </div>
         </div>
+        <CropArt />
       </section>
 
       <div className="hgrid">
