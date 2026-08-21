@@ -55,7 +55,10 @@
   z-index: 40;
 }
 .appnav-inner {
-  max-width: 1180px;
+  /* Wider than the content column on purpose: ten links plus a signed-in
+     identity (name, role, moderation, sign out) need more room than a reading
+     measure, and at 1180px the last two links fell off the end. */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 8px 20px;
   display: flex;
@@ -106,6 +109,56 @@
    height while it loads. The seal's artwork carries its own ring of white, so it
    is set a touch larger than the cap height to sit level with the wordmark. */
 .appnav-seal { width: 38px; height: 38px; flex: none; }
+
+/* The menu button. Absent on a wide screen, where the links are the menu. */
+.appnav-toggle {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 6px 12px 6px 10px;
+  background: none;
+  border: 1px solid var(--app-line);
+  border-radius: 8px;
+  color: var(--app-ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--app-fast) var(--app-ease);
+}
+.appnav-toggle:hover { background: var(--app-tint); }
+.appnav-toggle-label { line-height: 1; }
+/* Three bars that fold into a cross, which is the whole icon: no image, no font. */
+.appnav-burger,
+.appnav-burger::before,
+.appnav-burger::after {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.appnav-burger {
+  position: relative;
+  flex: none;
+  transition: background-color var(--app-fast) var(--app-ease);
+}
+.appnav-burger::before,
+.appnav-burger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  transition: transform var(--app-fast) var(--app-ease);
+}
+.appnav-burger::before { top: -6px; }
+.appnav-burger::after { top: 6px; }
+.appnav-toggle[aria-expanded='true'] .appnav-burger { background: transparent; }
+.appnav-toggle[aria-expanded='true'] .appnav-burger::before {
+  transform: translateY(6px) rotate(45deg);
+}
+.appnav-toggle[aria-expanded='true'] .appnav-burger::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
 .appnav-links {
   display: flex;
   gap: 2px;
@@ -616,18 +669,101 @@
 .hlist a { font-size: 0.93rem; font-weight: 500; }
 .hlist-meta { font-size: 0.79rem; color: var(--app-muted); }
 
+/* Between these widths the ten links need about 1,085px of row and do not get
+   it, so the menu takes the full width on a line of its own. Measured, not
+   guessed: at 1,050px the row still overflowed by 35px, and the scroll shadow
+   below is a warning that something is hidden, not a way to read it. A
+   disclosure button would do here too, but a menu that fits is better than a
+   menu behind a tap. */
+@media (min-width: 901px) and (max-width: 1090px) {
+  .appnav-inner { flex-wrap: wrap; gap: 2px 16px; padding-bottom: 4px; }
+  .appnav-inner > nav { order: 3; flex-basis: 100%; }
+  /* On its own row it reads from the left, not pushed up against sign-in. */
+  .appnav-links { justify-content: flex-start; }
+}
+
+/* Signed in, the identity in the row (name, role, moderation, sign out) costs
+   about what three links do, and at 1280px it pushed Q&A and Officials off the
+   end — which is the bug this whole block exists for. :has lets the layout
+   respond to whether anyone is actually signed in, which a media query cannot
+   know. Picks up where the range above leaves off. */
+@media (min-width: 1091px) and (max-width: 1300px) {
+  .appnav-inner:has(.authbar-who) {
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    padding-bottom: 4px;
+  }
+  .appnav-inner:has(.authbar-who) > nav { order: 3; flex-basis: 100%; }
+  .appnav-inner:has(.authbar-who) .appnav-links { justify-content: flex-start; }
+}
+
+/* Below this the row cannot hold ten links and an identity at once, so the
+   links become a disclosure menu: button in the row, panel under the header.
+   A horizontal scroller was the old answer, and it hid half the menu behind a
+   gesture nobody is told about. */
+@media (max-width: 900px) {
+  .appnav-toggle { display: inline-flex; }
+  /* Conventional order: button, brand, then whoever is signed in. */
+  .appnav-inner > nav { order: -1; flex: none; overflow: visible; }
+  .appnav-inner > nav {
+    background-image: none;
+    scroll-snap-type: none;
+  }
+  .authbar { margin-left: auto; }
+  .appnav-links {
+    /* Positioned against .appnav, which is sticky and therefore the containing
+       block, so the panel spans the header rather than the inner column. */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-width: 0;
+    gap: 2px;
+    margin: 0;
+    padding: 8px 16px 14px;
+    background: var(--app-surface);
+    border-bottom: 1px solid var(--app-line);
+    box-shadow: var(--app-shadow-2);
+    /* A long menu on a short screen scrolls inside itself rather than off. */
+    max-height: calc(100dvh - 100%);
+    overflow-y: auto;
+  }
+  .appnav-links.is-open { display: flex; }
+  .appnav-links a {
+    min-height: 46px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  .appnav-links a[aria-current='page'] { font-weight: 600; }
+}
+
+/* Signed in on a phone the identity does not fit beside the brand and the menu
+   button, and .authbar was flex: none in a nowrap row: at 320px it ran 562px
+   wide and took the whole page sideways with it. Its own row instead, so
+   nothing is truncated and nothing is hidden. */
+@media (max-width: 700px) {
+  .appnav-inner:has(.authbar-who) { flex-wrap: wrap; }
+  .appnav-inner:has(.authbar-who) .authbar {
+    order: 4;
+    flex: 1 1 100%;
+    min-width: 0;
+    margin-left: 0;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+}
+
 @media (max-width: 560px) {
   .row { grid-template-columns: 1fr; }
   .card { flex-direction: column; }
-  /* Too narrow for one line: brand and sign-in share the top row, the menu
-     scrolls beneath them, full width. */
-  .appnav-inner { flex-wrap: wrap; gap: 6px 12px; padding: 6px 16px 4px; }
-  .appnav-inner > nav { order: 3; flex-basis: 100%; }
-  .authbar { margin-left: auto; }
-  /* The menu has the row to itself here, so it reads left to right from the
-     start instead of being pushed against sign-in. */
-  .appnav-links { gap: 0; justify-content: flex-start; }
-  .appnav-links a { min-height: 44px; padding: 6px 10px; }
+  .appnav-inner { padding: 6px 16px; gap: 10px; }
+  .appnav-toggle { padding: 6px 10px; }
+  /* The word is not needed once the icon has the row to itself. */
+  .appnav-toggle-label { display: none; }
 }
 
 /* The brand shares its row with sign-in only, since the menu has wrapped to its
