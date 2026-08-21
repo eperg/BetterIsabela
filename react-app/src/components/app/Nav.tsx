@@ -20,6 +20,15 @@ export default function Nav() {
     <header className="appnav">
       <div className="appnav-inner">
         <a href="/" className="appnav-brand">
+          {/* The link is already named by the wordmark beside it, so the seal is
+              alt="" rather than announcing the province twice. */}
+          <img
+            className="appnav-seal"
+            src="/assets/images/logo/isabela-seal.png"
+            width={38}
+            height={38}
+            alt=""
+          />
           Better<strong>Isabela</strong>
         </a>
         <nav aria-label="Main">

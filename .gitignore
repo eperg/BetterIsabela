@@ -26,3 +26,6 @@ release/
 
 # TypeScript incremental build state
 *.tsbuildinfo
+.vercel
+.env*
+!.env.example

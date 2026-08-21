@@ -22,11 +22,9 @@ export default function Footer() {
       <div className="container">
         <div className="footer-main-new">
           <div className="footer-brand">
-            <img
-              src="/assets/images/logo/better-isabela-logo-white.svg"
-              alt="Better Isabela logo"
-              className="footer-logo"
-            />
+            <p className="footer-wordmark">
+              Better <strong>Isabela</strong>
+            </p>
             <p className="footer-tagline">{t('footer-tagline')}</p>
           </div>
           <div className="footer-column">

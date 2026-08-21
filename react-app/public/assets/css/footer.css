@@ -31,6 +31,19 @@
   margin-bottom: 16px;
 }
 
+/* The app footer sets the name as type rather than artwork, on one line. The
+   .footer-logo rules above are still in use by the static pages. */
+.footer-wordmark {
+  margin: 0 0 16px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+  white-space: nowrap;
+}
+.footer-wordmark strong { font-weight: 700; }
+
 .footer-tagline {
   font-size: 0.875rem;
   line-height: 1.6;
