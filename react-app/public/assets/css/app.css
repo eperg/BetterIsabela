@@ -55,10 +55,12 @@
   z-index: 40;
 }
 .appnav-inner {
-  /* Wider than the content column on purpose: ten links plus a signed-in
-     identity (name, role, moderation, sign out) need more room than a reading
-     measure, and at 1180px the last two links fell off the end. */
-  max-width: 1400px;
+  /* Left at the content column's width. Widening this to fit a signed-in
+     identity would have moved the whole header 110px sideways the moment
+     /api/me answered, since the identity renders as a placeholder first; and
+     signed out there was nothing to fix — 1180px overflows by nothing at any
+     width from 1200 up. The signed-in row is handled below instead. */
+  max-width: 1180px;
   margin: 0 auto;
   padding: 8px 20px;
   display: flex;
@@ -678,22 +680,28 @@
 @media (min-width: 901px) and (max-width: 1090px) {
   .appnav-inner { flex-wrap: wrap; gap: 2px 16px; padding-bottom: 4px; }
   .appnav-inner > nav { order: 3; flex-basis: 100%; }
-  /* On its own row it reads from the left, not pushed up against sign-in. */
+  /* Account business belongs at the far end of its row, not against the brand. */
+  .authbar { margin-left: auto; }
+  /* On its own row the menu reads from the left, not pushed up against sign-in. */
   .appnav-links { justify-content: flex-start; }
 }
 
 /* Signed in, the identity in the row (name, role, moderation, sign out) costs
    about what three links do, and at 1280px it pushed Q&A and Officials off the
-   end — which is the bug this whole block exists for. :has lets the layout
-   respond to whether anyone is actually signed in, which a media query cannot
-   know. Picks up where the range above leaves off. */
-@media (min-width: 1091px) and (max-width: 1300px) {
+   end — the bug this block exists for. :has lets the layout respond to whether
+   anyone is actually signed in, which a media query cannot know.
+   No upper bound on purpose: the identity is as wide as somebody's name, so a
+   width that fits "epergaboni" says nothing about the next person. A row of its
+   own always fits. Signed out, nothing here applies and the header is exactly
+   what it was. */
+@media (min-width: 1091px) {
   .appnav-inner:has(.authbar-who) {
     flex-wrap: wrap;
     gap: 2px 16px;
     padding-bottom: 4px;
   }
   .appnav-inner:has(.authbar-who) > nav { order: 3; flex-basis: 100%; }
+  .appnav-inner:has(.authbar-who) .authbar { margin-left: auto; }
   .appnav-inner:has(.authbar-who) .appnav-links { justify-content: flex-start; }
 }
 
